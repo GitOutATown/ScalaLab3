@@ -2,8 +2,8 @@ package lab.math.probability.ross.combinatorial_analysis
 
 import lab.math.probability.ross.combinatorial_analysis.Combinatorics._
 
-// Examples 1.1, 1.2
-object scratchpad {
+// Examples 1.1, 1.2, 1.3, Counting, Permutations
+object lab_1 {
 	10 * 3                                    //> res0: Int(30) = 30
 	
 	val women = 1 to 10                       //> women  : scala.collection.immutable.Range.Inclusive = Range(1, 2, 3, 4, 5, 6
