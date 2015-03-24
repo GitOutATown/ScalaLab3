@@ -70,6 +70,7 @@ object scratchpad {
                                                   //| fac(3): 6
                                                   //| fac(2): 2
                                                   //| res13: Int = 1260
+  binCoef(4, 2)                                   //> res14: Double = 6.0
 
 }
 /*

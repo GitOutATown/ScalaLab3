@@ -7,7 +7,7 @@ object lab_2 {
 
 	// Combinations of all possible groups of 3 objects out of 5.
   
-  binomialCoeficients(5, 3)                       //> res0: Double = 10.0
+  binCoef(5, 3)                                   //> res0: Double = 10.0
   fac(5) / (fac(5 - 3) * fac(3))                  //> fac(5): 120
                                                   //| fac(2): 2
                                                   //| fac(3): 6
@@ -36,21 +36,20 @@ object lab_2 {
                                                   //> res4: Int = 60
   // Combinations
   
-  binomialCoeficients(20, 3)                      //> res5: Double = 1140.0
+  binCoef(20, 3)                                  //> res5: Double = 1140.0
   
   // ---------------------------------------------------- //
   
   // EXAMPLE 4b
 	// From a group of 5 women and 7 men, how many different committees consisting of 2 women and 3 men can be formed?
-	binomialCoeficients(5, 2) * binomialCoeficients(7, 3)
-                                                  //> res6: Double = 350.0
+	binCoef(5, 2) * binCoef(7, 3)             //> res6: Double = 350.0
   // All of the women
-  binomialCoeficients(5, 2)                       //> res7: Double = 10.0
+  binCoef(5, 2)                                   //> res7: Double = 10.0
   
 	// All of the men
 	val men = List('A', 'B', 'C', 'D', 'E', 'F', 'G')
                                                   //> men  : List[Char] = List(A, B, C, D, E, F, G)
-  binomialCoeficients(7, 3)                       //> res8: Double = 35.0
+  binCoef(7, 3)                                   //> res8: Double = 35.0
   
 	
 	men.combinations(3).length                //> res9: Int = 35
@@ -73,7 +72,7 @@ object lab_2 {
  	// The first group that provides the third, non-feuding member is
 	List('C', 'D', 'E', 'F', 'G').combinations(1).length
                                                   //> res11: Int = 5
-	binomialCoeficients(5, 1)                 //> res12: Double = 5.0
+	binCoef(5, 1)                             //> res12: Double = 5.0
 	List('C', 'D', 'E', 'F', 'G').combinations(1).flatten.foreach(println)
                                                   //> C
                                                   //| D
@@ -82,13 +81,12 @@ object lab_2 {
                                                   //| G
 	// The second group providing the two members who won't work together is
   List('A', 'B').combinations(2).length           //> res13: Int = 1
-  binomialCoeficients(2, 2)                       //> res14: Double = 1.0
+  binCoef(2, 2)                                   //> res14: Double = 1.0
 	List('A', 'B').combinations(2).foreach(println)
                                                   //> List(A, B)
 	// In combination these two groups (of length 1 and 5) comprise the 5 possible committees that would contain the feuding men (listed above).
 	1 * 5                                     //> res15: Int(5) = 5
-	binomialCoeficients(2, 2) * binomialCoeficients(5, 1)
-                                                  //> res16: Double = 5.0
+	binCoef(2, 2) * binCoef(5, 1)             //> res16: Double = 5.0
 	for {
 		 x <- List('C', 'D', 'E', 'F', 'G')
 	} yield (List('A', 'B') ++ List(x))       //> res17: List[List[Char]] = List(List(A, B, C), List(A, B, D), List(A, B, E),
@@ -131,10 +129,9 @@ object lab_2 {
                                                   //| List(D, F, G)
                                                   //| List(E, F, G)
   // So therefor, with all the women, and allowing for the feuding men, the number of possible committees are
-  val allWomen = binomialCoeficients(5, 2)        //> allWomen  : Double = 10.0
-  val allMen = binomialCoeficients(7, 3)          //> allMen  : Double = 35.0
-  val feudingMen = binomialCoeficients(2, 2) * binomialCoeficients(5, 1)
-                                                  //> feudingMen  : Double = 5.0
+  val allWomen = binCoef(5, 2)                    //> allWomen  : Double = 10.0
+  val allMen = binCoef(7, 3)                      //> allMen  : Double = 35.0
+  val feudingMen = binCoef(2, 2) * binCoef(5, 1)  //> feudingMen  : Double = 5.0
   allWomen * (allMen - feudingMen)                //> res19: Double = 300.0
 }
 /*

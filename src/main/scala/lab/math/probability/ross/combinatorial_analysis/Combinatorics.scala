@@ -18,9 +18,10 @@ object Combinatorics {
 	    recurse(n, 1)
 	}
   
+  	// Binomial Coeficients
   	// recursive
     // See p. 90 Schaum Discrete Mathematics
-    def binomialCoeficients(n: Int, r: Int): Double = {
+    def binCoef(n: Int, r: Int): Double = {
         def inner(n: Int, r: Int, n_acc: Int, r_acc: Int): Double = {
 	        if (r >= 1) {
 	            val new_n_acc = n_acc * n
