@@ -5,6 +5,7 @@ import lab.math.probability.ross.combinatorial_analysis.Combinatorics._
 object lab_3 {
 	// 4c
 	
+	// Recursive
 	def failSeq(perms: List[Int]): Boolean = {
   		perms match {
   			case x :: Nil => true
@@ -18,7 +19,7 @@ object lab_3 {
   def diagnostic(perms: Int, filtered: Int) {
   		println(filtered + "/" + perms)
   }                                               //> diagnostic: (perms: Int, filtered: Int)Unit
-  
+ 
   // ....... test 1
   val perms1 = List(1,1,0,0).permutations.toList  //> perms1  : List[List[Int]] = List(List(1, 1, 0, 0), List(1, 0, 1, 0), List(1,
                                                   //|  0, 0, 1), List(0, 1, 1, 0), List(0, 1, 0, 1), List(0, 0, 1, 1))

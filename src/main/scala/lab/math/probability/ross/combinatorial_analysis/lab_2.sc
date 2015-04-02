@@ -1,5 +1,5 @@
 package lab.math.probability.ross.combinatorial_analysis
-
+ 
 import lab.math.probability.ross.combinatorial_analysis.Combinatorics._
 
 // Examples 1.4 Combinations
