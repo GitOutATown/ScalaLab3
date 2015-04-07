@@ -30,6 +30,7 @@ object Entropy_formula_1 {
   E(List(100d))                                   //> res4: Double = -4.327351922370738
   E(List(5d,5,5))                                 //> res5: Double = 1.2031521094532591
   E(List(5d,5,5,5,5,5,5))                         //> res6: Double = 2.8073549220576046
+  E(List(3d,3))                                   //> res7: Double = 0.6075978027812247
   
   
 }
