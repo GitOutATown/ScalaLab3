@@ -12,7 +12,9 @@ object MathUtil {
 	  		ci / n
 		}
   		
-  		val distTimesLogDist = valueCounts.map(ci => Pi(ci) * log2(Pi(ci)))
+  		val distTimesLogDist = valueCounts
+  				.filter(ci => ci != 0)
+  				.map(ci => Pi(ci) * log2(Pi(ci)))
   		-(distTimesLogDist.sum)
 	}
 	
