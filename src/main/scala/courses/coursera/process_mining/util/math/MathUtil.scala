@@ -6,15 +6,12 @@ object MathUtil {
 	// Entropy
 	def E(valueCounts: List[Double]) = {
 		val n = valueCounts.sum
-  		
   		// Probability distribution of count values
-		def Pi(ci: Double) = {
-	  		ci / n
-		}
-  		
+		def Pi(ci: Double) = ci / n
+  		// Weighting
   		val distTimesLogDist = valueCounts
-  				.filter(ci => ci != 0)
-  				.map(ci => Pi(ci) * log2(Pi(ci)))
+			.filter(ci => ci != 0)
+			.map(ci => Pi(ci) * log2(Pi(ci)))
   		-(distTimesLogDist.sum)
 	}
 	
