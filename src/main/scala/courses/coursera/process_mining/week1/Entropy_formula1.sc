@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import courses.coursera.process_mining.util.math.MathUtil.log2
 
-object Entropy_formula_1 {
+object Entropy_formula1 {
   
   val valueCounts = List(3d, 5, 2, 7, 9, 4, 3, 2) //> valueCounts  : List[Double] = List(3.0, 5.0, 2.0, 7.0, 9.0, 4.0, 3.0, 2.0)
   valueCounts.length                              //> res0: Int = 8

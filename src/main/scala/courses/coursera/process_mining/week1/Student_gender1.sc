@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import util.math.MathUtil._
 
-object Student_gender_1 {
+object Student_gender1 {
 
 	// List(pass, fail)
 

@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import math._
 
-object Entropy_lab_1 {
+object Entropy_lab1 {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   
   // See ScalaLab2/src/main/scala/lab/math/logarithm_lab.sc

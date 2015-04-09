@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import util.math.MathUtil._
 
-object Weighted_avg_1 {
+object Weighted_avg1 {
 	// 14-Learning Decision Trees.pdf
   
   // Initial entropy for all (died young, died old)

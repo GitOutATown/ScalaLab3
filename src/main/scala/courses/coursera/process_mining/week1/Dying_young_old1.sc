@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import util.math.MathUtil._
 
-object Dying_young_old_1 {
+object Dying_young_old1 {
 	
 	val diedOld = 546                         //> diedOld  : Int = 546
 	val diedYoung = 314                       //> diedYoung  : Int = 314

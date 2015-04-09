@@ -1,5 +1,5 @@
 package courses.coursera.process_mining
-
+ 
 import util.math.MathUtil._
 
 object Exercise_144_balls {

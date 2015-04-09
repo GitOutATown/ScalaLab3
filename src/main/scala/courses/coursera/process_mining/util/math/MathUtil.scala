@@ -1,6 +1,7 @@
 package courses.coursera.process_mining.util.math
 
 object MathUtil {
+  
 	def log2(x: Double) = scala.math.log(x)/scala.math.log(2)
 	
 	// Entropy
@@ -22,5 +23,11 @@ object MathUtil {
 			E(leaf) * (leaf.sum / n)
 		})
 		weightedEnts.sum
+	}
+	
+	def roundAt(prec: Int)(n: Double): Double = {
+	  	val scale = math pow(10, prec)
+	  	//println("scale: " + scale)
+	  	(math round n * scale) / scale
 	}
 }

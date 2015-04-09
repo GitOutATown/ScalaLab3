@@ -2,7 +2,7 @@ package courses.coursera.process_mining
 
 import util.math.MathUtil._
 
-object Student_smokers_2 {
+object Student_smokers2 {
 
 	// List(pass, fail)
 
