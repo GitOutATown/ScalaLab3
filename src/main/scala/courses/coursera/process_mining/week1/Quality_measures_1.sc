@@ -36,6 +36,10 @@ object Quality_measures_1 {
   val rc2 = rnd(recall(544, 2))                   //> rc2  : Double = 0.996
   rnd(F1(pr2, rc2))                               //> res0: Double = 0.811
   
+  // .............. //
+  
+  rnd(recall(250, 25))                            //> res1: Double = 0.909
+  
   /*
   rnd(precision(,))
   rnd(recall(,))
