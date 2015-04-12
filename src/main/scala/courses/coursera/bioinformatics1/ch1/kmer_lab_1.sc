@@ -2,8 +2,12 @@ package courses.coursera.bioinformatics1.ch1
 
 object kmer_lab_1 {
 
-	// There are |Text| - k + 1 k-mers in Text
+	// There are |Text| - k + 1 k-mers in Text.
 	// where |Text| denotes the length of Text.
+	// kmer is a sliding window.
+	// The "times" and "leftover" (below) don't matter because
+	// the kmers are not fitting end to end, but rather slide
+	// along the text in one character position increments.
 
 	val text1 = "TheQuickBrownFoxJumpedOverTheLazyDog"
                                                   //> text1  : String = TheQuickBrownFoxJumpedOverTheLazyDog
