@@ -2,6 +2,7 @@ package courses.coursera.bioinformatics1.ch1
 
 object kmer_lab_3 {
 
+	// Finds character segment of length k with the highest frequency in the text.
 	def highestFreqSeq(text: String, k: Int) = {
 		require(k < text.length)
 		
@@ -26,21 +27,29 @@ object kmer_lab_3 {
 		  		} // end case kmer :: tail
 	  		} // end kSegments match
 		} // end indexKmers
+		
 		// Start
-		indexKmers(kSegments, Map.empty[String, Int])
-	}                                         //> highestFreqSeq: (text: String, k: Int)Map[String,Int]
+		val kmerStore = indexKmers(kSegments, Map.empty[String, Int])
+		
+		// Invert the Map
+		// http://daily-scala.blogspot.com/2010/03/how-to-reverse-map.html
+		val inverseStore = kmerStore groupBy {_._2} map {
+			case (count, kmer_counts) => (count, kmer_counts.unzip._1)
+		}
+		
+		// Sort Map
+		// https://www.safaribooksonline.com/library/view/scala-cookbook/9781449340292/ch11s23.html
+		import scala.collection.immutable.ListMap
+		ListMap(inverseStore.toSeq.sortWith(_._1 > _._1):_*)
+		
+	} //                                      //> highestFreqSeq: (text: String, k: Int)scala.collection.immutable.ListMap[In
+                                                  //| t,scala.collection.immutable.Iterable[String]]
 	
 	val text2 = "TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyLive"
-                                                  //> text2  : String = TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyLi
-                                                  //| ve
-	highestFreqSeq(text2, 3)                  //> res0: Map[String,Int] = Map(ino -> 1, pai -> 1, try -> 1, nly -> 1, ret -> 1
-                                                  //| , ini -> 1, all -> 1, inl -> 1, eth -> 1, oun -> 1, nof -> 1, yon -> 1, lyo 
-                                                  //| -> 1, hep -> 1, ryw -> 1, ins -> 1, ntr -> 1, lsm -> 1, ain -> 4, epl -> 1, 
-                                                  //| inf -> 1, liv -> 1, eyl -> 1, hec -> 1, nth -> 1, sma -> 1, whe -> 1, lls ->
-                                                  //|  1, eco -> 1, fth -> 1, mai -> 1, pla -> 1, rai -> 1, era -> 1, cou -> 1, he
-                                                  //| r -> 2, unt -> 1, spa -> 1, ere -> 1, lai -> 1, ywh -> 1, nin -> 1, fal -> 1
-                                                  //| , nfa -> 1, yli -> 1, hey -> 1, ive -> 1, oft -> 1, ont -> 1, the -> 4, nsp 
-                                                  //| -> 1)
+                                                  //> text2  : String = TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyL
+                                                  //| ive
+	highestFreqSeq(text2, 3).take(2)          //> res0: scala.collection.immutable.ListMap[Int,scala.collection.immutable.Ite
+                                                  //| rable[String]] = Map(4 -> List(ain, the), 2 -> List(her))
 }
 /*
 
