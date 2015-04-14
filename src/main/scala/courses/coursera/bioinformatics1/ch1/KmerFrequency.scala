@@ -7,7 +7,7 @@ object KmerFrequency {
 		require(k < text.length)
 		
 		// prepare kmers
-		val kSegments = text.toLowerCase.iterator.sliding(k).map(
+		val kSegments = text.toUpperCase.iterator.sliding(k).map(
 			segment => segment.flatMap(_.toString).mkString
 		).toList
 		

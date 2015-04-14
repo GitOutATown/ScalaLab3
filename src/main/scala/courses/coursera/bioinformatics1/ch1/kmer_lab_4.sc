@@ -40,3 +40,8 @@ object kmer_lab_4 {
                                                   //| C, TCTTTGACTGTCAC, ACTGTCACGTCGTA, TCTTTGGATCTTTG, TGTCACGTCGTAGC, TCACGTCG
                                                   //| TAGCAC, GATCTTTGGATCTT, TTTGACTGTCACGT)
 }
+/*
+
+
+
+*/
