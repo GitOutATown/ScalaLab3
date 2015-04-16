@@ -1,4 +1,4 @@
-package courses.coursera.reactive_programming.scatacheck
+package courses.coursera.reactive_programming.scalacheck
 
 import org.scalacheck.Properties
 import org.scalacheck.Prop.forAll

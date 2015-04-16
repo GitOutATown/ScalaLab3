@@ -15,12 +15,12 @@ object PatternCount2 extends App {
 		def inter(index: Int, indices: List[Int]): List[Int] = {
 			val found = str.indexOf(pattern, index)
 			if (found < 0) indices // none found, we're done
-			else inter(found + 1, indices ++ List(found))
+			else inter(found + 1, indices :+ found)
 		}
 		inter(0, List.empty[Int])
 	}
 	
-	val pattern = "CCGGTAGCC"
+	val pattern = "AGTT"
 	val result = pattPos(pattern , text)
 	println("pattern locations: " + result)
 	println("number of locations: " + result.length)
