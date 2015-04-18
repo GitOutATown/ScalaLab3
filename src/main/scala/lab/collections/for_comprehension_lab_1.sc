@@ -9,8 +9,8 @@ object for_comprehension_lab_1 {
 	val N = 15                                //> N  : Int = 15
 	
 	for {
-		x <- 1 to M
-		y <- 11 to N
+		x <- 1 to M // flatMap
+		y <- 11 to N // map
 	} yield (x,y)                             //> res0: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((1,11), (1,
                                                   //| 12), (1,13), (1,14), (1,15), (2,11), (2,12), (2,13), (2,14), (2,15), (3,11),
                                                   //|  (3,12), (3,13), (3,14), (3,15), (4,11), (4,12), (4,13), (4,14), (4,15), (5,
@@ -46,11 +46,11 @@ object for_comprehension_lab_1 {
   // But, really, check this. The filtering could not be done on the generator.
   
   for{
-  		n <- 1 to 5
-  		m <- 11 to 15
+  		m <- 11 to 15 // flatMap
+  		n <- 1 to 5 // map
   		if m % n == 0
-  } yield n                                       //> res6: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 1, 1, 1, 1, 2, 
-                                                  //| 2, 3, 3, 4, 5)
+  } yield n                                       //> res6: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 1, 2, 3, 4, 1, 
+                                                  //| 1, 2, 1, 3, 5)
   
   // And the above could be translated to
   
@@ -63,8 +63,6 @@ object for_comprehension_lab_1 {
                                                   //| 1, 2, 1, 3, 5)
   	
   // And is also equivalent to
-
-	//(1 until n).flatMap(i => (1 until i).filter(j => isPrime(i + j)).map(j => (i, j)))
 	
 	(11 to 15).flatMap(m =>
 		(1 to 5).filter(n =>

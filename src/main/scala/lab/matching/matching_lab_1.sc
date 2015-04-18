@@ -2,7 +2,7 @@ package lab.matching
 
 object matching_lab_1 {
 
-	val myMap = Map("a" -> 42, "b" -> 43)     //> myMap  : scala.collection.immutable.Map[String,Int] = Map(a -> 42, b -> 43)
+	val myMap = Map("a" -> 42, "b" -> 43, "h" -> 56) //> myMap  : scala.collection.immutable.Map[String,Int] = Map(a -> 42, b -> 43)
 	
 	def getMapValue(s: String): String = {
 	  myMap get s match {
