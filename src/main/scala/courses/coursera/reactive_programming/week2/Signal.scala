@@ -1,5 +1,9 @@
 package courses.coursera.reactive_programming.week2
 
+/* DynamicVariable is thread-local state. Each thread in the application
+ * accesses its own copy of the variable. The variable is global for the
+ * thread, but it's not shared between threads.
+ */
 import scala.util.DynamicVariable
 
 class Signal[T](expr: => T) {

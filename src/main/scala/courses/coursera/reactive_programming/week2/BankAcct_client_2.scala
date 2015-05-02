@@ -1,9 +1,11 @@
 package courses.coursera.reactive_programming.week2
 
 object BankAcct_client_2 extends App {
-	println("-->Creating consolidated Signal")  
-  	def consolidated(accts: List[BankAccount2]): Signal[Int] =
-		Signal(accts.map(_.getBalance).sum)
+    
+  	def consolidated(accts: List[BankAccount2]): Signal[Int] = {
+  	  println("==>Inside def consolidated, creating Signal for accts total.")
+	  Signal(accts.map(_.getBalance).sum) // Int
+	}
 	
 	println("-->Creating new acct2")
 	val acct2 = new BankAccount2
@@ -20,14 +22,14 @@ object BankAcct_client_2 extends App {
 	val acct4 = new BankAccount2
 	println("-->acct4 bal: " + acct4.getBalance) // balance() calls Signal.apply
 	
-	println("-->Calling consolitated for list of accts")
+	println("==>Calling create consolitated for list of accts")
 	val acctsTotal = consolidated(List(acct2, acct3, acct4))
 	println("-->acctsTotal: " + acctsTotal())
 	
 	println("-->Depositing 50 in acct2")
 	acct2 deposit 50
 	println("-->acct2 bal: " + acct2.getBalance)
-	println("-->acctsTotal: " + acctsTotal())
+	println("==>acctsTotal: " + acctsTotal())
 	
 	println("-->Withdraw 20 from acct2")
 	acct2 withdraw 20
@@ -36,16 +38,16 @@ object BankAcct_client_2 extends App {
 	println("-->acctsTotal: " + acctsTotal())
 	
 	// A Var is a Signal that can be updated by the client program.
-	println("==>Creating xchange Var(246.00)")
+	println("-->Creating xchange Var(246.00)")
   	val xchange = Var(246.00)
   	
-  	println("==>Creating inDollars Signal(acctsTotal() * xchange()")
+  	println("-->Creating inDollars Signal(acctsTotal() * xchange()")
   	val inDollars = Signal(acctsTotal() * xchange())
-  	println("==>inDollars: " + inDollars())
+  	println("-->inDollars: " + inDollars())
   
-  	println("==>Changing xchange to 260.00")
+  	println("-->Changing xchange to 260.00")
   	xchange() = 260.00
-  	println("==>inDollars has been automatically updated: " + inDollars())
+  	println("-->inDollars has been automatically updated: " + inDollars())
   	
   	println("-->Withdraw 40 from acct3")
   	acct3 withdraw 40
