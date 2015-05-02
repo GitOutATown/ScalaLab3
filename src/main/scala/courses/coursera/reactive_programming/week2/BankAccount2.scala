@@ -2,7 +2,9 @@ package courses.coursera.reactive_programming.week2
 
 class BankAccount2 {
   
-  val balance = Var(0);
+  println("In BankAccount2 constructor")
+  
+  val balance = Var(0)
   
   def deposit(amount: Int): Unit =
     if (amount > 0) {

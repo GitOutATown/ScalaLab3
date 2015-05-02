@@ -9,7 +9,7 @@ class Signal[T](expr: => T) {
   private var observers: Set[Signal[_]] = Set()
   private var observed: List[Signal[_]] = Nil
   
-  //println("In Signal constructor")
+  println("In Signal constructor")
   
   update(expr)
 
@@ -73,39 +73,43 @@ class Signal[T](expr: => T) {
    * How/where/when is this being invoked? To answer that I need to 
    * trace/establish a more complete and integrated picture of program
    * flow.
+   * Ok, I've done that. Here are some examples from BankAccount2:
+   * Var(0) calls object Var def apply
+   * balance() calls class Signal def apply
+   * Odersky: The parameterless class version of apply gives you the current 
+   * value of the Signal. The object version of apply takes an expr
+   * argument and creates an instance of class Signal.
    */
   def apply() = {
     observers += caller.value // callers are observers
-    //println("~~In Signal apply observers: " + observers)
+    println("~~In Signal apply observers.size: " + observers.size)
     assert(!caller.value.observers.contains(this), "cyclic signal definition")
     caller.value.observed ::= this // this is observed
-    //println("~~In Signal apply, caller.value.observed: " + caller.value.observed)
+    println("~~In Signal apply, caller.value.observed.size: " + caller.value.observed.size)
     //println("~~In Signal apply, observed: " + observed)
-    //println("~~In Signal apply, myValue: " + myValue)
+    println("~~In Signal apply, myValue: " + myValue)
     myValue
   }
 } // end class Signal[T](expr: => T)
 
-// Var is an extention of Signal
-// Odersky: Singal is assumed to be a Var Signal
+// Var is an extention of Signal.
+// Odersky: Signal is assumed to be a Var Signal
 class Var[T](expr: => T) extends Signal[T](expr) {
   //println("In Var constructor, expr: " + expr)
-  override def update(expr: => T): Unit = super.update(expr)
+  override def update(expr: => T): Unit = super.update(expr) // Note that without super, update throws a stack overflow error
 }
 
-/*
- * This is pretty interesting. Var is serving its characteristic
- * of representing mutable state. But as an object (class instantiation)
- * it actually performs functionally in that change of value is represented
- * by a new object version which in this case contains the expression which
- * causes, or drives the change.
- * 
- * Hmmm... I'm starting to build a broader picture of this apperatus. I think
- * the sequence goes like this: Var.apply constructs a new instance of class
- * Var, which in turn calls super.update(expr). In true functional practice
+/* 
+ * Odersky: The parameterless class version of apply gives you the current 
+ * value of the Signal. The object version of apply takes an expr
+ * argument and creates an instance of class Signal.
+ */
+
+/* I think the sequence goes like this: Var.apply constructs a new instance of class
+ * Var, which in turn calls super.update(expr) on class Signal. In true functional practice
  * The expresion remains integrally linked with the resulting (consequential)
  * value it produces. super.update then calls computeValue, which involves
- * caller.withValue (DynamicVariable) using the passed expression to compute 
+ * caller.withValue (DynamicVariable) using the passed in expression to compute 
  * the value--but there is some necessary thread magic, which I don't quite 
  * understand the purpose of yet (but I'd like to! And I will!) to compute 
  * the value, which is then further applied in a general propagation on all 
