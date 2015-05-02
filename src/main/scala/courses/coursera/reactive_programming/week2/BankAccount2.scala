@@ -4,12 +4,20 @@ class BankAccount2 {
   
   println("In BankAccount2 constructor")
   
-  val balance = Var(0)
+  protected val balance = Var(0)
+  
+  def getBalance: Int = balance()
   
   def deposit(amount: Int): Unit =
     if (amount > 0) {
       val b = balance() // snapshot point in time value of balance
-      balance() = b + amount // new balance plus snapshot balance + amt
+      println("Calling balance() = b + " + amount)
+      /*
+       * "balance() = ..." calls update, which calls computeValue and 
+       * computeValue on all observers.
+       * Odersky: If the Signal changes, all observers will be re-evaluated.
+       */ 
+      balance() = b + amount // calling update new balance with snapshot balance + amt
     }
 
   def withdraw(amount: Int): Int =
