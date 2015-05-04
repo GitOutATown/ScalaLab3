@@ -14,5 +14,11 @@ object Map_lab_1 {
                                                   //| X -> 10)
 	val myMap3 = myMap2 updated("R", 42)      //> myMap3  : scala.collection.immutable.Map[String,Int] = Map(I -> 1, V -> 15, 
                                                   //| X -> 10, R -> 42)
-	'''                                       //> res4: Char('\'') = '
+	// filter out member
+	for{
+		(k, v) <- myMap
+		if k != "V"
+	} yield (k -> v)                          //> res4: scala.collection.immutable.Map[String,Int] = Map(I -> 1, X -> 10)
+	
+	'''                                       //> res5: Char('\'') = '
 }
