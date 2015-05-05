@@ -4,7 +4,17 @@ package lab.monad
  */
   
 sealed trait Maybe[+A] {
+	// Abstract
 	def flatMap[B](f: A => Maybe[B]): Maybe[B]
+	
+	/* Concrete, i.e. complete implementation
+	 * 
+	 * This is another great example of the power of function composition:
+	 * f being passed to the higher order function of map. 
+	 *  */
+	def map[B](f: A => B): Maybe[B] = flatMap {
+		a => Just(f(a))
+	}
 }
 
 case class Just[+A](a: A) extends Maybe[A] {
