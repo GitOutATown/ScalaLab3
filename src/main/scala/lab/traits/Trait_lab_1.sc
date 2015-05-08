@@ -35,5 +35,5 @@ object Trait_lab_1 {
 		term,
 		indexes
 	) with TermCount
-	0                                         //> res0: Int(0) = 0
+	'''                                       //> res0: Char('\'') = '
 }

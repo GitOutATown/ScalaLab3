@@ -3,10 +3,11 @@ package lab.monad
 object safeMath {
 	// http://scabl.blogspot.com/2013/03/monads-in-scala-2.html
 
+	// boolean conditional assignment
 	def safeSqrt(d: Double): Maybe[Double] =
   		if (d >= 0) Just(scala.math.sqrt(d)) else MaybeNot
                                                   //> safeSqrt: (d: Double)lab.monad.Maybe[Double]
- 
+ 	// boolean conditional assignment
 	def safeLog(d: Double): Maybe[Double] =
   		if (d > 0) Just(scala.math.log(d)) else MaybeNot
                                                   //> safeLog: (d: Double)lab.monad.Maybe[Double]
@@ -43,13 +44,15 @@ object safeMath {
 		 */
 		 
 	// for comprehension version
+	// Note that 'd' gets locally defined in each new function scope.
 	def logOfSafeSqrt_v3(d: Double): Maybe[Double] =
 		for {
-			sqrt <- safeSqrt(d)
-			log <- safeLog(sqrt)
-		} yield (log)                     //> logOfSafeSqrt_v3: (d: Double)lab.monad.Maybe[Double]
-  		
-  // -------------------------- //
+			d <- safeSqrt(d) // Maybe.flatMap
+			printStub = {println("d <- safeSqrt(d), d: " + d)} // Q: Why is 'd' a Double and not Just(Double), which is what flatMap should produce ?
+			d <- safeLog(d) // Maybe.map
+		} yield (d)                       //> logOfSafeSqrt_v3: (d: Double)lab.monad.Maybe[Double]
+	  		
+  // ----- tests --------------------- //
   
   safeSqrt(7)                                     //> res0: lab.monad.Maybe[Double] = Just(2.6457513110645907)
   safeSqrt(-7)                                    //> res1: lab.monad.Maybe[Double] = MaybeNot
@@ -64,13 +67,69 @@ object safeMath {
   println(".................")                    //> .................
   logOfSafeSqrt_v2(-7)                            //> res7: lab.monad.Maybe[Double] = MaybeNot
   
-  logOfSafeSqrt_v3(7)                             //> res8: lab.monad.Maybe[Double] = Just(0.9729550745276567)
+  logOfSafeSqrt_v3(7)                             //> d <- safeSqrt(d), d: 2.6457513110645907
+                                                  //| res8: lab.monad.Maybe[Double] = Just(0.9729550745276567)
   println(".................")                    //> .................
   logOfSafeSqrt_v3(-7)                            //> res9: lab.monad.Maybe[Double] = MaybeNot
   
-  '''                                             //> res10: Char('\'') = '
+  // ----- unsafe --------------------- //
+  
+  // >>> compose creates a new function that behaves by calling sqrt first, and then calling log on the result of that.<<<
+  val unsafeLogSqrt: (Double) => Double =
+  		scala.math.log _ compose scala.math.sqrt _
+                                                  //> unsafeLogSqrt  : Double => Double = <function1>
+  unsafeLogSqrt(7)                                //> res10: Double = 0.9729550745276567
+  unsafeLogSqrt(-7)                               //> res11: Double = NaN
+  
+  // another unsafe formulation
+  val unsafeLogSqrt_v2 = (x: Double) =>
+  		scala.math.log(scala.math.sqrt(x))//> unsafeLogSqrt_v2  : Double => Double = <function1>
+  
+  unsafeLogSqrt_v2(7)                             //> res12: Double = 0.9729550745276567
+  unsafeLogSqrt_v2(-7)                            //> res13: Double = NaN
+  
+  // ----- Kleisly composition ----- //
+  
+  def kleisliCompose[A, B, C](
+  		f: (B) => Maybe[C],
+  		g: (A) => Maybe[B]
+  	): (A) => Maybe[C] = {
+  		a: A => for {
+  			b <- g(a)
+  			c <- f(b)
+  		} yield c
+	}                                         //> kleisliCompose: [A, B, C](f: B => lab.monad.Maybe[C], g: A => lab.monad.May
+                                                  //| be[B])A => lab.monad.Maybe[C]
+  // TODO: I don't have a clear understanding of this syntax yet...
+  def logOfSafeSqrt_v4(d: Double): Maybe[Double] =
+		kleisliCompose(safeLog _, safeSqrt _)(d)
+                                                  //> logOfSafeSqrt_v4: (d: Double)lab.monad.Maybe[Double]
+	logOfSafeSqrt_v4(7)                       //> res14: lab.monad.Maybe[Double] = Just(0.9729550745276567)
+	logOfSafeSqrt_v4(-7)                      //> res15: lab.monad.Maybe[Double] = MaybeNot
+	
+	/* >>>
+	 The kleisliCompose method itself is the same, except that type parameters B and C, and parameter f, have been lifted out of the method and into the enclosing class. The MaybeFunction constructor takes a single Function1 as argument - in particular, a Function1 that returns a Maybe.
+	 <<< */
+	implicit class MaybeFunction[B, C](f: (B) => Maybe[C]) {
+	  def kleisliCompose_v2[A](g: (A) => Maybe[B]): (A) => Maybe[C] = {
+	    a: A =>
+	    for {
+	    		b <- g(a)
+	    		c <- f(b)
+    		} yield c
+	  }
+	}
+	
+	def logOfSafeSqrt_v5(d: Double): Maybe[Double] =
+  		(safeLog _ kleisliCompose_v2 safeSqrt _)(d)
+                                                  //> logOfSafeSqrt_v5: (d: Double)lab.monad.Maybe[Double]
+	logOfSafeSqrt_v5(7)                       //> res16: lab.monad.Maybe[Double] = Just(0.9729550745276567)
+	logOfSafeSqrt_v5(-7)                      //> res17: lab.monad.Maybe[Double] = MaybeNot
+	
+  '''                                             //> res18: Char('\'') = '
 }
 /*
+
 
 
 
