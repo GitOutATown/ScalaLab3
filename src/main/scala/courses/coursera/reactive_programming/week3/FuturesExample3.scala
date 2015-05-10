@@ -18,7 +18,7 @@ object FuturesExample3 extends App {
    * of type Failure[T] otherwise.
    */
   
-  // not too exciting, the result will always be 42. but more importantly, when?
+  // >>>not too exciting, the result will always be 42. but more importantly, when?<<<
   println("1 - starting calculation ...")
   val f = Future[Int] {
     sleep(Random.nextInt(5000))
