@@ -3,7 +3,7 @@ package courses.coursera.reactive_programming.week3
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
-object FutureChain_lab_3 extends App {
+object FutureChain_lab_4 extends App {
     
     // http://docs.scala-lang.org/overviews/core/futures.html
     /* >>>
@@ -24,11 +24,11 @@ object FutureChain_lab_3 extends App {
             else throw new Exception("not profitable")
         } recover { 
             case e: ConnectionException => {
-                // TODO: set up recursive def for repeated number of attempts.
-                println("In recover ConnectionException")
-                if(isProfitable(rateQuote)) true
-                else throw new Exception("not profitable")
-            } 
+                // Recursive for set number of attempts
+                if(recoverConnection(rateQuote, 3)) true
+                else throw e
+            }
+            // TODO: Other exception cases
         }
     } yield (buy(amount, rateQuote)) // yield is part of the map future propagation
     
@@ -40,11 +40,23 @@ object FutureChain_lab_3 extends App {
         case e => println("~~Exception: " + e)
     }
     
+    // Recursive with number of attempts
+    def recoverConnection(rateQuote: Double, attempts: Int): Boolean = {
+        println("In recoverConnection attempt " + attempts)
+        try {
+            isProfitable(rateQuote)
+        } catch {
+            case e: ConnectionException =>
+                if(attempts > 0) recoverConnection(rateQuote, attempts - 1) 
+                else false
+        }                    
+    }
+    
     // ------------------------ //
     
     val amount = 50
     
     println("TCB")
-    Thread.sleep(4000) // keep jvm running long enough for futures to complete
+    Thread.sleep(2500) // keep jvm running long enough for futures to complete
     println("JVM leaving the house.")
 }

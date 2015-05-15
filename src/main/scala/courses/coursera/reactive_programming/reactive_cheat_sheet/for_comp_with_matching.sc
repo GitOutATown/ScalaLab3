@@ -14,6 +14,6 @@ object for_comp_with_matching {
 		  case x if x > 4 => x * 2
 		  case x => x - 1
 		}
-		if x > 4
-	} yield x                                 //> res0: scala.collection.immutable.IndexedSeq[Int] = Vector(12, 16, 20)
+		if x > 2
+	} yield x                                 //> res0: scala.collection.immutable.IndexedSeq[Int] = Vector(3, 12, 16, 20)
 }
