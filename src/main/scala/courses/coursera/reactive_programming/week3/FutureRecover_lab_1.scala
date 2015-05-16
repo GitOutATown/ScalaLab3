@@ -3,7 +3,8 @@ package courses.coursera.reactive_programming.week3
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
-object FutureChain_lab_4 extends App {
+// Copy of FutureChain_lab_4
+object FutureRecover_lab_1 extends App {
     
     // http://docs.scala-lang.org/overviews/core/futures.html
     /* >>>

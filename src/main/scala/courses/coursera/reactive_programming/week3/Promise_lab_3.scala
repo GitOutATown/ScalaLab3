@@ -19,7 +19,7 @@ object Promise_lab_3 extends App {
     
     val consumer = Future {
         Future{startDoingSomething}
-        f onSuccess {
+        f onSuccess { // onSuccess supposed to be eventually deprecated
             case r => doSomethingWithResult(r)
         }
     }

@@ -22,12 +22,12 @@ object Duration_lab_2 {
   val res = delay(dur3)                           //> Duration length: 5
                                                   //| Duration unit: SECONDS
                                                   //| res  : scala.concurrent.Future[String] = scala.concurrent.impl.Promise$Defau
-                                                  //| ltPromise@1db87736
+                                                  //| ltPromise@399a8978
   
   res onComplete {
     case Success(x) => println("~~x: " + x)
     case Failure(e) => println("~~e: " + e)
   }
 
-  Thread.sleep(5000)                              //> ~~x: Foo!|
+  Thread.sleep(5000)                              //> ~~x: Foo!\
 }
