@@ -1,4 +1,4 @@
-package folds
+package lab.fold
 
 object fold_lab_1 {
 	

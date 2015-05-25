@@ -22,7 +22,7 @@ object async_await_lab_1 {
 	  val f2 = async { Thread.sleep(1000); 42 }
 	  if (await(f1)) await(f2) else 0
 	}                                         //> future  : scala.concurrent.Future[Int] = scala.concurrent.impl.Promise$Defau
-                                                  //| ltPromise@7773bb48
+                                                  //| ltPromise@e437ff0
 	future onComplete { case x => println("~~x: " + x) }
   // You can feel the macro compiler!
   println("TCB")                                  //> TCB

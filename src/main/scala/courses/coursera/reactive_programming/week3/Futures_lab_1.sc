@@ -12,7 +12,7 @@ object Futures_lab_1 {
 	val s = "Hello"                           //> s  : String = Hello
 	
 	def computation = {
-    println("computation (i.e. Future apply() body) gets invoked immediately upon parsing definition.")
+    println("computation (i.e. Future apply() body) gets invoked immediately upon parsing Future declaration/definition.")
     sleep(4000)
     println("computation is done!")
     s + " future!"
@@ -22,9 +22,9 @@ object Futures_lab_1 {
     /* The body gets invoked immediately upon parsing definition */
 	  computation
 	}                                         //> computation (i.e. Future apply() body) gets invoked immediately upon parsing
-                                                  //|  definition.
+                                                  //|  Future declaration/definition.
                                                   //| f  : scala.concurrent.Future[String] = scala.concurrent.impl.Promise$Default
-                                                  //| Promise@21c6f48c
+                                                  //| Promise@226dcb0f
 	
 	//f // really a DefaultPromise
 	f onSuccess { // internal Success extends Try[T]
@@ -34,5 +34,5 @@ object Futures_lab_1 {
 	println("TCB")                            //> TCB
 	
 	sleep(10000)                              //> computation is done!
-                                                  //| onSuccess: Hello future!|
+                                                  //| onSuccess: Hello future!/
 }

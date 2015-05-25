@@ -1,4 +1,4 @@
-package trees.rosetta
+package lab.trees.rosetta
 
 case class IntNode(value: Int, left: Option[IntNode] = None, right: Option[IntNode] = None) {
  

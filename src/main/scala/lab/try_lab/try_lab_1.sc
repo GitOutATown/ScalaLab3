@@ -8,6 +8,7 @@ object try_lab_1 {
 	  val dvend = Try(dividend)
 	  val dvsor = Try(divisor)
 	  val problem = dvend.flatMap(x => dvsor.map(y => x/y)) // problem: Try[Int] // inference
+	  // When exceptions are thrown in a Try, they are caught and converted to Failure(e)
 	  problem match {
 	    case Success(v) =>
 	      println("Result of " + dvend.get + "/"+ dvsor.get +" is: " + v)
