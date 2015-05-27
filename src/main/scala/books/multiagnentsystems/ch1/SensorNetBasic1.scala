@@ -1,6 +1,6 @@
 package books.multiagnentsystems.ch1
 
-case class Sensor(id: Long, var frequency: Option[Color] = None) {
+case class Sensor(id: Long, var frequency: Color) {
     import Colors._
     
     val self = this
@@ -24,22 +24,13 @@ case class Sensor(id: Long, var frequency: Option[Color] = None) {
     }
 }
 
-// I feel this should be non-deterministic and therefor not implemented
-/*class Network {
-    var sensors: Set[Sensor] = Set()
-}*/
-
 trait Color
 object Colors {
     object RED extends Color
     object GREEN extends Color
     object YELLOW extends Color
     
-    val colors = List(RED, GREEN, YELLOW)
-    
-    val red = Some(RED)
-    val green = Some(GREEN)
-    val yellow = Some(YELLOW)
-    
-    def randomColor = scala.util.Random.shuffle(List(red, green, yellow)).head
+    val colors = Set(RED, GREEN, YELLOW)
+        
+    def randomColor = scala.util.Random.shuffle(List(RED, GREEN, YELLOW)).head
 }
