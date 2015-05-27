@@ -1,0 +1,16 @@
+package books.multiagnentsystems.ch1
+
+case class Sensor(id: Long) {
+    var neighbors: Set[Sensor] = Set() // subset of network
+    var frequency: Option[Color] = None
+    //var location: Option[(Int, Int)] = None
+}
+
+class Network {
+    var sensors: Set[Sensor] = Set()
+}
+
+trait Color
+object RED extends Color
+object GREEN extends Color
+object YELLOW extends Color

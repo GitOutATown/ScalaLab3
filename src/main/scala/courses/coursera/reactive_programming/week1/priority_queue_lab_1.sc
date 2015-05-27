@@ -11,4 +11,7 @@ object priority_queue_lab_1 {
 	// contains trees of ranks 0, 2, and 4 (of sizes 1, 4, and 16, respectively).
 	floor(log2(21 + 1))                       //> res0: Double = 4.0
 	
+	// See:
+	// Development/Courses/Coursera/Reactive Programming/assignments/quickcheck/src/main/scala/quickcheck
+	
 }

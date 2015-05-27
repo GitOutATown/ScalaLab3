@@ -4,13 +4,13 @@ object Generators_lab_1 {
 
 	// java.util.Random
 	import java.util.Random
-	val rand = new Random                     //> rand  : java.util.Random = java.util.Random@1f7e6153
-	rand.nextInt                              //> res0: Int = -1872136868
-	rand.nextInt                              //> res1: Int = -1875755455
+	val rand = new Random                     //> rand  : java.util.Random = java.util.Random@1f5e4ae5
+	rand.nextInt                              //> res0: Int = 180576576
+	rand.nextInt                              //> res1: Int = -1993729828
 	rand.nextBoolean                          //> res2: Boolean = true
-	rand.nextBoolean                          //> res3: Boolean = false
-	rand.nextGaussian                         //> res4: Double = -1.6696513548451581
-	rand.nextDouble                           //> res5: Double = 0.9379564435691855
+	rand.nextBoolean                          //> res3: Boolean = true
+	rand.nextGaussian                         //> res4: Double = 1.6248512817542973
+	rand.nextDouble                           //> res5: Double = 0.46350008495656403
 	
 	// ----- boilerplate -------------- //
 	
@@ -23,33 +23,32 @@ object Generators_lab_1 {
 		def generate = rand.nextInt
 	}                                         //> integers  : courses.coursera.reactive_programming.week1.Generators_lab_1.Gen
                                                   //| erator[Int]{val rand: java.util.Random} = courses.coursera.reactive_programm
-                                                  //| ing.week1.Generators_lab_1$$anonfun$main$1$$anon$1@40e54538
+                                                  //| ing.week1.Generators_lab_1$$anonfun$main$1$$anon$1@3c09ff77
   val booleans = new Generator[Boolean] {
   		def generate = integers.generate > 0
   }                                               //> booleans  : courses.coursera.reactive_programming.week1.Generators_lab_1.Gen
                                                   //| erator[Boolean] = courses.coursera.reactive_programming.week1.Generators_lab
-                                                  //| _1$$anonfun$main$1$$anon$2@38ea5fcd
+                                                  //| _1$$anonfun$main$1$$anon$2@78c26d7
   val intPairs = new Generator[(Int, Int)] {
   		def generate = (integers.generate, integers.generate)
   }                                               //> intPairs  : courses.coursera.reactive_programming.week1.Generators_lab_1.Gen
                                                   //| erator[(Int, Int)] = courses.coursera.reactive_programming.week1.Generators_
-                                                  //| lab_1$$anonfun$main$1$$anon$3@514b50a9
+                                                  //| lab_1$$anonfun$main$1$$anon$3@6b030dea
   // ----- calls ------------------- //
   
   //val bools1 = for(x <- integers) yield (x > 0)
   
-  intPairs.generate                               //> res6: (Int, Int) = (-406427486,91154312)
-  intPairs.generate                               //> res7: (Int, Int) = (-933731165,183364577)
+  intPairs.generate                               //> res6: (Int, Int) = (-82615295,1957377256)
+  intPairs.generate                               //> res7: (Int, Int) = (57855869,-1773900603)
   
-  booleans.generate                               //> res8: Boolean = true
-  booleans.generate                               //> res9: Boolean = false
+  booleans.generate                               //> res8: Boolean = false
+  booleans.generate                               //> res9: Boolean = true
   
-  integers.generate                               //> res10: Int = -1224629516
-  integers.generate                               //> res11: Int = -603465435
+  integers.generate                               //> res10: Int = -355087589
+  integers.generate                               //> res11: Int = 1743575920
   
   
 	
-	'''                                       //> res12: Char('\'') = '
 }
 /*
 

@@ -18,3 +18,8 @@ object Student_smokers2 {
                                                   //> splitSmoking_E  : Double = 0.9544340029249649
   val informationGain = allRoot_E - splitSmoking_E//> informationGain  : Double = 0.0
 }
+/*
+
+
+
+*/

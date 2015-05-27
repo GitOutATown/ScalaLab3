@@ -5,7 +5,7 @@ import courses.coursera.process_mining.util.math.MathUtil.log2
 object Entropy_formula2 {
   
   // Entropy
-  def E(valueCounts: List[Double]) = {
+  def E(valueCounts: List[Double]): Double = {
   		val n = valueCounts.sum
   		
   		// Probability distribution of count values

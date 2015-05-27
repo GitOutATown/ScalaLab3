@@ -1,5 +1,9 @@
 package lab.rochambeaux
 
+case class Player(name: String) {
+    def choose() = Play(Rochambeaux.randomChoice)
+}
+
 case class Play(val choice: Choice) {
     val self = this
     def compare(that: Play): Play = 
@@ -8,10 +12,6 @@ case class Play(val choice: Choice) {
             case that.choice => that
             case _ => Rochambeaux.draw
         }
-}
-
-case class Player(name: String) {
-    def choose() = Play(Rochambeaux.randomChoice)
 }
 
 trait Choice {
@@ -49,8 +49,14 @@ object DRAW extends Choice {
 
 object Rochambeaux {
     
-    def play(p1: Play, p2: Play): Play = {
-        p1 compare p2
+    def play(p1: Player, p2: Player): String = {
+        val p1Choice = p1.choose()
+        val p2Choice = p2.choose()
+        (p1Choice compare p2Choice) match {
+            case `p1Choice` => p1.name
+            case `p2Choice` => p2.name
+            case draw => "DRAW"
+        }
     }
     
     def randomChoice = scala.util.Random.shuffle(List(ROCK, PAPER, SISSORS)).head

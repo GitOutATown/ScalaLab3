@@ -27,16 +27,28 @@ class Signal[T](expr: => T) {
   protected def computeValue(): Unit = {
     println("In computeValue TOP")
     
-    for (sig <- observed) {// List[Signal]
+    for (sig <- observed) { // List[Signal]
       //println("In computeValue, sig: " + sig)
-      sig.observers -= this // Set[Signal[_]]
+      sig.observers -= this // Set[Signal[_]] // Why is this being removed? Is it because it's being modified, and so the old version has to be removed and it will be replaced by the new version?
     }
     
-    observed = Nil
+    observed = Nil // And why is observed being set to Nil? Is everything being re established/built/constructed?
     
     /* 
      * 'this', may I remind you, is a Signal.
-     * caller is a DynamicVariable that is doing localThread magic. 
+     * caller is a DynamicVariable that is doing localThread magic.
+     * Is this where the notification to the observers is happening
+     * when there is an update? I don't see any clear observable
+     * evidence of that. And so I'm not seeing how/where the notification
+     * of updated value to being propagated to observers.
+     * 
+     * Ok, in tracing the flow again, I'm getting some more intuition of
+     * how it must be working. Yes, this is where the "notification" is
+     * happening (obviously). The key is this: all observers are notified
+     * via a computeValue call (you see that below). The compute value
+     * leads to the newValue expression right here. That is the mechanism.
+     * Each observer recomputes its value based on its "expression" that
+     * it was originally created with (something like that anyway).
      */
     val newValue = caller.withValue(this)(myExpr()) // T
     println("In computeValue, newValue: " + newValue)
@@ -48,15 +60,15 @@ class Signal[T](expr: => T) {
       myValue = newValue // transformation
       val obs = observers 
       /* 
-       * observers is var of Set() of Signal[_]. Observers are recorded
+       * observers is var of Set of Signal[_]. Observers are recorded
        * by the apply method which is used to get the Signal value, i.e.: 
        * observers += caller.value
        * Here in computeValue (called by update or from another Signal's 
-       * computeValue function) the Signal value has been
-       * changed and so all previously observing Signals are re-evaluated
-       * and the observers set is cleared. Re-evaluation (computeValue) will
-       * re-enter a calling Signal 'caller' in observers, as long as the 
-       * caller's value still depends on this Signal.
+       * computeValue function) the Signal value has been changed and so all 
+       * previously observing Signals are re-evaluated and the observers set 
+       * is cleared. Re-evaluation (computeValue) will re-enter a calling Signal 
+       * 'caller' in observers, as long as the caller's value still depends on 
+       * this Signal.
        * 
        * But I am still having some difficulty clearly reading how this is 
        * done in this definition. I understand that there is a broadcasting 
@@ -92,13 +104,13 @@ class Signal[T](expr: => T) {
     /* 
      * The expression is stored for further (consistent, uniform, repeatable) 
      * application (i.e. value production). 
-     * This is a def (function) that seems to have a body, but no (empty) 
-     * input parameters. The return type is Unit. So it is just an executable
-     * body with no input nor output. I have commented elsewhere in this file
-     * about how I think this works (i.e. it is just providing behavior that
-     * that interacts with fields external to itself (within the enclosing 
-     * Signal encapsulation). More specifically, it is used by computeValue 
-     * to do what that name implies.
+     * expr is a def (function) that seems to have a body, but no (i.e. empty) 
+     * input parameters. The return type is Unit (true?). So it is just an 
+     * executable body with no input nor output. I have commented elsewhere 
+     * in this file about how I think this works (i.e. it is just providing 
+     * behavior that interacts with fields external to itself (but within the 
+     * enclosing Signal encapsulation). More specifically, it is used by 
+     * computeValue to do what that name implies.
      * See: val newValue = caller.withValue(this)(myExpr()) // T
      */
     myExpr = () => expr 
@@ -145,12 +157,11 @@ class Var[T](expr: => T) extends Signal[T](expr) {
  * value of the Signal. The object version of apply takes an expr
  * argument and creates an instance of class Signal.
  */
-
 /* 
- * A Var is a Signal that can be updated by the client program.
- * I think the sequence goes like this: Var.apply constructs a new instance of class
- * Var, which in turn calls super.update(expr) on class Signal. In true functional practice
- * The expresion remains integrally linked with the resulting (consequential)
+ * A Var is a Signal that can be updated by the client program. I think the 
+ * sequence goes like this: Var.apply constructs a new instance of class Var, 
+ * which in turn calls super.update(expr) on class Signal. In true functional 
+ * practice the expresion remains integrally linked with the resulting (consequential)
  * value it produces. super.update then calls computeValue, which involves
  * caller.withValue (DynamicVariable) using the passed in expression to compute 
  * the value--but there is some necessary thread magic, which I don't quite 
