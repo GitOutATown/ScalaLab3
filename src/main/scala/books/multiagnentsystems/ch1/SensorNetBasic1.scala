@@ -5,19 +5,24 @@ case class Sensor(id: Long, var frequency: Color) {
     
     val self = this
     
-    var domain = colors
+    var domain: Set[Color] = Set()
     
     var neighbors: Set[Sensor] = Set() // subset of network
     
     // Asynchronous
     def coordFreq {
-        neighbors map revise _ // each neighbor
+        val domainCheck = domain
+        neighbors foreach revise _ // each neighbor
+        // Termination condition, no change in domain state
+        // TODO: This needs a repeat limit
+        // println("~~coordFreq Node:" + self.id + " domainCheck:" + domainCheck + " domain:" + domain)
+        if(domainCheck != domain) neighbors foreach(n => n coordFreq)
     }
     // Pruning
     def revise(that: Sensor) {
         val prunedDomain = for{
-            vj <- that.domain 
-            vi <- self.domain 
+            vi <- self.domain
+            vj <- that.domain  
             if vj != vi // vi doesn't conflict with vj, i.e. satisfies constraint
         } yield vi
         domain = prunedDomain
@@ -26,11 +31,12 @@ case class Sensor(id: Long, var frequency: Color) {
 
 trait Color
 object Colors {
-    object RED extends Color
-    object GREEN extends Color
-    object YELLOW extends Color
+    object RED extends Color {override def toString = "RED"}
+    object GREEN extends Color {override def toString = "GREEN"}
+    object BLUE extends Color {override def toString = "BLUE"}
     
-    val colors = Set(RED, GREEN, YELLOW)
+    val colors = Set(RED, GREEN, BLUE)
         
-    def randomColor = scala.util.Random.shuffle(List(RED, GREEN, YELLOW)).head
+    def randomColor = scala.util.Random.shuffle(List(RED, GREEN, BLUE)).head
 }
+
