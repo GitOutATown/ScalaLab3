@@ -11,5 +11,14 @@ object List_lab_1 {
                                                   //> res1: List[Int] = List(1, 2, 3, 4)
 	xs :+ x  // creates a new collection with trailing element x
                                                   //> res2: List[Int] = List(2, 3, 4, 1)
-	'''                                       //> res3: Char('\'') = '
+	// Scala List is LIFO, i.e. stack
+	val ys = 1 :: xs                          //> ys  : List[Int] = List(1, 2, 3, 4)
+	ys.head                                   //> res3: Int = 1
+	ys.last                                   //> res4: Int = 4
 }
+/*
+
+
+
+
+*/

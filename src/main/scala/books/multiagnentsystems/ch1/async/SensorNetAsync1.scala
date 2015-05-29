@@ -1,6 +1,9 @@
-package books.multiagnentsystems.ch1
+package books.multiagnentsystems.ch1.async
 
 case class Sensor(id: Long, var frequency: Color) {
+    import scala.concurrent._
+    import ExecutionContext.Implicits.global
+    import scala.util.{Success, Failure}
     import Colors._
     
     val self = this
@@ -10,14 +13,17 @@ case class Sensor(id: Long, var frequency: Color) {
     var neighbors: Set[Sensor] = Set() // subset of network
     
     def coordFreq {
+        //Thread.sleep(500)
         val domainCheck = domain
-        neighbors foreach revise _ // each neighbor
-        // Termination condition, no change in domain state
-        // TODO: This needs a repeat limit
-        // println("~~coordFreq Node:" + self.id + " domainCheck:" + domainCheck + " domain:" + domain)
-        if(domainCheck != domain) {
-            neighbors foreach(n => n coordFreq)
-            // self.coordFreq // Not completely certain as of yet whether this might be needed in some scenarios.
+        val revNeibsFut = Future { neighbors foreach revise _ }// each neighbor
+        println("~~coordFreq Node:" + self.id + " domainCheck:" + domainCheck + " domain:" + domain)
+        revNeibsFut onComplete { 
+            case Success(unit) =>
+                if(domainCheck != domain) {
+                    neighbors foreach(n => n coordFreq)
+                    // self.coordFreq // Not completely certain as of yet whether this might be needed in some scenarios.
+                }
+            case Failure(e) => throw e
         }
     }
     // Pruning

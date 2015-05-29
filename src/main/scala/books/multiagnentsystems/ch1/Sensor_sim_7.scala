@@ -1,16 +1,16 @@
 package books.multiagnentsystems.ch1
 
-object Sensor_sim_5 extends App {
+object Sensor_sim_7 extends App {
     import Colors._
     
     val s1 = new Sensor(1, randomColor)
     val s2 = new Sensor(2, randomColor)
     val s3 = new Sensor(3, randomColor)
     
-    // This problem accurately returns one correct solution
-    s1.domain = Set(RED, GREEN, BLUE)
-    s2.domain = Set(RED, GREEN)
-    s3.domain = Set(GREEN)
+    // This problem accurately returns no solution
+    s1.domain = Set(RED, BLUE)
+    s2.domain = Set(RED, BLUE)
+    s3.domain = Set(RED, BLUE)
     
     println("Before...")
     println("s1.domain: " + s1.domain)

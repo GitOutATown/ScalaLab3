@@ -35,6 +35,7 @@ case class IntNode(value: Int, left: Option[IntNode] = None, right: Option[IntNo
  
   def levelorder(f: IntNode => Unit) {
 	println("In def levelorder - f: " + f + " | this.value: " + this.value)
+    // Recursive
     def loVisit(ls: List[IntNode]): Unit = {
 		println("In loVisit TOP")
 		ls match {
@@ -74,7 +75,7 @@ object TreeTraversal extends App {
 		)
     	)
  
-  List(
+  List( // of tuples
     "  preorder: " -> tree.preorder _, // `_` denotes the function value of type `IntNode => Unit` (returning nothing)
     "   inorder: " -> tree.inorder _,
     " postorder: " -> tree.postorder _,
@@ -82,9 +83,9 @@ object TreeTraversal extends App {
       case (name, func) =>
         println("\nforeach...")
         val s = new StringBuilder(name)
-        println("===> Calling func " + name + " on the root IntNode.")
+        println("===> Calling func " + name + " on the 'tree' root IntNode.")
         // It's passing an anonymous function for assembling the values of the nested (hierarchical, tree) IntNode structure.
-        func(n => {
+        func(n => { // n is 'tree', presented by foreach
           println("...which is an annonymous function for StringBuilder assembly of tree with: " + n.value.toString)
           s ++= n.value.toString + " "
         })
