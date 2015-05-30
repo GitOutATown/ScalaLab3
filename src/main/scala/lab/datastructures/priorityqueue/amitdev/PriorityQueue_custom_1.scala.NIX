@@ -1,7 +1,14 @@
 package lab.datastructures.priorityqueue
 
+import scala.collection.generic.{CanBuildFrom, OrderedTraversableFactory, GenericOrderedCompanion, GenericOrderedTraversableTemplate}
+import scala.collection._
+import scala.collection.mutable.ArrayBuffer
+import scala.Iterator
+
 object PriorityQueue_custom_1 {
     // http://amitdev.github.io/coding/2014/03/06/Priority-Queue/
+    // http://www.brics.dk/RS/96/37/BRICS-RS-96-37.pdf
+    // quickcheck/src/main/scala/quickcheck/Heap.scala
     
     abstract class PriorityQueue[A](implicit val ord: Ordering[A]) {
         // Add an item
@@ -33,7 +40,8 @@ object PriorityQueue_custom_1 {
         override def compare(that: Node[A]): Int = ord.compare(data, that.data)
     } // end Node
     
-    private final case class BinomialQueue[A] 
+    //private final case class BinomialQueue[A] 
+    case class BinomialQueue[A]
         (nodes: List[Node[A]]) (implicit override val ord: Ordering[A])
         extends PriorityQueue[A] {
                                                                 
@@ -87,6 +95,17 @@ object PriorityQueue_custom_1 {
         }
         
     } // end BinomialQueue
+    
+    object PriorityQueue extends OrderedTraversableFactory[PriorityQueue] {
+
+    // Methods related to scala collections
+    override def newBuilder[A](implicit ord: Ordering[A]): mutable.Builder[A, PriorityQueue[A]] =
+        new ArrayBuffer[A] mapResult { xs =>
+            xs.foldLeft(BinomialQueue[A](Nil))((t, x) => t + x)
+        }
+
+        implicit def canBuildFrom[A](implicit ord: Ordering[A]): CanBuildFrom[Coll, A, PriorityQueue[A]] = new GenericCanBuildFrom[A]
+    }
 }
 
 
