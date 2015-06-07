@@ -3,6 +3,7 @@ package lab.datastructures.priorityqueue.amitdev
 object PriorityQueue_client_3 extends App {
 
     case class Task(pri:Int, text:String) extends Ordered[Task] {
+        // Note this compare order is oposite that of native Scala PriorityQueue for same behavioral order.
         def compare(that: Task) = this.pri compare that.pri
     }
     
