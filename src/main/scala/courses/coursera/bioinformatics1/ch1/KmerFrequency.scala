@@ -43,3 +43,8 @@ object KmerFrequency {
 		ListMap(inverseStore.toSeq.sortWith(_._1 > _._1):_*)
 	}
 }
+
+
+
+
+
