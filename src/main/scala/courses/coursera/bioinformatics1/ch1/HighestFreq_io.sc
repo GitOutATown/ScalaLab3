@@ -2,12 +2,10 @@ package courses.coursera.bioinformatics1.ch1
 
 import scala.io.Source
 import courses.coursera.bioinformatics1.ch1.KmerFrequency.highestFreqSeq
+import courses.coursera.bioinformatics1.util.Paths._
 
 object HighestFreq_io {
 	
-	val path = "/Users/hieronymus/Development/Workspace_BAK/ScalaLab3/src/main/data/"
-                                                  //> path  : String = /Users/hieronymus/Development/Workspace_BAK/ScalaLab3/src/m
-                                                  //| ain/data/
 	val docName = "data2.txt"                 //> docName  : String = data2.txt
 	
 	val source = Source.fromFile(path + docName)
@@ -31,6 +29,7 @@ object HighestFreq_io {
                                                   //> res1: String = GAAGGGAGAGC
 }
 /*
+
 
 
 
