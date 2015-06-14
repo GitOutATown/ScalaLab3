@@ -56,41 +56,41 @@ object population_drift_lab_2 {
   
   val shuf1 = Random.shuffle(mixedPop)            //> shuf1  : scala.collection.immutable.IndexedSeq[Product with Serializable wit
                                                   //| h books.cells_to_civilizations.ch1.population_drift_lab_2.Marble] = Vector(B
-                                                  //| lack, White, Black, White, Black, White, White, Black, Black, White, White, 
-                                                  //| Black, White, White, Black, Black, Black, Black, White, Black, White, White,
-                                                  //|  Black, Black, Black, Black, Black, Black, White, White, Black, White, White
-                                                  //| , White, Black, White, White, White, White, White, Black, White, Black, Whit
-                                                  //| e, Black, White, Black, White, White, White, Black, Black, White, White, Whi
-                                                  //| te, Black, Black, White, Black, White, White, Black, White, Black, White, Wh
-                                                  //| ite, Black, White, Black, Black, White, Black, Black, Black, Black, Black, B
-                                                  //| lack, White, Black, White, Black, White, White, Black, White, Black, Black, 
-                                                  //| Black, White, White, White, White, White, White, Black, White, Black, White,
-                                                  //|  White, White, Black, Black, White, White, Black, Black, White, Black, White
+                                                  //| lack, Black, Black, Black, Black, Black, Black, Black, Black, Black, White, 
+                                                  //| Black, White, Black, White, White, White, White, Black, White, Black, Black,
+                                                  //|  Black, Black, Black, Black, White, White, White, White, Black, Black, White
+                                                  //| , White, Black, Black, White, White, Black, Black, White, Black, Black, Whit
+                                                  //| e, Black, White, Black, White, Black, Black, Black, Black, Black, White, Bla
+                                                  //| ck, Black, Black, Black, White, White, Black, Black, White, White, White, Wh
+                                                  //| ite, White, White, White, Black, White, Black, Black, White, Black, Black, W
+                                                  //| hite, Black, White, Black, Black, White, Black, Black, Black, Black, Black, 
+                                                  //| Black, Black, Black, White, White, Black, Black, Black, Black, Black, Black,
+                                                  //|  White, White, Black, White, White, White, Black, White, Black, White, Black
                                                   //| , Black, White, Black, W
                                                   //| Output exceeds cutoff limit.
   
   val select1 = shuf1.take(100)                   //> select1  : scala.collection.immutable.IndexedSeq[Product with Serializable w
                                                   //| ith books.cells_to_civilizations.ch1.population_drift_lab_2.Marble] = Vector
-                                                  //| (Black, White, Black, White, Black, White, White, Black, Black, White, White
-                                                  //| , Black, White, White, Black, Black, Black, Black, White, Black, White, Whit
-                                                  //| e, Black, Black, Black, Black, Black, Black, White, White, Black, White, Whi
-                                                  //| te, White, Black, White, White, White, White, White, Black, White, Black, Wh
-                                                  //| ite, Black, White, Black, White, White, White, Black, Black, White, White, W
-                                                  //| hite, Black, Black, White, Black, White, White, Black, White, Black, White, 
-                                                  //| White, Black, White, Black, Black, White, Black, Black, Black, Black, Black,
-                                                  //|  Black, White, Black, White, Black, White, White, Black, White, Black, Black
-                                                  //| , Black, White, White, White, White, White, White, Black, White, Black, Whit
-                                                  //| e, White, White)
+                                                  //| (Black, Black, Black, Black, Black, Black, Black, Black, Black, Black, White
+                                                  //| , Black, White, Black, White, White, White, White, Black, White, Black, Blac
+                                                  //| k, Black, Black, Black, Black, White, White, White, White, Black, Black, Whi
+                                                  //| te, White, Black, Black, White, White, Black, Black, White, Black, Black, Wh
+                                                  //| ite, Black, White, Black, White, Black, Black, Black, Black, Black, White, B
+                                                  //| lack, Black, Black, Black, White, White, Black, Black, White, White, White, 
+                                                  //| White, White, White, White, Black, White, Black, Black, White, Black, Black,
+                                                  //|  White, Black, White, Black, Black, White, Black, Black, Black, Black, Black
+                                                  //| , Black, Black, Black, White, White, Black, Black, Black, Black, Black, Blac
+                                                  //| k, White, White)
   
   def ratio(group: Seq[Marble]): (Double, Double) = {
     val black = group.filter(m => m == Black)
     val ratioBlk = black.length.toDouble / group.length.toDouble
     val ratioWht = 1d - ratioBlk
-    (ratioBlk, ratioWht) // STUB
+    (ratioBlk, ratioWht)
   }                                               //> ratio: (group: Seq[books.cells_to_civilizations.ch1.population_drift_lab_2.M
                                                   //| arble])(Double, Double)
   
-  ratio(select1)                                  //> res1: (Double, Double) = (0.47,0.53)
+  ratio(select1)                                  //> res1: (Double, Double) = (0.62,0.38)
   
   // Recursive
   def duplicate(group: Seq[Marble])(limit: Int): Seq[Marble] = {
@@ -105,25 +105,26 @@ object population_drift_lab_2 {
                                                   //| _lab_2.Marble]
   
   val dup1 = duplicate(select1)(1000)             //> dup1  : Seq[books.cells_to_civilizations.ch1.population_drift_lab_2.Marble] 
-                                                  //| = Vector(Black, Black, White, White, Black, Black, White, White, Black, Blac
-                                                  //| k, White, White, White, White, Black, Black, Black, Black, White, White, Whi
-                                                  //| te, White, Black, Black, White, White, White, White, Black, Black, Black, Bl
-                                                  //| ack, Black, Black, Black, Black, White, White, Black, Black, White, White, W
-                                                  //| hite, White, Black, Black, Black, Black, Black, Black, Black, Black, Black, 
-                                                  //| Black, Black, Black, White, White, White, White, Black, Black, White, White,
-                                                  //|  White, White, White, White, Black, Black, White, White, White, White, White
-                                                  //| , White, White, White, White, White, Black, Black, White, White, Black, Blac
-                                                  //| k, White, White, Black, Black, White, White, Black, Black, White, White, Whi
-                                                  //| te, White, White, White, Black, Black, Black, Black, White, White, White, Wh
-                                                  //| ite, White, White, Black, Black, Black, Black, White, White, Black, Black, W
-                                                  //| hite, White, White, Whit
+                                                  //| = Vector(Black, Black, Black, Black, Black, Black, Black, Black, Black, Blac
+                                                  //| k, Black, Black, Black, Black, Black, Black, Black, Black, Black, Black, Whi
+                                                  //| te, White, Black, Black, White, White, Black, Black, White, White, White, Wh
+                                                  //| ite, White, White, White, White, Black, Black, White, White, Black, Black, B
+                                                  //| lack, Black, Black, Black, Black, Black, Black, Black, Black, Black, White, 
+                                                  //| White, White, White, White, White, White, White, Black, Black, Black, Black,
+                                                  //|  White, White, White, White, Black, Black, Black, Black, White, White, White
+                                                  //| , White, Black, Black, Black, Black, White, White, Black, Black, Black, Blac
+                                                  //| k, White, White, Black, Black, White, White, Black, Black, White, White, Bla
+                                                  //| ck, Black, Black, Black, Black, Black, Black, Black, Black, Black, White, Wh
+                                                  //| ite, Black, Black, Black, Black, Black, Black, Black, Black, White, White, W
+                                                  //| hite, White, Black, Blac
                                                   //| Output exceeds cutoff limit.
   dup1.length                                     //> res2: Int = 200
-  ratio(dup1)                                     //> res3: (Double, Double) = (0.47,0.53)
+  ratio(dup1)                                     //> res3: (Double, Double) = (0.62,0.38)
 
   '''                                             //> res4: Char('\'') = '
 }
 /*
+
 
 
 
