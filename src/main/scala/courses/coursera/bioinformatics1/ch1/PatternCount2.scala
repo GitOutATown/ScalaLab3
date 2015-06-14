@@ -5,7 +5,8 @@ import courses.coursera.bioinformatics1.util.Paths._
 
 object PatternCount2 extends App {
 
-	val docName = "data2.txt"
+	//val docName = "data2.txt"
+    val docName = "exercizeData1.txt"
 	
 	val source = Source.fromFile(path + docName)
 	val text = source.getLines.mkString
@@ -20,7 +21,7 @@ object PatternCount2 extends App {
 		inter(0, List.empty[Int])
 	}
 	
-	val pattern = "AGTT"
+	val pattern = "GGGGTTGGG"
 	val result = pattPos(pattern , text)
 	println("pattern locations: " + result)
 	println("number of locations: " + result.length)

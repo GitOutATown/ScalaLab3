@@ -13,8 +13,9 @@ object PatternCount_1 {
 		inter(0, List.empty[Int]) // index, accumulator
 	}                                         //> pattPos: (pattern: String, str: String)List[Int]
 	
-	val result = pattPos("ATAT", "GATATATGCATATACTT")
-                                                  //> result  : List[Int] = List(1, 3, 9)
-	result.length                             //> res0: Int = 3
+	//val result = pattPos("ATAT", "GATATATGCATATACTT")
+	//val result = pattPos("ACTAT", "ACAACTATGCATACTATCGGGAACTATCCT")
+	val result = pattPos("GCG", "GCGCG")      //> result  : List[Int] = List(0, 2)
+	result.length                             //> res0: Int = 2
 	
 }
