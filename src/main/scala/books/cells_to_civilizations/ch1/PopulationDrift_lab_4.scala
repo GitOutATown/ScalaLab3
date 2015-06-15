@@ -1,6 +1,6 @@
 package books.cells_to_civilizations.ch1
 
-import books.cells_to_civilizations.ch1.PopulationDrift4._
+import books.cells_to_civilizations.ch1.PopulationDrift5._
 import scala.util.Random
 
 object PopulationDrift_lab_4 extends App {
@@ -13,6 +13,6 @@ object PopulationDrift_lab_4 extends App {
         ". Mixed population ratio: " + ratio(mixedPop))
     
     // parameters: maxNumCycles, sampleSize, reproductionCap, population
-    val resultingPop = cycleSampleRepro(10)(100)(1000)(mixedPop)
+    val resultingPop = cycleSampleRepro(1000)(100)(1000)(mixedPop)
     println("Resulting Population ratio: " + ratio(resultingPop))
 }

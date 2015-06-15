@@ -2,7 +2,7 @@ package books.cells_to_civilizations.ch1
 
 import scala.util.Random
 
-object PopulationDrift4 {
+object PopulationDrift5 {
     
     trait Marble
     case object Black extends Marble
@@ -50,14 +50,18 @@ object PopulationDrift4 {
                         (reproLim: Int) // reproduction size cap
                         (group: Seq[Marble]): Seq[Marble] = {
         
-        val sample = Random.shuffle(group).take(sampleSize)
-        val newGroup = duplicate(reproLim)(sample)
-        val popRatio = ratio(newGroup)
-        println("==> Cycle: " + maxNumCycles + ", Population ratio: " + popRatio)
-        
-        if(maxNumCycles > 1 && !popConvergance(popRatio)) 
-            cycleSampleRepro(maxNumCycles - 1)(sampleSize)(reproLim)(newGroup)
-        else newGroup
+        def inter(group: Seq[Marble], cyclesRemain: Int): Seq[Marble] = {
+            val sample = Random.shuffle(group).take(sampleSize)
+            val newGroup = duplicate(reproLim)(sample)
+            val popRatio = ratio(newGroup)
+            println("==> Cycle: " + (maxNumCycles - cyclesRemain + 1) + 
+                ", Population ratio: " + popRatio)
+            
+            if(cyclesRemain > 1 && !popConvergance(popRatio)) 
+                inter(newGroup, cyclesRemain - 1)
+            else newGroup
+        }
+        inter(group, maxNumCycles)
     }
     
     def popConvergance(ratio: (Double, Double)): Boolean = {
