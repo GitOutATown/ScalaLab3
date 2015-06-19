@@ -2,7 +2,7 @@ package courses.langmead.tries
 
 object Trie_lab_12 extends App {
     
-    // Success
+    // trie model
     // https://www.youtube.com/watch?v=hLsrPsFHPcQ
     
     val T = "abaaba"
@@ -11,38 +11,34 @@ object Trie_lab_12 extends App {
     
     val root = new Node('R')
     
-    for{
+    for{ // Take each suffix of a String and build a trie
         i <- 0 to T$.length() - 1
     } yield root.place(T$.substring(i).toList)
     
     case class Node(val nodeData: Char, var children: List[Node] = Nil) {
-        def place(suf: List[Char]) {
-            suf match {
+        def place(suffix: List[Char]) {
+            suffix match {
                 case Nil => // on to the next suffix
-                case x :: xs => {
-                    contains(children, x) match {
-                        case Some(charNode) => charNode.place(xs)
-                        case None => {
-                            val charNode = Node(x)
-                            children = charNode :: children
-                            charNode.place(xs)
-                        }
-                    }
+                case head :: tail => contains(children, head) match {
+                    case Some(charNode) => charNode.place(tail)
+                    case None => 
+                        val charNode = Node(head)
+                        children = charNode :: children
+                        charNode.place(tail)
                 }
             }
         } // end def place
         
         def contains(children: List[Node], ch: Char): Option[Node] = {
-            val res = (for {
+            (for {
                 node <- children
                 if (node.nodeData == ch)
             } yield node).headOption
-            res
         }
         
     } // end case class Node
     
-    println("root: " + root)
+    println("trie: " + root)
     
 }
 
