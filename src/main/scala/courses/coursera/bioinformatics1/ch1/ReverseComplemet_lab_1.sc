@@ -12,5 +12,5 @@ object ReverseComplemet_lab_1 {
 		comps.reverse
 	}                                         //> revComp: (str: String)String
 	
-	revComp("AAAACCCGGT")                     //> res0: String = ACCGGGTTTT
+	revComp("CCAGATC")                        //> res0: String = GATCTGG
 }

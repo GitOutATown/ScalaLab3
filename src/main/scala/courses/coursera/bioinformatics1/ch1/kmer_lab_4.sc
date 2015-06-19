@@ -7,16 +7,17 @@ object kmer_lab_4 {
 	val text2 = "TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyLive"
                                                   //> text2  : String = TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyLi
                                                   //| ve
-	highestFreqSeq(text2, 3).head             //> res0: (Int, scala.collection.immutable.Iterable[String]) = (4,List(ain, the)
+	highestFreqSeq(text2, 3).head             //> res0: (Int, scala.collection.immutable.Iterable[String]) = (4,List(THE, AIN)
                                                   //| )
 	
 	val text1 = "ACAACTATGCATACTATCGGGAACTATCCT"
                                                   //> text1  : String = ACAACTATGCATACTATCGGGAACTATCCT
-	highestFreqSeq(text1, 5).head             //> res1: (Int, scala.collection.immutable.Iterable[String]) = (3,List(actat))
+	highestFreqSeq(text1, 5).head             //> res1: (Int, scala.collection.immutable.Iterable[String]) = (3,List(ACTAT))
 	
-	val text3 = "CGATATATCCATAG"              //> text3  : String = CGATATATCCATAG
+	val text3 = "TAAACGTGAGAGAAACGTGCTGATTACACTTGTTCGTGTGGTAT"
+                                                  //> text3  : String = TAAACGTGAGAGAAACGTGCTGATTACACTTGTTCGTGTGGTAT
 	
-	highestFreqSeq(text3, 3).head             //> res2: (Int, scala.collection.immutable.Iterable[String]) = (3,List(ata))
+	highestFreqSeq(text3, 3).head             //> res2: (Int, scala.collection.immutable.Iterable[String]) = (4,List(GTG))
 	
 	val text4 = "ACGTTGCATGTCGCATGATGCATGAGAGCT"
                                                   //> text4  : String = ACGTTGCATGTCGCATGATGCATGAGAGCT
@@ -35,10 +36,10 @@ object kmer_lab_4 {
                                                   //| CGTACTGTCACGTACGTGATTACGTGATTACGTGATTACTGTCACGTACTGTCACGTCGTAGCACACGTGATTCG
                                                   //| TAGCACACTGTCACGT
 	highestFreqSeq(text5, 14).head._2.map(_.toUpperCase)
-                                                  //> res3: scala.collection.immutable.Iterable[String] = List(CTTTGACTGTCACG, GT
-                                                  //| CACGTCGTAGCA, ATCTTTGGATCTTT, CTGTCACGTCGTAG, ATCTTTGACTGTCA, GATCTTTGACTGT
-                                                  //| C, TCTTTGACTGTCAC, ACTGTCACGTCGTA, TCTTTGGATCTTTG, TGTCACGTCGTAGC, TCACGTCG
-                                                  //| TAGCAC, GATCTTTGGATCTT, TTTGACTGTCACGT)
+                                                  //> res3: scala.collection.immutable.Iterable[String] = List(GATCTTTGACTGTC, TT
+                                                  //| TGACTGTCACGT, TGTCACGTCGTAGC, ACTGTCACGTCGTA, TCTTTGACTGTCAC, GATCTTTGGATCT
+                                                  //| T, CTTTGACTGTCACG, GTCACGTCGTAGCA, CTGTCACGTCGTAG, TCACGTCGTAGCAC, ATCTTTGA
+                                                  //| CTGTCA, ATCTTTGGATCTTT, TCTTTGGATCTTTG)
 }
 /*
 
