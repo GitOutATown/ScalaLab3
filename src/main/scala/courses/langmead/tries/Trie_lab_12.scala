@@ -2,7 +2,7 @@ package courses.langmead.tries
 
 object Trie_lab_12 extends App {
     
-    // trie model
+    // Suffix trie
     // https://www.youtube.com/watch?v=hLsrPsFHPcQ
     
     val T = "abaaba"
