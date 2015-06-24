@@ -1,7 +1,5 @@
 package lab.math.probability.ross.combinatorial_analysis
 
-import lab.math.probability.ross.combinatorial_analysis.Combinatorics._
-
 object scratchpad_2 {
   
   List("Foo", "Bar", "Buzz").reduce(_ + _)        //> res0: String = FooBarBuzz

@@ -1,4 +1,4 @@
-package lab.math.probability.ross.combinatorial_analysis
+package lab.math.probability.common
 
 object Combinatorics {
 	
@@ -36,6 +36,5 @@ object Combinatorics {
         inner(n, r, 1, 1)
     } // end binomialCoeficients
 }
-
 
 

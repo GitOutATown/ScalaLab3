@@ -1,6 +1,6 @@
 package lab.math.probability.ross.combinatorial_analysis
 
-import lab.math.probability.ross.combinatorial_analysis.Combinatorics._
+import lab.math.probability.common.Combinatorics._
 
 object lab_4 {
 
@@ -29,3 +29,9 @@ object lab_4 {
 	binCoef(7, 3) == ( binCoef(7 - 1, 3 - 1) + binCoef(7 - 1, 3) )
                                                   //> res11: Boolean = true
 }
+/*
+
+
+
+
+*/
