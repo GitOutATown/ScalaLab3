@@ -48,8 +48,12 @@ object kmer_lab_3 {
 	val text2 = "TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyLive"
                                                   //> text2  : String = TheRainInSpainFallsMainlyOnThePlainOfTheCountryWhereTheyL
                                                   //| ive
-	highestFreqSeq(text2, 3).take(2)          //> res0: scala.collection.immutable.ListMap[Int,scala.collection.immutable.Ite
-                                                  //| rable[String]] = Map(4 -> List(ain, the), 2 -> List(her))
+	highestFreqSeq(text2, 3).take(3)          //> res0: scala.collection.immutable.ListMap[Int,scala.collection.immutable.Ite
+                                                  //| rable[String]] = Map(4 -> List(ain, the), 2 -> List(her), 1 -> List(ino, pa
+                                                  //| i, try, nly, ret, ini, all, inl, eth, oun, nof, yon, lyo, hep, ryw, ins, nt
+                                                  //| r, lsm, epl, inf, liv, eyl, hec, nth, sma, whe, lls, eco, fth, mai, pla, ra
+                                                  //| i, era, cou, unt, spa, ere, lai, ywh, nin, fal, nfa, yli, hey, ive, oft, on
+                                                  //| t, nsp))
 }
 /*
 

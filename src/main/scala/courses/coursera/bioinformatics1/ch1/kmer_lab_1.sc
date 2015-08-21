@@ -17,8 +17,7 @@ object kmer_lab_1 {
 	
 	val result = for(
 		k <- 1 to text1.length
-	) yield (
-		kmerFormula(text1, k)             //> result  : scala.collection.immutable.IndexedSeq[(String, String, String, Str
+	) yield 	kmerFormula(text1, k)     //> result  : scala.collection.immutable.IndexedSeq[(String, String, String, Str
                                                   //| ing)] = Vector((k:1,times:36,leftover:0,formula:36), (k:2,times:18,leftover:
                                                   //| 0,formula:35), (k:3,times:12,leftover:0,formula:34), (k:4,times:9,leftover:0
                                                   //| ,formula:33), (k:5,times:7,leftover:1,formula:32), (k:6,times:6,leftover:0,f
@@ -32,7 +31,6 @@ object kmer_lab_1 {
                                                   //| ormula:17), (k:21,times:1,leftover:15,formula:16), (k:22,times:1,leftover:14
                                                   //| ,formula:15), (k:23,time
                                                   //| Output exceeds cutoff limit.
-	)
 	
 	result foreach println                    //> (k:1,times:36,leftover:0,formula:36)
                                                   //| (k:2,times:18,leftover:0,formula:35)

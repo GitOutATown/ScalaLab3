@@ -12,25 +12,13 @@ object HighestFreq_io {
 	
 	val source = Source.fromFile(path + docName)
                                                   //> source  : scala.io.BufferedSource = non-empty iterator
-	val text = source.getLines.mkString       //> text  : String = CACTAGCATACTCCCACTAGCAGTTCCAGAGTTCCAGTTAGTGAAGTTCCAGATACTCC
-                                                  //| AGTTCCAGAGTTCCAGTTAGTGAATACTCCCACTAGCAGTTCCAGAGTTCCAGTTAGTGACAATTGCTCAATTGCT
-                                                  //| ATACTCCCAATTGCTATACTCCAGTTCCAGTTAGTGAAGTTCCAGCACTAGCATACTCCTTAGTGACAATTGCTAT
-                                                  //| ACTCCCAATTGCTCACTAGCAGTTCCAGATACTCCTTAGTGAAGTTCCAGAGTTCCAGTTAGTGACAATTGCTCAA
-                                                  //| TTGCTATACTCCAGTTCCAGTTAGTGAATACTCCATACTCCAGTTCCAGAGTTCCAGTTAGTGAAGTTCCAGCAAT
-                                                  //| TGCTCAATTGCTCAATTGCTTTAGTGAATACTCCAGTTCCAGATACTCCCAATTGCTCACTAGCTTAGTGATTAGT
-                                                  //| GATTAGTGATTAGTGAAGTTCCAGAGTTCCAGCACTAGCCACTAGCATACTCCATACTCCTTAGTGAAGTTCCAGA
-                                                  //| GTTCCAGATACTCCTTAGTGACAATTGCTATACTCCATACTCCTTAGTGAAGTTCCAGCACTAGCCAATTGCTATA
-                                                  //| CTCCCAATTGCTATACTCCATACTCCTTAGTGAATACTCCCACTAGCATACTCCCAATTGCTAGTTCCAGTTAGTG
-                                                  //| ACAATTGCTCAATTGCTATACTCCATACTCCCACTAGCCACTAGCAGTTCCAGATACTCCCACTAGCCACTAGCAT
-                                                  //| ACTCCCAATTGCTTTAGTGAAGTTCCAGATACTCCTTAGTGAATACTCCCAATTGCTCACTAGCAGTTCCAGCACT
-                                                  //| AGCATACTCCATACTCCAGTTCCAGCACTAGCCACTAGCAGTTCCAG
+	val text = source.getLines.mkString       //> text  : String = CGGAGGACTCTAGGTAACGCTTATCAGGTCCATAGGACATTCA
 	source.close
 	//val k = 11
-	val k = 14                                //> k  : Int = 14
-	highestFreqSeq(text, k).head._1           //> res0: Int = 8
+	val k = 3                                 //> k  : Int = 3
+	highestFreqSeq(text, k).head._1           //> res0: Int = 4
 	highestFreqSeq(text, k).head._2.mkString(" ")
-                                                  //> res1: String = TTAGTGAAGTTCCA AATTGCTATACTCC AGTTCCAGTTAGTG CAATTGCTATACTC G
-                                                  //| TTCCAGTTAGTGA TAGTGAAGTTCCAG
+                                                  //> res1: String = AGG
 }
 /*
 

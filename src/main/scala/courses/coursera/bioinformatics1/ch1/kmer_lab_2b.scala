@@ -19,7 +19,7 @@ object kmer_lab_2b extends App {
     
     // --------------------- //
 
-    println("===> text2: " + kmerFormula(text2, 3))
+    println("\n===> text2: " + kmerFormula(text2, 3))
   
     val segmentsText2 = text2.toLowerCase.iterator.sliding(3)
   

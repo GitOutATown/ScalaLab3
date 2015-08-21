@@ -28,7 +28,7 @@ object kmer_lab_2 {
   val segText2StrIter = segmentsText2 map(s => s.flatMap(_.toString).mkString)
                                                   //> segText2StrIter  : Iterator[String] = non-empty iterator
   
-  // segText2StrIter foreach println // List[String] eg. List("the", "rai", "ain" ...)
+  // segText2StrIter foreach println // List[String] eg. List("the", "her", "era", "rai", ...)
   
   // mutable
   val kmerStoreSegText2 = Map.empty[String, Int]  //> kmerStoreSegText2  : scala.collection.mutable.Map[String,Int] = Map()
