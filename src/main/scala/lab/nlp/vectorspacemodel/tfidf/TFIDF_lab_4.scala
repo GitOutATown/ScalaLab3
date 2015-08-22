@@ -6,7 +6,7 @@ import scala.collection.mutable.Map
 import java.io.File
 import math._
 
-object TFIDF_lab_3 extends App {
+object TFIDF_lab_4 extends App {
     
     // Documents location
     val resource_path = "src/main/scala/resources/"
@@ -29,7 +29,7 @@ object TFIDF_lab_3 extends App {
     val tfsPerDoc = termCountsPerDoc.map{
         case (title, termCounts) => {
             
-            // Count number of docs each term appears in (side effect)
+            // Tally number of docs each term appears in (side effect)
             termCounts.foreach{
                 case (term, _) => docsPerTerm.get(term) match {
                     case Some(_) => docsPerTerm(term) += 1
@@ -37,7 +37,7 @@ object TFIDF_lab_3 extends App {
                 }
             }
         
-            // counts, frequency ratio, normalized
+            // counts, frequency ratio (normalized)
             val maxFreq = (termCounts.values.max).toFloat
             val freqs = termCounts.map{
                 case (term, count) => (term, count / maxFreq)
@@ -83,6 +83,7 @@ object TFIDF_lab_3 extends App {
     // log2 function
     def log2(x: Double) = scala.math.log(x)/scala.math.log(2)
     
+    // Calculate TFIDF (culmination)
     // Sort remains by TF to highlight effect of IDF
     val allTFIDFs = tfsPerDoc.map{
         case (title, terms) => {
