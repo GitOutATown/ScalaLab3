@@ -8,13 +8,10 @@ object RegEx_lab_1 extends App {
     val text2 = "8/22/15"
     val text3 = "Email I just sent to Waseem and May"
     
-    val date = """^[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}""".r
+    val datePattern = """^[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}""".r
     val maybe = "May".r
     
     val allText = List(text1, text2, text3)
     
-    text1 match {
-        case maybe(d) => println(d)
-        case _ => println("nuthin")
-    }
+    println(datePattern.findFirstIn(text2))
 }
