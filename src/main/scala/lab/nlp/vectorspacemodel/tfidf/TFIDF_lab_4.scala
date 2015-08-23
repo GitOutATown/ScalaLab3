@@ -2,9 +2,16 @@ package lab.nlp.vectorspacemodel.tfidf
 
 import common.Path._
 import scala.io.Source
-import scala.collection.mutable.Map
 import java.io.File
 import math._
+
+/*
+ * I am, somewhat paradocically, using Maps instead of Matrices as my 
+ * mechanism for tallying, counting, and looking up frequency values.
+ * This is an admitedly paradoxical early stage convience for developing 
+ * my intuition for Semantic Vectory Models.
+ */
+import scala.collection.mutable.Map
 
 object TFIDF_lab_4 extends App {
     
@@ -19,7 +26,7 @@ object TFIDF_lab_4 extends App {
     // Load all txt files in corpus directory
     val corpus = new File(corpusDir).listFiles.filter(_.getName.endsWith(".txt"))
     
-    // Holds count of number of docs term appears in.
+    // Holds count of number of docs each term appears in.
     val docsPerTerm = Map.empty[String, Int]
     
     // Array of term counts per doc.
