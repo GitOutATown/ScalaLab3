@@ -1,9 +1,7 @@
 package lab.nlp.vectorspacemodel.tfidf.journal
 
-object JournalParser_3 {
+object JournalParser_4 {
     
-    case class JournalEntry(date: String, text: List[String])
-
     val datePattern = """[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}""".r
     
     def isDate(line: String): Boolean = {
@@ -15,25 +13,25 @@ object JournalParser_3 {
         }
     }
     
-    def process(text: List[String]): List[JournalEntry] = {
+    def process(text: List[String]): List[Document] = {
         
-        def inter(interText: List[String], journal: List[JournalEntry], entry: JournalEntry = null): List[JournalEntry] = {
+        def inter(interText: List[String], journal: List[Document], entry: Document = null): List[Document] = {
             interText match {
                 case Nil => journal :+ entry
                 case line :: tail => {
                     if(isDate(line)) {
-                        val date = line
+                        val title = line
                         val iterJournal = if(entry == null) journal else journal :+ entry
-                        inter(tail, iterJournal, JournalEntry(date, List[String]()))
+                        inter(tail, iterJournal, Document(title, List[String]()))
                     }
                     else {
-                        val iterEntry = JournalEntry(entry.date, entry.text :+ line)
+                        val iterEntry = Document(entry.title, entry.text :+ line)
                         inter(tail, journal, iterEntry)
                     }
                 }
             }
         } // End inter
         
-        inter(text, List[JournalEntry]())
+        inter(text, List[Document]())
     } // End process
 }

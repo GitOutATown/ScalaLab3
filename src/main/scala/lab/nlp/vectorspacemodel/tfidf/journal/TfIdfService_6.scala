@@ -1,4 +1,4 @@
-package lab.nlp.vectorspacemodel.tfidf
+package lab.nlp.vectorspacemodel.tfidf.journal
 
 import common.Path._
 import scala.io.Source
@@ -8,19 +8,21 @@ import math._
 /*
  * I am, somewhat paradocically, using Maps instead of Matrices as my 
  * mechanism for tallying, counting, and looking up frequency values.
- * This is an admitedly paradoxical early stage convience for developing 
- * my intuition for Semantic Vectory Models.
+ * This is an early stage convience for developing my intuition for 
+ * Semantic Vectory Models.
  */
 import scala.collection.mutable.Map
 
-object TfIdfService_5 {
+object TfIdfService_6 {
         
     // Holds count of number of docs each term appears in.
     val docsPerTerm = Map.empty[String, Int]
     
     // ----- Methods ----------------- //
     
-    def tfidf(corpus: Array[File], stopwords: List[String]) {
+    def tfidf(corpus: List[Document], stopwords: List[String])
+        :List[(String, List[(String, Double)])] = {
+        
         // Array of term counts per doc.
         val termCountsPerDoc = for(file <- corpus) yield mapTerms(file, stopwords)
     
@@ -56,26 +58,17 @@ object TfIdfService_5 {
                         (term, tf * idf)
                     }
                 }
-                (title, tfidfs)
+                (title, tfidfs.sortBy(_._2).reverse)
             }
         } // end allTFIDFs
-        
-        // Display output of all TFIDF scores per doc
-        allTFIDFs foreach {
-            doc => {
-                println(doc._1)
-                println(doc._2.take(10))
-                println()
-            }
-        }
         
         allTFIDFs // return result
     } // END tdidf
     
         // Parse file, filter, count terms. Returns tuple of (file name, term counts)
-    def mapTerms(file: File, stopwords: List[String]) = {
-        val doc = Source.fromFile(file)
-        val terms = doc.getLines.flatMap(preprocess(_))
+    def mapTerms(file: Document, stopwords: List[String]) = {
+        //val doc = Source.fromFile(file)
+        val terms = file.text.flatMap(preprocess(_))
             .filter(term => !stopwords.contains(term) && term != "")
             
         // Holds term counts for this doc. Mutable (side effect). Re-implement in Spark for immutability and scalability.
@@ -88,22 +81,13 @@ object TfIdfService_5 {
             }
         }
         
-        (file.getName, termCounts)
+        (file.title, termCounts)
     } // end mapTerms
     
     def preprocess(str: String): Array[String] = {
         val splits = str.split("[ !,.:;]+").map(_.toLowerCase)
         splits.map { s => s.replaceAll("(?m)^[ \t]*\r?\n", "") }
     }
-    
-    // Display term frequency scores for each doc
-    /*tfCounts foreach {
-        doc => {
-            println(doc._1); // doc name
-            println(doc._2.take(20)) // term frequencies
-            println
-        }
-    }*/
     
     // log2 function
     def log2(x: Double) = scala.math.log(x)/scala.math.log(2)
