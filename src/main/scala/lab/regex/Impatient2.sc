@@ -39,7 +39,7 @@ object Impatient2 {
   val m10 = datePattern.findPrefixOf("18/12/2015 and then")
                                                   //> m10  : Option[String] = Some(18/12/2015)
   
-  
+  val m11 = datePattern.findPrefixOf("3/5/14")    //> m11  : Option[String] = Some(3/5/14)
   
   
 

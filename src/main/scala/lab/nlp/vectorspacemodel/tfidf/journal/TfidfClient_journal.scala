@@ -20,12 +20,11 @@ object TfidfClient_journal extends App {
     
     val journalEntries = process(text)
     
-    println("result length: " + journalEntries.length)
-    journalEntries.take(2).foreach { println }
-    println("------------")
+    println("Number of journal entries: " + journalEntries.length + "\n")
     
     val allTFIDFs = tfidf(journalEntries, stopwords)
     
+    println("TFIDF weights for each entry:\n")
     allTFIDFs foreach {
         doc => {
             println(doc._1)

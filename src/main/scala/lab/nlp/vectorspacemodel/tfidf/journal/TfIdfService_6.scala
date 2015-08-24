@@ -4,6 +4,7 @@ import common.Path._
 import scala.io.Source
 import java.io.File
 import math._
+import util.MathUtil._
 
 /*
  * I am, somewhat paradocically, using Maps instead of Matrices as my 
@@ -49,13 +50,13 @@ object TfIdfService_6 {
         } // END termDocMaps.map
         
         // Calculate TFIDF (culmination)
-        // Sort remains by TF to highlight effect of IDF
+        val rnd = roundAt(3)_
         val allTFIDFs = tfsPerDoc.map{
             case (title, terms) => {
                 val tfidfs = terms.map{
                     case (term, tf) => {
                         val idf = log2(docsPerTerm.size.toFloat / docsPerTerm(term))
-                        (term, tf * idf)
+                        (term, rnd(tf * idf))
                     }
                 }
                 (title, tfidfs.sortBy(_._2).reverse)
@@ -67,9 +68,20 @@ object TfIdfService_6 {
     
         // Parse file, filter, count terms. Returns tuple of (file name, term counts)
     def mapTerms(file: Document, stopwords: List[String]) = {
+        
+        def filterTerm(term: String): Boolean = {
+            if(!stopwords.contains(term) && term != "") true
+            else {
+                //println("===>filtering out: " + term)
+                false
+            }
+        }
+        
         //val doc = Source.fromFile(file)
         val terms = file.text.flatMap(preprocess(_))
-            .filter(term => !stopwords.contains(term) && term != "")
+            .filter(term => filterTerm(term))
+            
+        //println("terms after filtering: " + terms)
             
         // Holds term counts for this doc. Mutable (side effect). Re-implement in Spark for immutability and scalability.
         val termCounts = Map.empty[String, Int] // not parallelizable
@@ -85,7 +97,7 @@ object TfIdfService_6 {
     } // end mapTerms
     
     def preprocess(str: String): Array[String] = {
-        val splits = str.split("[ !,.:;]+").map(_.toLowerCase)
+        val splits = str.split("""[ !?,.:;()"]+""").map(_.toLowerCase)
         splits.map { s => s.replaceAll("(?m)^[ \t]*\r?\n", "") }
     }
     

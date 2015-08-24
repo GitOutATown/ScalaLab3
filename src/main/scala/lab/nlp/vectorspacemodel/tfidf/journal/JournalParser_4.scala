@@ -5,11 +5,9 @@ object JournalParser_4 {
     val datePattern = """[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}""".r
     
     def isDate(line: String): Boolean = {
-        //println("def isDate, line: " + line)
-        //println("def isDate, datePattern: " + datePattern)
         datePattern.findPrefixMatchOf(line) match {
             case Some(_) => true
-            case None => false
+            case None => false 
         }
     }
     
@@ -19,13 +17,17 @@ object JournalParser_4 {
             interText match {
                 case Nil => journal :+ entry
                 case line :: tail => {
-                    if(isDate(line)) {
+                    if(isDate(line)) { // new entry
                         val title = line
                         val iterJournal = if(entry == null) journal else journal :+ entry
                         inter(tail, iterJournal, Document(title, List[String]()))
                     }
-                    else {
-                        val iterEntry = Document(entry.title, entry.text :+ line)
+                    else { // continuing as part of existing entry
+                        val iterEntry = {
+                            // Catch potential null entry scenarios, such as first line in doc not being date or bad date formating.
+                            if(entry != null) Document(entry.title, entry.text :+ line)
+                            else Document("DATE MISSING", List(line)) // Creating new entry
+                        }
                         inter(tail, journal, iterEntry)
                     }
                 }
@@ -35,3 +37,6 @@ object JournalParser_4 {
         inter(text, List[Document]())
     } // End process
 }
+
+
+
