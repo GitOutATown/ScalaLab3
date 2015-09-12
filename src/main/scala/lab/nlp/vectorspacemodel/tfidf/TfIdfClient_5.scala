@@ -20,7 +20,16 @@ object TfIdfClient_5 extends App {
     // Load all txt files in corpus directory
     val corpus = new File(corpusDir).listFiles.filter(_.getName.endsWith(".txt"))     
     
-    tfidf(corpus, stopwords)
+    val allTFIDFs = tfidf(corpus, stopwords)
+    
+    // Display output of all TFIDF scores per doc
+    allTFIDFs foreach {
+        doc => {
+            println(doc._1)
+            println(doc._2.take(10))
+            println()
+        }
+    }
 }
 
 

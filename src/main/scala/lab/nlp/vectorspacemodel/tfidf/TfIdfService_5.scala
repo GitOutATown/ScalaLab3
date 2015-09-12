@@ -20,7 +20,8 @@ object TfIdfService_5 {
     
     // ----- Methods ----------------- //
     
-    def tfidf(corpus: Array[File], stopwords: List[String]) {
+    def tfidf(corpus: Array[File], stopwords: List[String])
+        :List[(String, List[(String, Double)])] = {
         // Array of term counts per doc.
         val termCountsPerDoc = for(file <- corpus) yield mapTerms(file, stopwords)
     
@@ -61,25 +62,26 @@ object TfIdfService_5 {
         } // end allTFIDFs
         
         // Display output of all TFIDF scores per doc
-        allTFIDFs foreach {
+        /*allTFIDFs foreach {
             doc => {
                 println(doc._1)
                 println(doc._2.take(10))
                 println()
             }
-        }
+        }*/
         
-        allTFIDFs // return result
+        allTFIDFs.toList // return result
     } // END tdidf
     
         // Parse file, filter, count terms. Returns tuple of (file name, term counts)
-    def mapTerms(file: File, stopwords: List[String]) = {
+    def mapTerms(file: File, stopwords: List[String])
+        :(String, Map[String, Int]) = {
         val doc = Source.fromFile(file)
         val terms = doc.getLines.flatMap(preprocess(_))
             .filter(term => !stopwords.contains(term) && term != "")
             
-        // Holds term counts for this doc. Mutable (side effect). Re-implement in Spark for immutability and scalability.
-        val termCounts = Map.empty[String, Int] // not parallelizable
+        // Holds term counts for this doc. Mutable (side effect)
+        val termCounts = Map.empty[String, Int]
         // Count number of times each term occurs in this doc.
         terms.foreach {
             term => termCounts.get(term) match {
