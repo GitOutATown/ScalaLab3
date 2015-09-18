@@ -1,4 +1,4 @@
-package books.funproginscala.ch1
+package books.funproginscala.ch2
 
 object MyModule {
     
