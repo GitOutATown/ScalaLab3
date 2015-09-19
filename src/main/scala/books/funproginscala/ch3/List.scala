@@ -33,9 +33,51 @@ object List {
             case Cons(_, xs) => drop(xs, n - 1)
         }
     
+    def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+        case Cons(x, xs) =>
+            if(f(x)) dropWhile(xs, f)
+            else l
+        case _ => l
+    }
+    
+    // My interpretation is that the sole member of a single value list is both head and init (i.e. first and last) as with scala collections package List.
+    def init[A](l: List[A]): List[A] = l match {
+        case Nil => sys.error("init of empty list")
+        case Cons(_, Nil) => l
+        case _ => 
+            // Not tail recursive, vulnerable to stack overflow.
+            def loop[A](l: List[A]): List[A] = l match { 
+                case Cons(_, Nil) => Nil // recursive convergence condition
+                case Cons(x, xs) => Cons(x, loop(xs))
+            }
+            loop(l)
+    }
+    
+    // tail recursive
+    def initAlt[A](l: List[A]): List[A] = l match {
+        case Nil => sys.error("init of empty list")
+        case Cons(_, Nil) => l
+        case _ =>
+            import collection.mutable.ListBuffer
+            val buf = new ListBuffer[A]
+            @annotation.tailrec
+            def loop(l: List[A]): List[A] = l match {
+                case Cons(_, Nil) => List(buf.toList: _*)
+                case Cons(x, xs) => 
+                    buf += x
+                    loop(xs)
+            }
+            loop(l)
+    }
+    
     def setHead[A](h: A, l: List[A]): List[A] = l match {
         case Nil => sys.error("set head on empty list")
         case Cons(_, xs) => Cons(h, xs)
+    }
+    
+    def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
+        case Nil => a2
+        case Cons(x, xs) => Cons(x, append(xs, a2))
     }
     
     def apply[A](as: A*): List[A] = {
