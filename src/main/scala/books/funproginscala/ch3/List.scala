@@ -108,11 +108,10 @@ object List {
     
     // Recursion over lists and generalizing to higher-order functions
     
-    def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = 
-        as match {
-            case Nil => z // TODO: This is not correct for case when initial as is Nil.
-            case Cons(x, xs) => f(x, foldRight(xs, z)(f))
-        }
+    def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+        case Nil => z // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
     
     def sumAlt2(ns: List[Int]) = foldRight(ns, 0)(_ + _)
     
@@ -124,6 +123,26 @@ object List {
     def prodAlt2(ns: List[Double]) = foldRight(ns, 1.0)((x, acc) => x * acc)
     
     def length[A](ns: List[A]): Int = foldRight(ns, 0)((_, acc) => acc + 1)
+    
+    @annotation.tailrec
+    def foldRightTR[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+        case Nil => z // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => foldRightTR(xs, f(x, z))(f)
+    }
+    
+    def sumAlt4(ns: List[Int]) = foldRightTR(ns, 0)((x, acc) => x + acc)
+    
+    def prodAlt3(ns: List[Double]) = foldRightTR(ns, 1.0)((x, acc) => x * acc)
+    
+    @annotation.tailrec
+    def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+        case Nil => z // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    }
+    
+    def sumAlt5(ns: List[Int]) = foldLeft(ns, 0)((acc, x) => x + acc)
+    
+    def prodAlt4(ns: List[Double]) = foldLeft(ns, 1.0)((acc, x) => x * acc)
 }
 
 
