@@ -9,7 +9,7 @@ object List_client_1 {
                                                   //| ape,Cons(apple,Cons(banana,Cons(app,Nil))))
   val l3 = List(5, 6, 7)                          //> l3  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Cons(5,
                                                   //| Cons(6,Cons(7,Nil)))
-  
+ 
   val l4 = List(1d,2,3,4)                         //> l4  : books#35.funproginscala#17381.ch3#17393.List#17412[Double#1639] = Cons
                                                   //| (1.0,Cons(2.0,Cons(3.0,Cons(4.0,Nil))))
   
@@ -18,9 +18,9 @@ object List_client_1 {
   val res01 = List.sum(l1)                        //> res01  : Int#1123 = 10
   val res02 = List.sumAlt1(l1)                    //> res02  : Int#1123 = 10
   val res03 = List.sumAlt2(l1)                    //> res03  : Int#1123 = 10
-  List.sumAlt3(l1)                                //> res0: Int#1123 = 10
-  List.sumAlt4(l1)                                //> res1: Int#1123 = 10
-  List.sumAlt5(l1)                                //> res2: Int#1123 = 10
+  val resA3 = List.sumAlt3(l1)                    //> resA3  : Int#1123 = 10
+  val resA4 = List.sumAlt4(l1)                    //> resA4  : Int#1123 = 10
+  val resA5 = List.sumAlt5(l1)                    //> resA5  : Int#1123 = 10
   
   val res04 = List.product(l4)                    //> res04  : Double#1639 = 24.0
   val res05 = List.prodAlt1(l4)                   //> res05  : Double#1639 = 24.0
@@ -34,7 +34,7 @@ object List_client_1 {
   val res011 = List.tail(l1)                      //> res011  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Con
                                                   //| s(2,Cons(3,Cons(4,Nil)))
   //List.tail(List()) // correctly throws error
-  List.setHead("fee", List("ho", "fi", "fo"))     //> res3: books#35.funproginscala#17381.ch3#17393.List#17412[String#264] = Cons(
+  List.setHead("fee", List("ho", "fi", "fo"))     //> res0: books#35.funproginscala#17381.ch3#17393.List#17412[String#264] = Cons(
                                                   //| fee,Cons(fi,Cons(fo,Nil)))
   //List.setHead("fee", List()) // correctly throws error
   val res0 = List.drop(l1, 0)                     //> res0  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Cons(
@@ -44,8 +44,8 @@ object List_client_1 {
                                                   //| 2,Cons(3,Cons(4,Nil)))
   val res2 = List.drop(l1, 2)                     //> res2  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Cons(
                                                   //| 3,Cons(4,Nil))
-  val res3 = List.drop(l1, 3)                     //> res3  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Cons(
-                                                  //| 4,Nil)
+  val res3 = List.drop(l1, 3)                     //> res3  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Cons
+                                                  //| (4,Nil)
   val res4 = List.drop(l1, 4)                     //> res4  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Nil
  
   val res5 = List.drop(l1, 5)                     //> res5  : books#35.funproginscala#17381.ch3#17393.List#17412[Int#1123] = Nil
@@ -81,5 +81,30 @@ object List_client_1 {
                                                   //| s(1,Cons(2,Cons(3,Nil)))
   val res17 = List.length(l2)                     //> res17  : Int#1123 = 4
   val res18 = List.length(l5)                     //> res18  : Int#1123 = 5
-  '''                                             //> res4: Char#1783('\'') = '
+  
+  val res19 = List.lengthFL(l2)                   //> res19  : Int#1123 = 4
+  val res20 = List.lengthFL(l5)                   //> res20  : Int#1123 = 5
+  
+  val res21 = List.reverse(l5)                    //> res21  : books#35.funproginscala#17381.ch3#17393.List#17412[Double#1639] = 
+                                                  //| Cons(4.0,Cons(3.0,Cons(2.0,Cons(1.0,Cons(0.0,Nil)))))
+  val res22 = List.reverse(l2)                    //> res22  : books#35.funproginscala#17381.ch3#17393.List#17412[String#264] = C
+                                                  //| ons(app,Cons(banana,Cons(apple,Cons(ape,Nil))))
+  
+  val res23 = List.reverseFR(l5)                  //> res23  : books#35.funproginscala#17381.ch3#17393.List#17412[Double#1639] = 
+                                                  //| Cons(4.0,Cons(3.0,Cons(2.0,Cons(1.0,Cons(0.0,Nil)))))
+  //NOT WORKING CORRECTLY
+  val res24 = List.reverseFLViaFR(l5)             //> res24  : books#35.funproginscala#17381.ch3#17393.List#17412[Double#1639] = 
+                                                  //| Cons(0.0,Cons(1.0,Cons(2.0,Cons(3.0,Cons(4.0,Nil)))))
+  // Interesting! This does work, but the FR is not TR.
+  // That's the difference from res24 = reverseFLViaFR above,
+  // where the FR is TR and it doesn't work!
+  val res25 = List.reverseFLViaFR2(l5)            //> res25  : books#35.funproginscala#17381.ch3#17393.List#17412[Double#1639] = 
+                                                  //| Cons(4.0,Cons(3.0,Cons(2.0,Cons(1.0,Cons(0.0,Nil)))))
+  '''                                             //> res1: Char#1783('\'') = '
 }
+/*
+
+
+
+
+*/

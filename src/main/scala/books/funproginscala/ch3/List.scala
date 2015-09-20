@@ -106,43 +106,67 @@ object List {
         else Cons(as.head, apply(as.tail: _*))
     }
     
-    // Recursion over lists and generalizing to higher-order functions
+    //-----------------------------------------------------------------//
+    // Recursion over lists and generalizing to higher-order functions //
+    //-----------------------------------------------------------------//
     
-    def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
-        case Nil => z // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
+        case Nil => acc // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => f(x, foldRight(xs, acc)(f))
     }
     
-    def sumAlt2(ns: List[Int]) = foldRight(ns, 0)(_ + _)
+    def sumAlt2(xs: List[Int]) = foldRight(xs, 0)(_ + _)
     
-    def sumAlt3(ns: List[Int]) = foldRight(ns, 0)((x, acc) => x + acc)
+    def sumAlt3(xs: List[Int]) = foldRight(xs, 0)((x, acc) => x + acc)
     
-    def prodAlt1(ns: List[Double]) = foldRight(ns, 1.0)(_ * _)
+    def prodAlt1(xs: List[Double]) = foldRight(xs, 1.0)(_ * _)
     
     // The right hand side of the fat arrow comes back as acc. x is the next value in the list.
-    def prodAlt2(ns: List[Double]) = foldRight(ns, 1.0)((x, acc) => x * acc)
+    def prodAlt2(xs: List[Double]) = foldRight(xs, 1.0)((x, acc) => x * acc)
     
-    def length[A](ns: List[A]): Int = foldRight(ns, 0)((_, acc) => acc + 1)
-    
-    @annotation.tailrec
-    def foldRightTR[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
-        case Nil => z // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => foldRightTR(xs, f(x, z))(f)
-    }
-    
-    def sumAlt4(ns: List[Int]) = foldRightTR(ns, 0)((x, acc) => x + acc)
-    
-    def prodAlt3(ns: List[Double]) = foldRightTR(ns, 1.0)((x, acc) => x * acc)
+    def length[A](xs: List[A]): Int = foldRight(xs, 0)((_, acc) => acc + 1)
     
     @annotation.tailrec
-    def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = as match {
-        case Nil => z // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    def foldRightTR[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
+        case Nil => acc // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => foldRightTR(xs, f(x, acc))(f)
     }
     
-    def sumAlt5(ns: List[Int]) = foldLeft(ns, 0)((acc, x) => x + acc)
+    def sumAlt4(xs: List[Int]) = foldRightTR(xs, 0)((x, acc) => x + acc)
     
-    def prodAlt4(ns: List[Double]) = foldLeft(ns, 1.0)((acc, x) => x * acc)
+    def prodAlt3(xs: List[Double]) = foldRightTR(xs, 1.0)((x, acc) => x * acc)
+    
+    @annotation.tailrec
+    def foldLeft[A,B](l: List[A], acc: B)(f: (B, A) => B): B = l match {
+        case Nil => acc // TODO: This is not correct for case when initial as is Nil.
+        case Cons(x, xs) => foldLeft(xs, f(acc, x))(f)
+    }
+    
+    def sumAlt5(l: List[Int]) = foldLeft(l, 0)((acc, x) => x + acc)
+    
+    def prodAlt4(l: List[Double]) = foldLeft(l, 1.0)((acc, x) => x * acc)
+    
+    def lengthFL[A](l: List[A]): Int = foldLeft(l, 0)((acc, _) => acc + 1)
+    
+    def reverse[A](l: List[A]): List[A] = foldLeft(l, List[A]())((acc, x) => Cons(x, acc))
+    
+    def reverseFR[A](l: List[A]): List[A] = foldRightTR(l, List[A]())((x, acc) => Cons(x, acc))
+    
+    // This is evidently theoretic (academic). Don't worry about not grokking it now.
+    // https://github.com/fpinscala/fpinscala/blob/master/answerkey/datastructures/13.answer.scala
+    def foldLeftViaFR[A,B](l: List[A], acc: B)(f: (B, A) => B): B = 
+        foldRightTR(l, (b:B) => b)((a,g) => b => g(f(b,a)))(acc)
+    
+    // NOPE, NOT WORKING, NOT REVERSING
+    def reverseFLViaFR[A](l: List[A]): List[A] = 
+        foldLeftViaFR(l, List[A]())((acc, x) => Cons(x, acc))
+        
+    def foldLeftViaFR2[A,B](l: List[A], acc: B)(f: (B, A) => B): B = 
+        foldRight(l, (b:B) => b)((a,g) => b => g(f(b,a)))(acc)
+        // Note foldRight is not TR here.
+        
+    def reverseFLViaFR2[A](l: List[A]): List[A] = 
+        foldLeftViaFR2(l, List[A]())((acc, x) => Cons(x, acc))
 }
 
 
