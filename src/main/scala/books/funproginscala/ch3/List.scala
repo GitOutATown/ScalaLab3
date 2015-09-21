@@ -17,13 +17,13 @@ object List {
     // tail recursive
     def sumAlt1(ints: List[Int]): Int = ints match {
         case Nil => 0
-        case Cons(h, t) => {
+        case Cons(h, t) =>
+            @annotation.tailrec
             def loop(acc: Int, ints: List[Int]): Int = ints match {
                 case Nil => acc
                 case Cons(h, t) => loop(h + acc, t)
             }
             loop(0, ints)
-        }
     }
     
     def product(doubles: List[Double]): Double = doubles match {
@@ -56,15 +56,14 @@ object List {
     // curried
     def dropWhileAlt[A](l: List[A])(f: A => Boolean): List[A] = l match {
         case Cons(x, xs) =>
-            if(f(x)) dropWhile(xs, f)
+            if(f(x)) dropWhileAlt(xs)(f)
             else l
         case _ => l
     }
     
-    // My interpretation is that the sole member of a single value list is both head and init (i.e. first and last) as with scala collections package List.
+    // Return everything but the last element.
     def init[A](l: List[A]): List[A] = l match {
         case Nil => sys.error("init of empty list")
-        case Cons(_, Nil) => l
         case _ => 
             // Not tail recursive, vulnerable to stack overflow.
             def loop[A](l: List[A]): List[A] = l match { 
@@ -77,16 +76,15 @@ object List {
     // tail recursive
     def initAlt[A](l: List[A]): List[A] = l match {
         case Nil => sys.error("init of empty list")
-        case Cons(_, Nil) => l
         case _ =>
             import collection.mutable.ListBuffer
             val buf = new ListBuffer[A]
             @annotation.tailrec
             def loop(l: List[A]): List[A] = l match {
                 case Cons(_, Nil) => List(buf.toList: _*)
-                case Cons(x, xs) => 
-                    buf += x
-                    loop(xs)
+                case Cons(h, t) => 
+                    buf += h
+                    loop(t)
             }
             loop(l)
     }
