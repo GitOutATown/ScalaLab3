@@ -1,6 +1,6 @@
 package books.funproginscala.ch3.MEM
 
-// abstract class List[+A] // same for all practical purposes
+// abstract class[+A] // same, for all practical purposes
 trait List[+A]
 // data constructors
 case object Nil extends List[Nothing]
@@ -114,22 +114,46 @@ object List {
     //-----------------------------------------------------------------//
     
     @annotation.tailrec
-    def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
+    def foldRight[A,B](l: List[A], acc: B)(f: (A,B) => B): B = l match {
         case Nil => acc
         case Cons(h, t) => foldRight(t, f(h, acc))(f)
     }
     
-    def sumAlt2(l: List[Int]) = foldRight(l, 0)((h, acc) => h + acc)
+    def sumAlt2(l: List[Int]): Int = foldRight(l, 0)((h, acc) => h + acc) // (_ + _)
     
-    def prodAlt1(l: List[Double]) = foldRight(l, 1d)((h, acc) => h * acc)
+    def prodAlt1(l: List[Double]): Double = foldRight(l, 1.0)((h, acc) => h * acc) // (_ * _)
     
-    //def sumAlt3
+    @annotation.tailrec
+    def foldLeft[A,B](l: List[A], acc: B)(f: (B,A) => B): B = l match {
+        case Nil => acc
+        case Cons(h, t) => foldLeft(t, f(acc, h))(f)
+    }
     
-    //def sumAlt4
+    def sumAlt3(l: List[Int]): Int = foldLeft(l, 0)((acc, h) => h + acc)
     
-    //def sumAlt5
+    def prodAlt2(l: List[Double]): Double = foldLeft(l, 1d)((acc, h) => h * acc)
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
