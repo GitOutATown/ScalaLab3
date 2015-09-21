@@ -49,11 +49,13 @@ object List_client_MEM {
   //val res11 = List.init(List()) // correctly throws error
   val res12 = List.init(List(1,2))                //> res12  : books.funproginscala.ch3.MEM.List[Int] = Cons(1,Nil)
   
-  '''                                             //> res0: Char('\'') = '
+  List.setHead("fee", List("foo", "fi", "fo", "fum"))
+                                                  //> res0: books.funproginscala.ch3.MEM.List[String] = Cons(fee,Cons(fi,Cons(fo,
+                                                  //| Cons(fum,Nil))))
+  
+  '''                                             //> res1: Char('\'') = '
 }
 /*
-
-
 
 
 

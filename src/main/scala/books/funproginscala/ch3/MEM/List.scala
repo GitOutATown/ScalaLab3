@@ -9,6 +9,12 @@ case class Cons[+A](head: A, tail: List[A]) extends List[A]
 // companion object
 object List {
     
+    // companion class factory
+    def apply[A](as: A*): List[A] = {
+        if(as.isEmpty) Nil
+        else Cons(as.head, apply(as.tail: _*))
+    }
+    
     def sum(ints: List[Int]): Int = ints match {
         case Nil => 0
         case Cons(h, t) => h + sum(t)
@@ -93,11 +99,29 @@ object List {
             inner(l)
     }
     
+    def setHead[A](h: A, l: List[A]): List[A] = l match {
+        case Nil => sys.error("operation on empty list")
+        case Cons(_, t) => Cons(h, t)
+    }
+    
+    def append[A](l1: List[A], l2: List[A]): List[A] = l1 match {
+        case Nil => l2
+        case Cons(h, t) => Cons(h, append(t, l2))
+    }
+    
     //-----------------------------------------------------------------//
     // Recursion over lists and generalizing to higher-order functions //
     //-----------------------------------------------------------------//
     
-    //def sumAlt2
+    @annotation.tailrec
+    def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
+        case Nil => acc
+        case Cons(h, t) => foldRight(t, f(h, acc))(f)
+    }
+    
+    def sumAlt2(l: List[Int]) = foldRight(l, 0)((h, acc) => h + acc)
+    
+    def prodAlt1(l: List[Double]) = foldRight(l, 1d)((h, acc) => h * acc)
     
     //def sumAlt3
     
@@ -105,11 +129,6 @@ object List {
     
     //def sumAlt5
     
-    // companion class factory
-    def apply[A](as: A*): List[A] = {
-        if(as.isEmpty) Nil
-        else Cons(as.head, apply(as.tail: _*))
-    }
 }
 
 

@@ -110,7 +110,7 @@ object List {
     
     def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => f(x, foldRight(xs, acc)(f))
+        case Cons(h, t) => f(h, foldRight(t, acc)(f))
     }
     
     def sumAlt2(xs: List[Int]) = foldRight(xs, 0)(_ + _)

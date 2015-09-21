@@ -32,8 +32,9 @@ object List_client_1 {
   
   val res011 = List.tail(l1)                      //> res011  : books.funproginscala.ch3.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
   //List.tail(List()) // correctly throws error
-  List.setHead("fee", List("ho", "fi", "fo"))     //> res0: books.funproginscala.ch3.List[String] = Cons(fee,Cons(fi,Cons(fo,Nil))
-                                                  //| )
+  List.setHead("fee", List("foo", "fi", "fo", "fum"))
+                                                  //> res0: books.funproginscala.ch3.List[String] = Cons(fee,Cons(fi,Cons(fo,Cons(
+                                                  //| fum,Nil))))
   //List.setHead("fee", List()) // correctly throws error
   val res0 = List.drop(l1, 0)                     //> res0  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Nil
                                                   //| ))))
