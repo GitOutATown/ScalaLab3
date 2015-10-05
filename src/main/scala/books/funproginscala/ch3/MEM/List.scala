@@ -25,7 +25,7 @@ object List {
         case Nil => 0
         case Cons(h, t) =>
             @annotation.tailrec
-            def inner(t: List[Int], acc: Int): Int = t match {
+            def inner(l: List[Int], acc: Int): Int = l match {
                 case Nil => acc
                 case Cons(h, t) => inner(t, h + acc)
             }
@@ -83,6 +83,12 @@ object List {
     
     def dropWhileCur[A](l: List[A])(f: A => Boolean): List[A] = l match {
         case Cons(h, t) => if(f(h)) dropWhileCur(t)(f) else l
+        case _ => l
+    }
+    
+    // Reverses the order of the curried parameters
+    def dropWhileCurAlt[A](f: A => Boolean)(l: List[A]): List[A] = l match {
+        case Cons(h, t) => if(f(h)) dropWhileCurAlt(f)(t) else l
         case _ => l
     }
     

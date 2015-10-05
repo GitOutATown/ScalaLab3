@@ -3,6 +3,7 @@ package books.funproginscala.ch2
 object Factorial1 {
   
   def fac(n: Int): Int = {
+    require(n > 0)
     def inter(n: Int, acc: Int): Int = {
       if(n <= 0) acc
       else(inter(n-1, n*acc))

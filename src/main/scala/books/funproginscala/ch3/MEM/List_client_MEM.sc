@@ -40,14 +40,31 @@ object List_client_MEM {
                                                   //| Cons(app,Nil)))
   val res6b = dropWhileCur(l2) (x => x.length < 4)//> res6b  : books.funproginscala.ch3.MEM.List[String] = Cons(apple,Cons(banana,
                                                   //| Cons(app,Nil)))
-  val res9 = init(l1)                             //> res9  : books.funproginscala.ch3.MEM.List[Int] = Cons(1,Cons(2,Cons(3,Nil)))
-                                                  //| 
+  val dwCur1 = dropWhileCur(l2)_                  //> dwCur1  : (String => Boolean) => books.funproginscala.ch3.MEM.List[String] =
+                                                  //|  <function1>
+  val res6c = dwCur1(x => x.length < 4)           //> res6c  : books.funproginscala.ch3.MEM.List[String] = Cons(apple,Cons(banana,
+                                                  //| Cons(app,Nil)))
+  def strLen4(x:String) = x.length < 4            //> strLen4: (x: String)Boolean
+  val dwCurAlt = dropWhileCurAlt(strLen4)_        //> dwCurAlt  : books.funproginscala.ch3.MEM.List[String] => books.funproginscal
+                                                  //| a.ch3.MEM.List[String] = <function1>
+  val res6d = dwCurAlt(l2)                        //> res6d  : books.funproginscala.ch3.MEM.List[String] = Cons(apple,Cons(banana,
+                                                  //| Cons(app,Nil)))
+  
+  val dwCurAlt2 = dropWhileCurAlt((x:String) => x.length < 4)_
+                                                  //> dwCurAlt2  : books.funproginscala.ch3.MEM.List[String] => books.funproginsc
+                                                  //| ala.ch3.MEM.List[String] = <function1>
+  
+  val res6e = dwCurAlt2(l2)                       //> res6e  : books.funproginscala.ch3.MEM.List[String] = Cons(apple,Cons(banana
+                                                  //| ,Cons(app,Nil)))
+    
+  val res9 = init(l1)                             //> res9  : books.funproginscala.ch3.MEM.List[Int] = Cons(1,Cons(2,Cons(3,Nil))
+                                                  //| )
   val res10 = init(List(1))                       //> res10  : books.funproginscala.ch3.MEM.List[Int] = Nil
   //val res11 = init(List()) // correctly throws error
   val res12 = init(List(1,2))                     //> res12  : books.funproginscala.ch3.MEM.List[Int] = Cons(1,Nil)
   
-  setHead("fee", List("foo", "fi", "fo", "fum"))  //> res0: books.funproginscala.ch3.MEM.List[String] = Cons(fee,Cons(fi,Cons(fo,C
-                                                  //| ons(fum,Nil))))
+  setHead("fee", List("foo", "fi", "fo", "fum"))  //> res0: books.funproginscala.ch3.MEM.List[String] = Cons(fee,Cons(fi,Cons(fo,
+                                                  //| Cons(fum,Nil))))
   val res13 = sumAlt2(l1)                         //> res13  : Int = 10
   
   val res14 = sumAlt3(l1)                         //> res14  : Int = 10
@@ -57,7 +74,6 @@ object List_client_MEM {
   '''                                             //> res1: Char('\'') = '
 }
 /*
-
 
 
 
