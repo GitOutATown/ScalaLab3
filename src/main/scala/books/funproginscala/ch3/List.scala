@@ -127,7 +127,7 @@ object List {
     @annotation.tailrec
     def foldRightTR[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => foldRightTR(xs, f(x, acc))(f)
+        case Cons(h, t) => foldRightTR(t, f(h, acc))(f)
     }
     
     def sumAlt4(xs: List[Int]) = foldRightTR(xs, 0)((x, acc) => x + acc)
@@ -135,20 +135,23 @@ object List {
     def prodAlt3(xs: List[Double]) = foldRightTR(xs, 1.0)((x, acc) => x * acc)
     
     @annotation.tailrec
-    def foldLeft[A,B](l: List[A], acc: B)(f: (B, A) => B): B = l match {
+    def foldLeftTR[A,B](l: List[A], acc: B)(f: (B, A) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
-        case Cons(x, xs) => foldLeft(xs, f(acc, x))(f)
+        case Cons(h, t) => foldLeftTR(t, f(acc, h))(f)
     }
     
-    def sumAlt5(l: List[Int]) = foldLeft(l, 0)((acc, x) => x + acc)
+    def sumAlt5(l: List[Int]) = foldLeftTR(l, 0)((acc, x) => x + acc)
     
-    def prodAlt4(l: List[Double]) = foldLeft(l, 1.0)((acc, x) => x * acc)
+    def prodAlt4(l: List[Double]) = foldLeftTR(l, 1.0)((acc, x) => x * acc)
     
-    def lengthFL[A](l: List[A]): Int = foldLeft(l, 0)((acc, _) => acc + 1)
+    def lengthFL[A](l: List[A]): Int = foldLeftTR(l, 0)((acc, _) => acc + 1)
     
-    def reverse[A](l: List[A]): List[A] = foldLeft(l, List[A]())((acc, x) => Cons(x, acc))
+    def reverse[A](l: List[A]): List[A] = foldLeftTR(l, List[A]())((acc, x) => Cons(x, acc))
     
     def reverseFR[A](l: List[A]): List[A] = foldRightTR(l, List[A]())((x, acc) => Cons(x, acc))
+    
+    def foldRightViaFoldLeft[A,B](l: List[A], z: B)(f: (A,B) => B): B = 
+        foldLeftTR(reverse(l), z)((b,a) => f(a,b))
     
     // This is evidently theoretic (academic). Don't worry about not grokking it now.
     // https://github.com/fpinscala/fpinscala/blob/master/answerkey/datastructures/13.answer.scala
@@ -185,6 +188,21 @@ object List {
         
     def concatListsAlt[A](l: List[List[A]]): List[A] =
         foldRight(l, Nil:List[A])(append)
+        
+    def add1(l: List[Int]): List[Int] =
+        foldRight(l, Nil: List[Int])((h, t) => Cons(h + 1, t))
+        
+    def doubleToString(l: List[Double]): List[String] =
+        foldRight(l, Nil: List[String])((h, t) => Cons(h.toString, t))
+        
+    def map[A,B](l: List[A])(f: A => B): List[B] =
+        foldRight(l, Nil: List[B])((h, t) => Cons(f(h), t))
+        
+    def mapAlt1[A,B](l: List[A])(f: A => B): List[B] = 
+        foldRightViaFoldLeft(l, Nil: List[B])((h,t) => Cons(f(h), t))
+        
+    def filter[A](l: List[A])(f: A => Boolean): List[A] =
+        foldRight(l, Nil: List[A])((h, t) => if(f(h)) Cons(h, t) else t)
 }
 
 

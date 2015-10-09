@@ -102,6 +102,18 @@ object List_client_1 {
   
   val res27 = concatListsAlt(List(l2, l6))        //> res27  : books.funproginscala.ch3.List[String] = Cons(ape,Cons(apple,Cons(b
                                                   //| anana,Cons(app,Cons(zebra,Cons(zygote,Nil))))))
+  
+  val res28 = add1(List(4,3,2,1))                 //> res28  : books.funproginscala.ch3.List[Int] = Cons(5,Cons(4,Cons(3,Cons(2,N
+                                                  //| il))))
+  
+  val res29 = doubleToString(List(1d, 2, 3))      //> res29  : books.funproginscala.ch3.List[String] = Cons(1.0,Cons(2.0,Cons(3.0
+                                                  //| ,Nil)))
+  val res30 = map(List(2, 4))(x => x * 2)         //> res30  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
+  
+  val res31 = mapAlt1(List(2, 4))(x => x * 2)     //> res31  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
+  
+  val res32 = filter(List(1,2,3,4,5))(x => !(x % 2 == 0))
+                                                  //> res32  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(3,Cons(5,Nil)))
   '''                                             //> res1: Char('\'') = '
 }
 /*
