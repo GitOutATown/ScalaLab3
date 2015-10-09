@@ -51,15 +51,15 @@ object List {
     }
     
     def productTR(ds: List[Double]): Double = ds match {
-        case Nil => sys.error("operation on empty list")
-        case Cons(h, t) =>
-            @annotation.tailrec
-            def inner(l: List[Double], acc: Double): Double = l match {
-                case Nil => acc
-                case Cons(0.0, _) => 0.0
-                case Cons(h, t) => inner(t, h * acc)
-            }
-            inner(ds, 1.0)
+        case Nil => sys.error("Operation on empty list.")
+        case Cons(x, xs) =>
+        @annotation.tailrec
+        def inner(l: List[Double], acc: Double): Double = l match {
+            case Nil => acc
+            case Cons(0.0, t) => 0.0
+            case Cons(h, t) => inner(t, h * acc)
+        }
+        inner(ds, 1.0)
     }
     
     def tail[A](l: List[A]): List[A] = l match {
@@ -125,7 +125,7 @@ object List {
         case Cons(h, t) => foldRight(t, f(h, acc))(f)
     }
     
-    def sumAlt2(l: List[Int]): Int = foldRight(l, 0)((h, acc) => h + acc) // (_ + _)
+    def sumAlt2(l: List[Int]) = foldRight(l, 0)((h, acc) => h + acc) // (_ + _)
     
     def prodAlt1(l: List[Double]): Double = foldRight(l, 1.0)((h, acc) => h * acc) // (_ * _)
     
@@ -135,10 +135,14 @@ object List {
         case Cons(h, t) => foldLeft(t, f(acc, h))(f)
     }
     
-    def sumAlt3(l: List[Int]): Int = foldLeft(l, 0)((acc, h) => h + acc)
+    def sumAlt3(l: List[Int]) = foldLeft(l, 0)((acc, h) => h + acc)
     
-    def prodAlt2(l: List[Double]): Double = foldLeft(l, 1d)((acc, h) => h * acc)
+    def prodAlt2(l: List[Double]) = foldLeft(l, 1.0)((acc, h) => h * acc)
     
+    def appendViaFR[A](a1: List[A], a2: List[A]): List[A] = {
+        // Needs to not be TR
+        books.funproginscala.ch3.MEM.List.foldRight(a1, a2)(Cons(_,_))
+    }
 }
 
 

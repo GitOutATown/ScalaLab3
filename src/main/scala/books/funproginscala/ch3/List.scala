@@ -155,7 +155,7 @@ object List {
     def foldLeftViaFR[A,B](l: List[A], acc: B)(f: (B, A) => B): B = 
         foldRightTR(l, (b:B) => b)((a,g) => b => g(f(b,a)))(acc)
     
-    // NOPE, NOT WORKING, NOT REVERSING
+    // NOPE, NOT WORKING, NOT REVERSING because foldRightTR is TR
     def reverseFLViaFR[A](l: List[A]): List[A] = 
         foldLeftViaFR(l, List[A]())((acc, x) => Cons(x, acc))
         
@@ -165,6 +165,26 @@ object List {
         
     def reverseFLViaFR2[A](l: List[A]): List[A] = 
         foldLeftViaFR2(l, List[A]())((acc, x) => Cons(x, acc))
+    
+    /*
+     * `append` simply replaces the `Nil` constructor of the first list with 
+     * the second list, which is exactly the operation performed by `foldRight`.
+     * foldRight's f just becomes Cons.
+     * Note no TR here. TR (elsewhere) causes incorrect result.
+     */
+    def appendViaFR[A](a1: List[A], a2: List[A]): List[A] = {
+        foldRight(a1, a2)(Cons(_, _))
+    }
+    
+    // This is not correct because of TR!
+    def appendViaFRTR[A](a1: List[A], a2: List[A]): List[A] =
+        foldRightTR(a1, a2)(Cons(_, _))
+    
+    def concatLists[A](l: List[List[A]]): List[A] =
+        foldRight(l, Nil:List[A])(appendViaFR)
+        
+    def concatListsAlt[A](l: List[List[A]]): List[A] =
+        foldRight(l, Nil:List[A])(append)
 }
 
 

@@ -14,6 +14,8 @@ object List_client_1 {
   
   val l5 = Cons(0d, l4)                           //> l5  : books.funproginscala.ch3.Cons[Double] = Cons(0.0,Cons(1.0,Cons(2.0,Con
                                                   //| s(3.0,Cons(4.0,Nil)))))
+  
+  val l6 = List("zebra", "zygote")                //> l6  : books.funproginscala.ch3.List[String] = Cons(zebra,Cons(zygote,Nil))
   val res01 = List.sum(l1)                        //> res01  : Int = 10
   val res02 = List.sumAlt1(l1)                    //> res02  : Int = 10
   val res03 = List.sumAlt2(l1)                    //> res03  : Int = 10
@@ -55,8 +57,14 @@ object List_client_1 {
                                                   //| s(app,Nil)))
   val res7 = List.dropWhile(l2, (x:String) => x.startsWith("a"))
                                                   //> res7  : books.funproginscala.ch3.List[String] = Cons(banana,Cons(app,Nil))
-  val res8 = List.append(l1, l3)                  //> res8  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Co
-                                                  //| ns(5,Cons(6,Cons(7,Nil)))))))
+  val res8a = List.append(l1, l3)                 //> res8a  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,C
+                                                  //| ons(5,Cons(6,Cons(7,Nil)))))))
+  
+  val res8b = List.appendViaFR(l1, l3)            //> res8b  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,C
+                                                  //| ons(5,Cons(6,Cons(7,Nil)))))))
+  // With TR, this is not correct!
+  val res8c = List.appendViaFRTR(l1, l3)          //> res8c  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(3,Cons(2,Cons(1,C
+                                                  //| ons(5,Cons(6,Cons(7,Nil)))))))
   val res9 = List.init(l1)                        //> res9  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Nil)))
   val res10 = List.init(List(1))                  //> res10  : books.funproginscala.ch3.List[Int] = Nil
   //val res11 = List.init(List()) // correctly throws error
@@ -88,6 +96,12 @@ object List_client_1 {
   // where the FR is TR and it doesn't work!
   val res25 = List.reverseFLViaFR2(l5)            //> res25  : books.funproginscala.ch3.List[Double] = Cons(4.0,Cons(3.0,Cons(2.0
                                                   //| ,Cons(1.0,Cons(0.0,Nil)))))
+  
+  val res26 = concatLists(List(l2, l6))           //> res26  : books.funproginscala.ch3.List[String] = Cons(ape,Cons(apple,Cons(b
+                                                  //| anana,Cons(app,Cons(zebra,Cons(zygote,Nil))))))
+  
+  val res27 = concatListsAlt(List(l2, l6))        //> res27  : books.funproginscala.ch3.List[String] = Cons(ape,Cons(apple,Cons(b
+                                                  //| anana,Cons(app,Cons(zebra,Cons(zygote,Nil))))))
   '''                                             //> res1: Char('\'') = '
 }
 /*
