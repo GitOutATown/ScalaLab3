@@ -112,8 +112,10 @@ object List_client_1 {
   
   val res31 = mapAlt1(List(2, 4))(x => x * 2)     //> res31  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
   
-  val res32 = filter(List(1,2,3,4,5))(x => !(x % 2 == 0))
-                                                  //> res32  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(3,Cons(5,Nil)))
+  val res32 = mapAlt2(List(2, 4))(x => x * 2)     //> res32  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
+  
+  val res33 = filter(List(1,2,3,4,5))(x => !(x % 2 == 0))
+                                                  //> res33  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(3,Cons(5,Nil)))
   '''                                             //> res1: Char('\'') = '
 }
 /*

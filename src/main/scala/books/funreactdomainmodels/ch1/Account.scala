@@ -41,15 +41,64 @@ case class MoneyMarketAccount(
 ) extends Account
 
 trait AccountService{
-    def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
+    import AccountType._
+    
+    //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
+    
+    def verifyCustomer(customer: Customer): Option[Customer] = {
+        if (Verifications.verifyRecord(customer)) Some(customer)
+        else None
+    }
+    
+    def openCheckingAccount(customer: Customer, effectiveDate: Date): Account = {
+        // TODO: Account opening logic
+        //Account(accountNo, openingDate, customer.name, customer.address)
+        Account(CHECKING, customer, effectiveDate)
+    }
+    
+    //object AccountService extends AccountService // TODO: This makes no sense!
+}
+
+object AccountService extends AccountService
+
+object AccountType extends Enumeration {
+    type AccountType = Value
+    val CHECKING, SAVINGS, MONEYMARKET = Value
 }
 
 // companion object in Scala that contains the factory
 object Account {
+    import AccountType._
+    
     // factory method that instantiates accounts
-    def apply() { //.. parameters
+    def apply(acctType: AccountType, customer: Customer, effectiveDate: Date) = { //.. parameters
         // instantiate checking, savings, or money market account
         // depending on parameters
+        acctType match {
+            case CHECKING => 
+                CheckingAccount(
+                    "STUB_ID", 
+                    customer.name, 
+                    Bank(), 
+                    customer.address, 
+                    effectiveDate, None
+                )
+            case SAVINGS => SavingsAccount(
+                "STUB_ID", 
+                customer.name, 
+                Bank(), 
+                customer.address, 
+                effectiveDate, None,
+                0.0
+            )
+            case MONEYMARKET => MoneyMarketAccount(
+                "STUB_ID",
+                customer.name, 
+                Bank(), 
+                customer.address, 
+                effectiveDate, None
+            )
+        }
     }
 }
 

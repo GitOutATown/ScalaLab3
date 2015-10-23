@@ -150,8 +150,8 @@ object List {
     
     def reverseFR[A](l: List[A]): List[A] = foldRightTR(l, List[A]())((x, acc) => Cons(x, acc))
     
-    def foldRightViaFoldLeft[A,B](l: List[A], z: B)(f: (A,B) => B): B = 
-        foldLeftTR(reverse(l), z)((b,a) => f(a,b))
+    def foldRightViaFL[A,B](l: List[A], acc: B)(f: (A,B) => B): B = 
+        foldLeftTR(reverse(l), acc)((b,a) => f(a,b))
     
     // This is evidently theoretic (academic). Don't worry about not grokking it now.
     // https://github.com/fpinscala/fpinscala/blob/master/answerkey/datastructures/13.answer.scala
@@ -194,15 +194,56 @@ object List {
         
     def doubleToString(l: List[Double]): List[String] =
         foldRight(l, Nil: List[String])((h, t) => Cons(h.toString, t))
+    
+    // 18
+    /* 
+        map
         
+        A natural solution is using `foldRight`, but our implementation of 
+        `foldRight` is not stack-safe. We can use `foldRightViaFoldLeft` 
+        to avoid the stack overflow (variation 1), but more commonly, with 
+        our current implementation of `List`, `map` will just be implemented 
+        using local mutation (variation 2). Again, note that the mutation 
+        isn't observable outside the function, since we're only mutating a 
+        buffer that we've allocated. 
+    */
     def map[A,B](l: List[A])(f: A => B): List[B] =
         foldRight(l, Nil: List[B])((h, t) => Cons(f(h), t))
         
     def mapAlt1[A,B](l: List[A])(f: A => B): List[B] = 
-        foldRightViaFoldLeft(l, Nil: List[B])((h,t) => Cons(f(h), t))
+        foldRightViaFL(l, Nil: List[B])((h,t) => Cons(f(h), t))
         
+    def mapAlt2[A,B](l: List[A])(f: A => B): List[B] = {
+        val buf = new collection.mutable.ListBuffer[B]
+        def inner(l: List[A]): Unit = l match {
+            case Nil => ()
+            case Cons(h, t) => 
+                buf += f(h)
+                inner(t)
+        }
+        inner(l)
+        List(buf.toList: _*) // converting from the standard Scala list to the list we've defined here
+    }
+    
+    // 19
+    /* 
+        The discussion about `map` also applies here.
+    */
     def filter[A](l: List[A])(f: A => Boolean): List[A] =
         foldRight(l, Nil: List[A])((h, t) => if(f(h)) Cons(h, t) else t)
+        
+    def filter_1[A](l: List[A])(f: A => Boolean): List[A] = 
+        foldRightViaFL(l, Nil:List[A])((h,t) => if (f(h)) Cons(h,t) else t)
+
+    def filter_2[A](l: List[A])(f: A => Boolean): List[A] = {
+        val buf = new collection.mutable.ListBuffer[A]
+        def inner(l: List[A]): Unit = l match {
+            case Nil => ()
+            case Cons(h,t) => if (f(h)) buf += h; inner(t)
+        }
+        inner(l)
+        List(buf.toList: _*) // converting from the standard Scala list to the list we've defined here
+    }
 }
 
 

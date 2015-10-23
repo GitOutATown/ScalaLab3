@@ -1,5 +1,7 @@
 package lab.enumeration_type
 
+import scala.collection.immutable.Map
+
 object Role extends Enumeration {
     type Role = Value
     val NON, VIEW, EDIT, ORG_ADMIN, Q_ADMIN = Value
