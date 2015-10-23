@@ -1,6 +1,7 @@
 package books.funreactdomainmodels.ch1
 
 import java.util.Date // replace with something better
+import scala.util.{Try, Success, Failure}
 
 // Interface for Account entity and the various types of accounts
 trait Account {
@@ -10,6 +11,7 @@ trait Account {
     def address: Address
     def dateOfOpening: Date
     def dateOfClose: Option[Date]
+    def balance: Balance
 }
 
 case class CheckingAccount(
@@ -18,7 +20,8 @@ case class CheckingAccount(
      bank: Bank,
      address: Address,
      dateOfOpening: Date,
-     dateOfClose: Option[Date]
+     dateOfClose: Option[Date],
+     balance: Balance
 ) extends Account
 
 case class SavingsAccount(
@@ -28,7 +31,8 @@ case class SavingsAccount(
      address: Address,
      dateOfOpening: Date,
      dateOfClose: Option[Date],
-     rateOfInterest: BigDecimal
+     rateOfInterest: BigDecimal,
+     balance: Balance
 ) extends Account
 
 case class MoneyMarketAccount(
@@ -37,11 +41,13 @@ case class MoneyMarketAccount(
      bank: Bank,
      address: Address,
      dateOfOpening: Date,
-     dateOfClose: Option[Date]        
+     dateOfClose: Option[Date],
+     balance: Balance
 ) extends Account
 
 trait AccountService{
     import AccountType._
+    type Amount = BigDecimal
     
     //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
     
@@ -56,7 +62,18 @@ trait AccountService{
         Account(CHECKING, customer, effectiveDate)
     }
     
-    //object AccountService extends AccountService // TODO: This makes no sense!
+    def debitChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
+        if(account.balance.amount.value < amount)
+            Failure(new Exception("Insufficient funds in account"))
+        else
+            Success(account.copy(
+                balance = Balance(Amount(
+                    account.balance.amount.value - amount // TODO: This is whacked ugly!
+                ))
+            ))
+    }
+    
+    def creditChecking(account: CheckingAccount, amount: Amount)
 }
 
 object AccountService extends AccountService
@@ -71,9 +88,13 @@ object Account {
     import AccountType._
     
     // factory method that instantiates accounts
-    def apply(acctType: AccountType, customer: Customer, effectiveDate: Date) = { //.. parameters
-        // instantiate checking, savings, or money market account
-        // depending on parameters
+    def apply(
+        acctType: AccountType, 
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(Amount(0.0))
+    ) = {
+        // instantiate checking, savings, or money market account depending on parameters
         acctType match {
             case CHECKING => 
                 CheckingAccount(
@@ -81,7 +102,9 @@ object Account {
                     customer.name, 
                     Bank(), 
                     customer.address, 
-                    effectiveDate, None
+                    effectiveDate, 
+                    None,
+                    balance
                 )
             case SAVINGS => SavingsAccount(
                 "STUB_ID", 
@@ -89,14 +112,17 @@ object Account {
                 Bank(), 
                 customer.address, 
                 effectiveDate, None,
-                0.0
+                0.0,
+                balance
             )
             case MONEYMARKET => MoneyMarketAccount(
                 "STUB_ID",
                 customer.name, 
                 Bank(), 
                 customer.address, 
-                effectiveDate, None
+                effectiveDate, 
+                None,
+                balance
             )
         }
     }
@@ -106,7 +132,9 @@ case class Bank()
 
 case class Address()
 
-case class Amount()
+//case class Amount(value: BigDecimal)
+
+case class Balance(amount: Amount)
 
 
 
