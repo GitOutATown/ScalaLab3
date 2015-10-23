@@ -63,21 +63,21 @@ trait AccountService{
     }
     
     def debitChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
-        if(account.balance.amount.value < amount)
+        if(account.balance.amount < amount)
             Failure(new Exception("Insufficient funds in account"))
         else
             Success(account.copy(
-                balance = Balance(Amount(
-                    account.balance.amount.value - amount // TODO: This is whacked ugly!
-                ))
+                balance = Balance(
+                    account.balance.amount - amount // TODO: This is whacked ugly!
+                )
             ))
     }
     
     def creditChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
         Success(account.copy(
-            balance = Balance(Amount(
-                account.balance.amount.value + amount // TODO: This is whacked ugly!
-            ))
+            balance = Balance(
+                account.balance.amount + amount // TODO: This is whacked ugly!
+            )
         ))
     }
 }
@@ -98,7 +98,7 @@ object Account {
         acctType: AccountType, 
         customer: Customer, 
         effectiveDate: Date, 
-        balance: Balance = Balance(Amount(0.0))
+        balance: Balance = Balance(0.0)
     ) = {
         // instantiate checking, savings, or money market account depending on parameters
         acctType match {
@@ -138,9 +138,9 @@ case class Bank()
 
 case class Address()
 
-case class Amount(value: BigDecimal)
+//case class Amount(value: BigDecimal)
 
-case class Balance(amount: Amount)
+case class Balance(amount: BigDecimal)
 
 
 
