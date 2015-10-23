@@ -73,7 +73,13 @@ trait AccountService{
             ))
     }
     
-    def creditChecking(account: CheckingAccount, amount: Amount)
+    def creditChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
+        Success(account.copy(
+            balance = Balance(Amount(
+                account.balance.amount.value + amount // TODO: This is whacked ugly!
+            ))
+        ))
+    }
 }
 
 object AccountService extends AccountService
@@ -126,13 +132,13 @@ object Account {
             )
         }
     }
-}
+} // end object Account
 
 case class Bank()
 
 case class Address()
 
-//case class Amount(value: BigDecimal)
+case class Amount(value: BigDecimal)
 
 case class Balance(amount: Amount)
 
