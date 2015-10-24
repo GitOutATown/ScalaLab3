@@ -2,7 +2,7 @@ package books.funreactdomainmodels.ch1
 
 object Customer {
     
-    def getCustomer() = Customer(1, "Joe Doe", Address()) // TODO: STUB
+    def getStubCustomer() = Customer(1, "Joe Stub", Address()) // TODO: STUB
 }
 
 case class Customer(id: Int, name: String, address: Address)

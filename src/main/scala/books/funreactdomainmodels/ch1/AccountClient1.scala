@@ -7,10 +7,11 @@ import java.util.Calendar
 
 object AccountClient1 extends App {
 
-    val cust = getCustomer()
-    val acct = verifyCustomer(cust).map { c => 
+    val custStub = getStubCustomer()
+    
+    val acct1 = verifyCustomer(custStub).map { c => 
         openCheckingAccount(c, Calendar.getInstance().getTime())
     }.getOrElse(throw new Exception("Verification failed for customer"))
     
-    println(acct)
+    println(acct1)
 }

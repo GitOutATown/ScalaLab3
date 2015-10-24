@@ -1,7 +1,6 @@
 package books.funreactdomainmodels.ch1
 
 import java.util.Date // replace with something better
-import scala.util.{Try, Success, Failure}
 
 // Interface for Account entity and the various types of accounts
 trait Account {
@@ -47,6 +46,7 @@ case class MoneyMarketAccount(
 
 trait AccountService{
     import AccountType._
+    import scala.util.{Try, Success, Failure}
     type Amount = BigDecimal
     
     //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
@@ -56,28 +56,24 @@ trait AccountService{
         else None
     }
     
-    def openCheckingAccount(customer: Customer, effectiveDate: Date): Account = {
+    def openCheckingAccount(customer: Customer, effectiveDate: Date): CheckingAccount = {
         // TODO: Account opening logic
         //Account(accountNo, openingDate, customer.name, customer.address)
-        Account(CHECKING, customer, effectiveDate)
+        CheckingAccount(customer, effectiveDate)
     }
     
-    def debitChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
+    def debitChecking(account: CheckingAccount, amount: Amount): Try[CheckingAccount] = {
         if(account.balance.amount < amount)
             Failure(new Exception("Insufficient funds in account"))
         else
             Success(account.copy(
-                balance = Balance(
-                    account.balance.amount - amount // TODO: This is whacked ugly!
-                )
+                balance = Balance(account.balance.amount - amount)
             ))
     }
     
-    def creditChecking(account: CheckingAccount, amount: Amount): Try[Account] = {
+    def creditChecking(account: CheckingAccount, amount: Amount): Try[CheckingAccount] = {
         Success(account.copy(
-            balance = Balance(
-                account.balance.amount + amount // TODO: This is whacked ugly!
-            )
+            balance = Balance(account.balance.amount + amount)
         ))
     }
 }
@@ -87,6 +83,60 @@ object AccountService extends AccountService
 object AccountType extends Enumeration {
     type AccountType = Value
     val CHECKING, SAVINGS, MONEYMARKET = Value
+}
+
+object CheckingAccount {
+    def apply(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): CheckingAccount = {
+        CheckingAccount(
+            "STUB_ID", 
+            customer.name, 
+            Bank(), 
+            customer.address, 
+            effectiveDate, 
+            None,
+            balance
+        )
+    }
+}
+
+object SavingsAccount {
+    def apply(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): SavingsAccount = {
+        SavingsAccount(
+            "STUB_ID", 
+            customer.name, 
+            Bank(), 
+            customer.address, 
+            effectiveDate, None,
+            0.0,
+            balance
+        )
+    }
+}
+
+object MoneyMarketAccount {
+    def apply(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): MoneyMarketAccount = {
+        MoneyMarketAccount(
+            "STUB_ID",
+            customer.name, 
+            Bank(), 
+            customer.address, 
+            effectiveDate, 
+            None,
+            balance
+        )
+    }
 }
 
 // companion object in Scala that contains the factory
