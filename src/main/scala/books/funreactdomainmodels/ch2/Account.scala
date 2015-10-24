@@ -1,4 +1,4 @@
-package books.funreactdomainmodels.ch1
+package books.funreactdomainmodels.ch2
 
 import java.util.Date // replace with something better
 
@@ -17,6 +17,9 @@ trait Account {
     def balance: Balance
 }
 
+trait IntrestBearingAccount extends Account {
+    def rateOfInterest: BigDecimal
+}
 
 trait AccountService {
     import AccountType._
@@ -103,6 +106,7 @@ object Account {
                 customer.address, 
                 effectiveDate, 
                 None,
+                0.0,
                 balance
             )
         }
@@ -137,7 +141,7 @@ object AccountEntities {
          dateOfClose: Option[Date],
          rateOfInterest: BigDecimal,
          balance: Balance
-    ) extends Account
+    ) extends IntrestBearingAccount
     
     case class MoneyMarketAccount(
          no: String,
@@ -146,8 +150,9 @@ object AccountEntities {
          address: Address,
          dateOfOpening: Date,
          dateOfClose: Option[Date],
+         rateOfInterest: BigDecimal,
          balance: Balance
-    ) extends Account
+    ) extends IntrestBearingAccount
     
     object CheckingAccount {
         def apply(
@@ -198,6 +203,7 @@ object AccountEntities {
                 customer.address, 
                 effectiveDate, 
                 None,
+                0.0,
                 balance
             )
         }

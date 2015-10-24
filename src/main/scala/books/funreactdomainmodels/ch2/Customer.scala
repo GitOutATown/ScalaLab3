@@ -1,4 +1,4 @@
-package books.funreactdomainmodels.ch1
+package books.funreactdomainmodels.ch2
 
 import AccountEntities._
 
