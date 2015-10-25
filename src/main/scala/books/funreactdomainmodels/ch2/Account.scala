@@ -40,6 +40,8 @@ trait AccountService {
         CheckingAccount(customer, effectiveDate)
     }
     
+    // This won't work because of copy only works with case classes.
+    // def debitChecking[A <: Account](account: A, amount: Amount): Try[A] = {
     def debitChecking(account: CheckingAccount, amount: Amount): Try[CheckingAccount] = {
         if(account.balance.amount < amount)
             Failure(new Exception("Insufficient funds in account"))
@@ -53,6 +55,11 @@ trait AccountService {
         Success(account.copy(
             balance = Balance(account.balance.amount + amount)
         ))
+    }
+    
+    def calculateInterest[A <: IntrestBearingAccount](account: A, period: DateRange): Try[BigDecimal] = {
+        account.rateOfInterest * account.balance.amount
+        Success(0.0) // Stub
     }
     
     //val generateAuditLog: (Account, Amount) => Try[String] = ???
@@ -121,6 +128,8 @@ object AccountEntities {
     //case class Amount(value: BigDecimal)
     
     case class Balance(amount: BigDecimal)
+    
+    case class DateRange()
     
     case class CheckingAccount (
         no: String,
