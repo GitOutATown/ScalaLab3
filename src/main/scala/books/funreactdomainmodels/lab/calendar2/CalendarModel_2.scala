@@ -1,6 +1,6 @@
 package books.funreactdomainmodels.lab.calendar2
 
-import java.util.Date
+import org.joda.time.DateTime
 import scala.util.{Try, Success, Failure}
 
 trait CalendarService {
@@ -9,9 +9,9 @@ trait CalendarService {
     
     /*
     def firstDayOfWeek: DayName
-    def getWeek(date: Date): Try[Week]
-    def getMonth(date: Date): Try[Month]
-    def getYear(date: Date): Try[Year]
+    def getWeek(date: DateTime): Try[Week]
+    def getMonth(date: DateTime): Try[Month]
+    def getYear(date: DateTime): Try[Year]
     def getHolidays(holidays: List[Holiday])
     */
     
@@ -40,9 +40,9 @@ trait EventService {
     
     //def editEvent(event: CalendarEvent): Try[CalendarEvent]
     
-    //def eventsBy(startTime: Date, endTime: Date): Try[List[CalendarEvent]]
+    //def eventsBy(startTime: DateTime, endTime: DateTime): Try[List[CalendarEvent]]
     
-    def addReminder(event: CalendarEvent, date: Date): Try[CalendarEvent] = {
+    def addReminder(event: CalendarEvent, date: DateTime): Try[CalendarEvent] = {
         val newReminders = Reminder(date) :: event.reminders
         Success(event.copy(reminders = newReminders))
     }
@@ -55,7 +55,7 @@ trait EventService {
     }
     
     def changeReminder(
-        event: CalendarEvent, oldReminder: Reminder, newDate: Date
+        event: CalendarEvent, oldReminder: Reminder, newDate: DateTime
     ): Try[CalendarEvent] = {
         val newReminders = Reminder(newDate) :: event.reminders.filter { 
             r => r != oldReminder 
@@ -92,8 +92,8 @@ object CalendarEntities {
     case class CalendarEvent(
         calendar: Calendar,
         name: String,
-        startTime: Date, 
-        endTime: Date, 
+        startTime: DateTime, 
+        endTime: DateTime, 
         location: Option[Location] = None,
         notes: Option[List[String]] = None,
         url: Option[URL] = None,
@@ -111,7 +111,7 @@ object CalendarEntities {
     
     case class Week(days: List[Day])
     
-    case class Day(date: Date)
+    case class Day(date: DateTime)
     
     case class Location(name: String, address: Address, map: Map)
     
@@ -123,9 +123,9 @@ object CalendarEntities {
     
     case class Email(address: String)
     
-    case class Reminder(before: Date)
+    case class Reminder(before: DateTime)
     
-    case class Holiday(date: Date, name: String)
+    case class Holiday(date: DateTime, name: String)
 }
 
 
