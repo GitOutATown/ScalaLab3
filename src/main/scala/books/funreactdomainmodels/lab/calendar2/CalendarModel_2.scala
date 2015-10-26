@@ -15,12 +15,43 @@ trait CalendarService {
     def getHolidays(holidays: List[Holiday])
     */
     
+    def newCalendar(uId: User): Try[Calendar]
+}
+
+object CalendarApplication extends CalendarService { //with EventService {
+    import CalendarEntities._
+    
     def newCalendar(uId: User): Try[Calendar] = Success(Calendar(uId))
 }
 
-object CalendarApplication extends CalendarService with EventService
-
 trait EventService {
+    import CalendarEntities._
+    
+    def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)]
+    
+    def deleteEvent(calendar: Calendar, event: CalendarEvent): Try[Calendar]
+    
+    def findEvent(calendar: Calendar, name: String): Try[List[CalendarEvent]]
+    
+    //def editEvent(event: CalendarEvent): Try[CalendarEvent]
+    
+    //def eventsBy(startTime: DateTime, endTime: DateTime): Try[List[CalendarEvent]]
+    
+    def addReminder(event: CalendarEvent, date: DateTime): Try[CalendarEvent]
+    
+    def deleteReminder(event: CalendarEvent, reminder: Reminder)
+        : Try[CalendarEvent]
+    
+    def changeReminder(
+        event: CalendarEvent, oldReminder: Reminder, newDate: DateTime
+    ): Try[CalendarEvent]
+    
+    def transferEvent(
+        sourceCal: Calendar, targetCal: Calendar, event: CalendarEvent
+    ): Try[(Calendar, Calendar)]
+}
+
+object Event extends EventService {
     import CalendarEntities._
     
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)] = {
@@ -28,26 +59,27 @@ trait EventService {
         Success(newCalendar)
     }
     
-    def deleteEvent(calendar: Calendar, event: CalendarEvent): Try[Calendar] = {
+    def deleteEvent(
+        calendar: Calendar, event: CalendarEvent
+    ): Try[Calendar] = {
         val newEvents = calendar.events.filter(e => e != event)
         Success(calendar.copy(events = newEvents))
     }
     
-    def findEvent(calendar: Calendar, name: String): Try[List[CalendarEvent]] = {
+    def findEvent(calendar: Calendar, name: String)
+        : Try[List[CalendarEvent]] = {
         val foundEvents = calendar.events.filter(_.name == name)
         Success(foundEvents)
     }
     
-    //def editEvent(event: CalendarEvent): Try[CalendarEvent]
-    
-    //def eventsBy(startTime: DateTime, endTime: DateTime): Try[List[CalendarEvent]]
-    
-    def addReminder(event: CalendarEvent, date: DateTime): Try[CalendarEvent] = {
+    def addReminder(event: CalendarEvent, date: DateTime)
+        : Try[CalendarEvent] = {
         val newReminders = Reminder(date) :: event.reminders
         Success(event.copy(reminders = newReminders))
     }
     
-    def deleteReminder(event: CalendarEvent, reminder: Reminder): Try[CalendarEvent] = {
+    def deleteReminder(event: CalendarEvent, reminder: Reminder)
+        : Try[CalendarEvent] = {
         val newReminders = event.reminders.filter { 
             r => r != reminder 
         }
@@ -63,8 +95,10 @@ trait EventService {
         Success(event.copy(reminders = newReminders))
     }
     
-    def transferEvent(sourceCal: Calendar, targetCal: Calendar, event: CalendarEvent)
-        : Try[(Calendar, Calendar)] = {
+    def transferEvent(
+        sourceCal: Calendar, targetCal: Calendar, event: CalendarEvent
+    )
+    : Try[(Calendar, Calendar)] = {
         for {
             sCal <- deleteEvent(sourceCal, event)
             tCal <- addEvent(targetCal, event)

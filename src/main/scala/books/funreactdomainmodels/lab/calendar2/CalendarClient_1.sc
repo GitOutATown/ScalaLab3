@@ -2,6 +2,7 @@ package books.funreactdomainmodels.lab.calendar2
 
 import books.funreactdomainmodels.lab.calendar2.CalendarApplication._
 import books.funreactdomainmodels.lab.calendar2.CalendarEntities._
+import books.funreactdomainmodels.lab.calendar2.Event._
 import java.util.Locale
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -21,7 +22,7 @@ object CalendarClient_1 {
   
   val format = DateTimeFormat.forPattern(pattern).withLocale(Locale.ENGLISH)
                                                   //> format  : org.joda.time.format.DateTimeFormatter = org.joda.time.format.Date
-                                                  //| TimeFormatter@7bb52a38
+                                                  //| TimeFormatter@59c4fcd4
   val startTime1 = format.parseDateTime(startTimeInput)
                                                   //> startTime1  : org.joda.time.DateTime = 2016-03-21T11:30:00.000-07:00
   val endTime1 = startTime1.plusHours(3)          //> endTime1  : org.joda.time.DateTime = 2016-03-21T14:30:00.000-07:00
@@ -53,5 +54,7 @@ object CalendarClient_1 {
                                                   //| arEvent] = List()
   personalCalRef2.events.foreach(e => println(e.name))
                                                   //> MyB-Day
+  
+  
   '''                                             //> res1: Char('\'') = '
 }
