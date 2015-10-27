@@ -2,6 +2,8 @@ package books.funreactdomainmodels.ch2.lab
 
 object Lens_1 {
 
+  // Careful! This is just my first whacked experiment with the lens pattern!
+
   case class Lens[O, V](
 	  get: O => V,
 	  set: (O, V) => O
@@ -23,11 +25,11 @@ object Lens_1 {
                                                   //| 2)
                                                   //| 	at scala.collection.immutable.StringOps.toInt(StringOps.scala:30)
                                                   //| 	at books.funreactdomainmodels.ch2.lab.Lens_1$$anonfun$main$1$$anonfun$1.
-                                                  //| apply(books.funreactdomainmodels.ch2.lab.Lens_1.scala:11)
+                                                  //| apply(books.funreactdomainmodels.ch2.lab.Lens_1.scala:13)
                                                   //| 	at books.funreactdomainmodels.ch2.lab.Lens_1$$anonfun$main$1$$anonfun$1.
-                                                  //| apply(books.funreactdomainmodels.ch2.lab.Lens_1.scala:11)
+                                                  //| apply(books.funreactdomainmodels.ch2.lab.Lens_1.scala:13)
                                                   //| 	at books.funreactdomainmodels.ch2.lab.Lens_1$$anonfun$main$1.apply$mcV$s
-                                                  //| p(books.funreactdomainmodels.ch2.lab.Lens_1.scala:16)
+                                                  //| p(books.funreactdomainmodels.ch2.lab.Lens_1.scala:18)
                                                   //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$$anonfun$$exe
                                                   //| cute$1.apply$mcV$sp(WorksheetSupport.scala:76)
                                                   //| 	at org.scalaide.worksheet.runtime.li

@@ -2,10 +2,9 @@ package books.funreactdomainmodels.lab.calendar2
 
 import org.joda.time.DateTime
 import scala.util.{Try, Success, Failure}
+import CalendarEntities._
 
-trait CalendarService {
-    import CalendarEntities._
-    import CalendarEntities.Days._
+trait CalendarService[User, Calendar] {
     
     /*
     def firstDayOfWeek: DayName
@@ -18,14 +17,13 @@ trait CalendarService {
     def newCalendar(uId: User): Try[Calendar]
 }
 
-object CalendarApplication extends CalendarService { //with EventService {
-    import CalendarEntities._
+object CalendarApplication extends CalendarService[User, Calendar] { //with EventService {
+    //import CalendarEntities._
     
     def newCalendar(uId: User): Try[Calendar] = Success(Calendar(uId))
 }
 
-trait EventService {
-    import CalendarEntities._
+trait EventService[Calendar, CalendarEvent, Reminder] {
     
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)]
     
@@ -51,8 +49,7 @@ trait EventService {
     ): Try[(Calendar, Calendar)]
 }
 
-object Event extends EventService {
-    import CalendarEntities._
+object Event extends EventService[Calendar, CalendarEvent, Reminder] {
     
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)] = {
         val newCalendar = calendar.copy(events = event :: calendar.events)
@@ -106,8 +103,7 @@ object Event extends EventService {
     }
 }
     
-trait InviteService {
-    import CalendarEntities._
+trait InviteService[CalendarEvent, Email] {
     
     // Side effects
     def invite(event: CalendarEvent, email: List[Email])

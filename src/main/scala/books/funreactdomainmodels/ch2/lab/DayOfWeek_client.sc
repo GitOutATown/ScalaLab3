@@ -4,7 +4,7 @@ import DayOfWeek._
 
 object DayOfWeek_client {
 
-  // Smart constructor pattern
+  // Smart constructor pattern. Also instantiation of trait.
 
   def schedule(day: DayOfWeek) = {
     "Scheduling " + day
@@ -47,8 +47,8 @@ object DayOfWeek_client {
   
   getDay(8)                                       //> res6: Either[books.funreactdomainmodels.ch2.lab.DayOfWeek,String] = Right(Ba
                                                   //| d day!)
-  val res = getDay(1)                             //> res  : Either[books.funreactdomainmodels.ch2.lab.DayOfWeek,String] = Left(Mo
-                                                  //| nday)
+  val res = getDay(1)                             //> res  : Either[books.funreactdomainmodels.ch2.lab.DayOfWeek,String] = Left(M
+                                                  //| onday)
   if(res.isLeft) res.left.get                     //> res7: Any = Monday
   
   dayOfWeek(8).isDefined                          //> res8: Boolean = false
@@ -58,6 +58,10 @@ object DayOfWeek_client {
   if(dayOfWeek(1).isDefined) dayOfWeek(1).get     //> res10: Any = Monday
   
   //val noSuchElement = dayOfWeek(8).get
+  
+  val day1 = dayOfWeek(1)                         //> day1  : Option[books.funreactdomainmodels.ch2.lab.DayOfWeek] = Some(Monday)
+                                                  //| 
+  val day8 = dayOfWeek(8)                         //> day8  : Option[books.funreactdomainmodels.ch2.lab.DayOfWeek] = None
 
   
 }
