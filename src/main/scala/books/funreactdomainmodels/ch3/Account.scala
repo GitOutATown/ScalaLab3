@@ -156,17 +156,17 @@ object Account extends AccountService
 } // end object Account
 
 object AccountEntities {
-    case class Bank()
+    final case class Bank private[ch3]() 
     
-    case class Address()
+    final case class Address private[ch3]()
     
     //case class Amount(value: BigDecimal)
     
-    case class Balance(amount: BigDecimal)
+    final case class Balance private[ch3](amount: BigDecimal)
     
     case class DateRange()
     
-    case class CheckingAccount (
+    final case class CheckingAccount private[ch3] (
         acctId: String,
         custId: String,
         dateOfOpening: Date,
@@ -174,7 +174,7 @@ object AccountEntities {
         balance: Balance
     ) extends Account
 
-    case class SavingsAccount(
+    final case class SavingsAccount private[ch3](
          acctId: String,
          custId: String,
          dateOfOpening: Date,
@@ -183,7 +183,7 @@ object AccountEntities {
          balance: Balance
     ) extends IntrestBearingAccount
     
-    case class MoneyMarketAccount(
+    final case class MoneyMarketAccount private[ch3](
          acctId: String,
          custId: String,
          dateOfOpening: Date,

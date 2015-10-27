@@ -22,7 +22,7 @@ object CalendarClient_1 {
   
   val format = DateTimeFormat.forPattern(pattern).withLocale(Locale.ENGLISH)
                                                   //> format  : org.joda.time.format.DateTimeFormatter = org.joda.time.format.Date
-                                                  //| TimeFormatter@693ba66d
+                                                  //| TimeFormatter@4b2b7414
   val startTime1 = format.parseDateTime(startTimeInput)
                                                   //> startTime1  : org.joda.time.DateTime = 2016-03-21T11:30:00.000-07:00
   val endTime1 = startTime1.plusHours(3)          //> endTime1  : org.joda.time.DateTime = 2016-03-21T14:30:00.000-07:00

@@ -68,6 +68,21 @@ trait EventService[Calendar, CalendarEvent, Reminder] {
 
 object Event extends EventService[Calendar, CalendarEvent, Reminder] {
     
+    def calendarEvent(
+        calendar: Calendar,
+        name: String,
+        startTime: DateTime, 
+        endTime: DateTime
+    ){
+        // TODO: Need validation
+        CalendarEvent(
+            calendar: Calendar,
+            name: String,
+            startTime: DateTime, 
+            endTime: DateTime
+        )
+    }
+    
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)] = {
         val newCalendar = calendar.copy(events = event :: calendar.events)
         Success(newCalendar)
@@ -134,9 +149,9 @@ object CalendarEntities {
         val SUN, MON, TUE, WED, THU, FRI, SAT = Value
     }
         
-    case class User(uId: String)
+    final case class User (uId: String)
     
-    case class CalendarEvent(
+    final case class CalendarEvent private[calendar2](
         calendar: Calendar,
         name: String,
         startTime: DateTime, 
@@ -148,7 +163,7 @@ object CalendarEntities {
         invites: List[Email] = Nil
     ) extends Event
     
-    case class Calendar (
+    final case class Calendar private[calendar2](
         user: User, events: List[CalendarEvent] = Nil, holidays: List[Holiday] = Nil
     )
         
@@ -170,9 +185,9 @@ object CalendarEntities {
     
     case class Email(address: String)
     
-    case class Reminder(before: DateTime)
+    final case class Reminder(before: DateTime)
     
-    case class Holiday(date: DateTime, name: String)
+    final case class Holiday(date: DateTime, name: String)
 }
 
 
