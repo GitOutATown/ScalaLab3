@@ -58,9 +58,24 @@ object Account extends AccountService {
     ): Try[CheckingAccount] = {
         Success(CheckingAccount(
             "STUB_ID", 
-            customer.name, 
+            customer.id, 
             effectiveDate, 
             None,
+            balance
+        ))
+    }
+    
+    def savingsAccount(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): Try[SavingsAccount] = {
+        Success(SavingsAccount(
+            "STUB_ID", 
+            customer.id,
+            effectiveDate, 
+            None,
+            0.0,
             balance
         ))
     }
