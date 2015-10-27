@@ -4,15 +4,11 @@ import java.util.{Date, Calendar} // replace with something better
 import scala.util.{Try, Success, Failure}
 
 // Interface for Account entity and the various types of accounts
-// RW: Not yet. This is in fact NOT being used! And no real context
-// for such generalization has been presented/discussed.
 trait Account {
     import AccountEntities._
     
-    def no: String
-    def name: String
-    def bank: Bank
-    def address: Address
+    def acctId: String
+    def custId: String
     def dateOfOpening: Date
     def dateOfClose: Option[Date]
     def balance: Balance
@@ -24,7 +20,7 @@ trait IntrestBearingAccount extends Account {
 
 trait AccountService {
     import scala.util.{Try, Success, Failure}
-    import AccountEntities._
+    import AccountEntities._ // TODO: parameterize
     type Amount = BigDecimal
     
     //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
@@ -34,6 +30,48 @@ trait AccountService {
     def openCheckingAccount(
         customer: Customer, effectiveDate: Date, balance: Balance
     ): Try[CheckingAccount]
+    
+    def debitChecking(account: CheckingAccount, amount: Amount)
+        : Try[CheckingAccount]
+    
+    def creditChecking(account: CheckingAccount, amount: Amount)
+        : Try[CheckingAccount]
+    
+    def calculateInterest[A <: IntrestBearingAccount]
+        (account: A, period: DateRange): Try[BigDecimal]
+    
+    //val generateAuditLog: (Account, Amount) => Try[String] = ???
+    //val write: String => Unit
+} // end trait AccountService
+
+// companion object in Scala that contains the factories
+object Account extends AccountService {
+    import AccountEntities._
+    
+    def today = Calendar.getInstance.getTime
+    
+    // Factory
+    def checkingAccount(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): Try[CheckingAccount] = {
+        Success(CheckingAccount(
+            "STUB_ID", 
+            customer.name, 
+            effectiveDate, 
+            None,
+            balance
+        ))
+    }
+    
+    def openCheckingAccount(
+        customer: Customer, effectiveDate: Date, balance: Balance
+    ): Try[CheckingAccount] = {
+        // TODO: Account opening logic
+        //Account(accountNo, openingDate, customer.name, customer.address)
+        checkingAccount(customer, effectiveDate, balance)
+    }
     
     // This won't work because of copy only works with case classes.
     // def debitChecking[A <: Account](account: A, amount: Amount): Try[A] = {
@@ -47,41 +85,16 @@ trait AccountService {
             ))
     }
     
-    def creditChecking(account: CheckingAccount, amount: Amount): Try[CheckingAccount] = {
+    def creditChecking(account: CheckingAccount, amount: Amount)
+        : Try[CheckingAccount] = {
         Success(account.copy(
             balance = Balance(account.balance.amount + amount)
         ))
     }
     
-    def calculateInterest[A <: IntrestBearingAccount](account: A, period: DateRange): Try[BigDecimal] = {
-        account.rateOfInterest * account.balance.amount
-        Success(0.0) // Stub
-    }
-    
-    //val generateAuditLog: (Account, Amount) => Try[String] = ???
-    //val write: String => Unit
-} // end trait AccountService
-
-// companion object in Scala that contains the factories
-object Account extends AccountService {
-    import AccountEntities._
-    
-    def today = Calendar.getInstance.getTime
-        
-    def checkingAccount(
-        customer: Customer, 
-        effectiveDate: Date, 
-        balance: Balance = Balance(0.0)
-    ): Try[CheckingAccount] = {
-        Success(CheckingAccount(
-            "STUB_ID", 
-            customer.name, 
-            Bank(), 
-            customer.address, 
-            effectiveDate, 
-            None,
-            balance
-        ))
+    def calculateInterest[A <: IntrestBearingAccount]
+        (account: A, period: DateRange): Try[BigDecimal] = {
+        Success(account.rateOfInterest * account.balance.amount)
     }
     
     private def closeDateCheck(
@@ -102,15 +115,6 @@ object Account extends AccountService {
         if (Verifications.verifyRecord(customer)) Success(customer)
         else Failure(new Exception("Customer failed verification"))
     }
-    
-    def openCheckingAccount(
-        customer: Customer, effectiveDate: Date, balance: Balance
-    ): Try[CheckingAccount] = {
-        // TODO: Account opening logic
-        //Account(accountNo, openingDate, customer.name, customer.address)
-        checkingAccount(customer, effectiveDate, balance)
-    }
-    
 } // end object Account
 
 object AccountEntities {
@@ -125,20 +129,16 @@ object AccountEntities {
     case class DateRange()
     
     case class CheckingAccount (
-        no: String,
-        name: String,
-        bank: Bank,
-        address: Address,
+        acctId: String,
+        custId: String,
         dateOfOpening: Date,
         dateOfClose: Option[Date],
         balance: Balance
     ) extends Account
 
     case class SavingsAccount(
-         no: String,
-         name: String,
-         bank: Bank,
-         address: Address,
+         acctId: String,
+         custId: String,
          dateOfOpening: Date,
          dateOfClose: Option[Date],
          rateOfInterest: BigDecimal,
@@ -146,10 +146,8 @@ object AccountEntities {
     ) extends IntrestBearingAccount
     
     case class MoneyMarketAccount(
-         no: String,
-         name: String,
-         bank: Bank,
-         address: Address,
+         acctId: String,
+         custId: String,
          dateOfOpening: Date,
          dateOfClose: Option[Date],
          rateOfInterest: BigDecimal,
