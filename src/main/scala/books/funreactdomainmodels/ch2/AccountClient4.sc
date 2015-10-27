@@ -13,15 +13,15 @@ object AccountClient4 {
     openCheckingAccount(c, Calendar.getInstance().getTime())
   }.getOrElse(throw new Exception("Verification failed for customer"))
                                                   //> acct1  : books.funreactdomainmodels.ch2.AccountEntities.CheckingAccount = Ch
-                                                  //| eckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Sat Oct 24 12:33:30 PDT 2015
+                                                  //| eckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Mon Oct 26 19:20:44 PDT 2015
                                                   //| ,None,Balance(0.0))
   acct1.balance == Balance(0.0)                   //> res0: Boolean = true
   
   val acct1_1 = creditChecking(acct1, 1000.00)    //> acct1_1  : scala.util.Try[books.funreactdomainmodels.ch2.AccountEntities.Che
-                                                  //| ckingAccount] = Success(CheckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Sa
-                                                  //| t Oct 24 12:33:30 PDT 2015,None,Balance(1000.0)))
+                                                  //| ckingAccount] = Success(CheckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Mo
+                                                  //| n Oct 26 19:20:44 PDT 2015,None,Balance(1000.0)))
   acct1                                           //> res1: books.funreactdomainmodels.ch2.AccountEntities.CheckingAccount = Check
-                                                  //| ingAccount(STUB_ID,Joe Stub,Bank(),Address(),Sat Oct 24 12:33:30 PDT 2015,No
+                                                  //| ingAccount(STUB_ID,Joe Stub,Bank(),Address(),Mon Oct 26 19:20:44 PDT 2015,No
                                                   //| ne,Balance(0.0))
   
   for {
@@ -29,7 +29,8 @@ object AccountClient4 {
     b <- debitChecking(a, 200)
     c <- debitChecking(b, 190)
   } yield c                                       //> res2: scala.util.Try[books.funreactdomainmodels.ch2.AccountEntities.Checking
-                                                  //| Account] = Success(CheckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Sat Oct
-                                                  //|  24 12:33:30 PDT 2015,None,Balance(610.0)))
+                                                  //| Account] = Success(CheckingAccount(STUB_ID,Joe Stub,Bank(),Address(),Mon Oct
+                                                  //|  26 19:20:44 PDT 2015,None,Balance(610.0)))
+  
   '''                                             //> res3: Char('\'') = '
 }
