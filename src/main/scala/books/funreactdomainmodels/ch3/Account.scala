@@ -27,7 +27,7 @@ trait AccountService {
     
     def verifyCustomer(customer: Customer): Try[Customer]
     
-    def openCheckingAccount(
+    def checkingAccount(
         customer: Customer, effectiveDate: Date, balance: Balance
     ): Try[CheckingAccount]
     
@@ -56,36 +56,51 @@ object Account extends AccountService {
         effectiveDate: Date, 
         balance: Balance = Balance(0.0)
     ): Try[CheckingAccount] = {
-        Success(CheckingAccount(
-            "STUB_ID", 
-            customer.id, 
-            effectiveDate, 
-            None,
-            balance
-        ))
+        verifyCustomer(customer).map { c =>
+            CheckingAccount(
+                "STUB_ID", 
+                c.id, 
+                effectiveDate, 
+                None,
+                balance
+            )
+        }
     }
     
+    // Factory
     def savingsAccount(
         customer: Customer, 
         effectiveDate: Date, 
         balance: Balance = Balance(0.0)
     ): Try[SavingsAccount] = {
-        Success(SavingsAccount(
-            "STUB_ID", 
-            customer.id,
-            effectiveDate, 
-            None,
-            0.0,
-            balance
-        ))
+        verifyCustomer(customer).map{ c =>
+            SavingsAccount(
+                "STUB_ID", 
+                customer.id,
+                effectiveDate, 
+                None,
+                0.0,
+                balance
+            )
+        }
     }
     
-    def openCheckingAccount(
-        customer: Customer, effectiveDate: Date, balance: Balance
-    ): Try[CheckingAccount] = {
-        // TODO: Account opening logic
-        //Account(accountNo, openingDate, customer.name, customer.address)
-        checkingAccount(customer, effectiveDate, balance)
+    // Factory
+    def moneyMarketAccount(
+        customer: Customer, 
+        effectiveDate: Date, 
+        balance: Balance = Balance(0.0)
+    ): Try[MoneyMarketAccount] = {
+        verifyCustomer(customer).map{ c =>
+            MoneyMarketAccount(
+                "STUB_ID",
+                customer.id, 
+                effectiveDate, 
+                None,
+                0.0,
+                balance
+            )
+        }
     }
     
     // This won't work because of copy only works with case classes.
