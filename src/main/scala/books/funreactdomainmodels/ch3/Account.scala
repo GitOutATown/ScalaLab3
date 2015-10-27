@@ -2,10 +2,12 @@ package books.funreactdomainmodels.ch3
 
 import java.util.{Date, Calendar} // replace with something better
 import scala.util.{Try, Success, Failure}
+import AccountEntities._
 
-// Interface for Account entity and the various types of accounts
+// Interface for Account entity and the various types of accounts.
+// Base contract for all account types.
 trait Account {
-    import AccountEntities._
+    //import AccountEntities._
     
     def acctId: String
     def custId: String
@@ -18,9 +20,12 @@ trait IntrestBearingAccount extends Account {
     def rateOfInterest: BigDecimal
 }
 
-trait AccountService {
+trait AccountService
+    [Customer, Balance, CheckingAccount, 
+    SavingsAccount, MoneyMarketAccount] {
+    
     import scala.util.{Try, Success, Failure}
-    import AccountEntities._ // TODO: parameterize
+    //import AccountEntities._ // TODO: parameterize
     type Amount = BigDecimal
     
     //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
@@ -45,7 +50,10 @@ trait AccountService {
 } // end trait AccountService
 
 // companion object in Scala that contains the factories
-object Account extends AccountService {
+object Account extends AccountService
+    [Customer, Balance, CheckingAccount, 
+    SavingsAccount, MoneyMarketAccount] {
+    
     import AccountEntities._
     
     def today = Calendar.getInstance.getTime

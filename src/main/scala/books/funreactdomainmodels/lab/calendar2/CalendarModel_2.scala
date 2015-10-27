@@ -4,6 +4,10 @@ import org.joda.time.DateTime
 import scala.util.{Try, Success, Failure}
 import CalendarEntities._
 
+/*
+ * Base contract and interface for Calendar entity and 
+ * the various types of accounts.
+ */
 trait CalendarService[User, Calendar] {
     
     /*
@@ -18,11 +22,24 @@ trait CalendarService[User, Calendar] {
 }
 
 object CalendarApplication extends CalendarService[User, Calendar] { //with EventService {
-    //import CalendarEntities._
     
     def newCalendar(uId: User): Try[Calendar] = Success(Calendar(uId))
 }
 
+trait Event {
+    def name: String
+    def startTime: DateTime
+    def endTime: DateTime
+    def notes: Option[List[String]]
+    def reminders: List[Reminder]
+}
+
+/*
+ * Base contract and interface for Event entity and 
+ * the various types of Events.
+ * All functions are abstract with concrete implementations 
+ * in module type companion objects.
+ */
 trait EventService[Calendar, CalendarEvent, Reminder] {
     
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)]
@@ -129,7 +146,7 @@ object CalendarEntities {
         url: Option[URL] = None,
         reminders: List[Reminder] = Nil,
         invites: List[Email] = Nil
-    )
+    ) extends Event
     
     case class Calendar (
         user: User, events: List[CalendarEvent] = Nil, holidays: List[Holiday] = Nil
