@@ -1,7 +1,7 @@
 package books.funproginscala.ch3.MEM
 
-// abstract class[+A] // same, for all practical purposes
-trait List[+A]
+// abstract class List[+A] // same, for all intensive purposes
+sealed trait List[+A]
 // data constructors
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
@@ -25,11 +25,11 @@ object List {
         case Nil => 0
         case Cons(h, t) =>
             @annotation.tailrec
-            def inner(l: List[Int], acc: Int): Int = l match {
+            def loop(acc: Int, ints: List[Int]): Int = ints match {
                 case Nil => acc
-                case Cons(h, t) => inner(t, h + acc)
+                case Cons(h, t) => loop(h + acc, t)
             }
-            inner(ints, 0)
+            loop(0, ints)
     }
     
     def product(ds: List[Double]): Double = ds match {
@@ -64,23 +64,24 @@ object List {
     
     def tail[A](l: List[A]): List[A] = l match {
         case Nil => sys.error("operation on empty list")
-        case Cons(h, t) => t
+        case Cons(_, t) => t
     }
     
-    def drop[A](l: List[A], n: Int): List[A] = {
-        if(n < 0) sys.error("negative drop count")
+    def drop[A](l: List[A], n: Int): List[A] = 
+        if(n < 0) sys.error("negative arg to drop")
         else if(n == 0) l
         else l match {
+            // I'm choosing to allow n to overstep list length
             case Nil => Nil
-            case Cons(h, t) => drop(t, n - 1)
+            case Cons(_, t) => drop(t, n - 1)
         }
-    } 
     
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
         case Cons(h, t) => if(f(h)) dropWhile(t, f) else l
         case _ => l
     }
     
+    // curried
     def dropWhileCur[A](l: List[A])(f: A => Boolean): List[A] = l match {
         case Cons(h, t) => if(f(h)) dropWhileCur(t)(f) else l
         case _ => l
@@ -92,6 +93,7 @@ object List {
         case _ => l
     }
     
+    // Return everything but the last element.
     def init[A](l: List[A]): List[A] = l match {
         case Nil => sys.error("operation on empty list")
         case Cons(_, _) =>

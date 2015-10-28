@@ -1,6 +1,6 @@
 package books.funproginscala.ch2
 
-object PolymorphicFun1 extends App {
+object PolymorphicFun1 { //extends App {
 
     def findFirst[A](as: Array[A], p: A => Boolean): Int = {
         def loop(n: Int): Int = {
@@ -13,9 +13,7 @@ object PolymorphicFun1 extends App {
     }
     
     def strMatch(str1: String)(str2: String): Boolean = str1 == str2
-        
-    val fooMatch = strMatch("foo")_
-    
+            
     // ------------------------- //
             
     def orderedInt(a: Int, b: Int): Boolean = a <= b

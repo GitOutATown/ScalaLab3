@@ -9,9 +9,15 @@ case class Cons[+A](head: A, tail: List[A]) extends List[A]
 // companion object
 object List {
     
+    // companion class factory
+    def apply[A](as: A*): List[A] = {
+        if(as.isEmpty) Nil
+        else Cons(as.head, apply(as.tail: _*))
+    }
+    
     def sum(ints: List[Int]): Int = ints match {
         case Nil => 0
-        case Cons(x, xs) => x + sum(xs)
+        case Cons(h, t) => h + sum(t)
     }
     
     // tail recursive
@@ -26,15 +32,39 @@ object List {
             loop(0, ints)
     }
     
-    def product(doubles: List[Double]): Double = doubles match {
+    def product(ds: List[Double]): Double = ds match {
         case Nil => 1.0 // TODO: This is not correct for case when initial as is Nil.
         case Cons(0.0, _) => 0.0
-        case Cons(x, xs) => x * product(xs)
+        case Cons(h, t) => h * product(t)
+    }
+    
+    // captures initial empty list error
+    def productAlt0(ds: List[Double]): Double = ds match {
+        case Nil => sys.error("operation on empty list")
+        case Cons(h, t) => 
+            def inner(l: List[Double]): Double = l match {
+                case Nil => 1.0
+                case Cons(0.0, _) => 0.0
+                case Cons(h, t) => h * inner(t)
+            }
+            inner(ds)
+    }
+    
+    def productTR(ds: List[Double]): Double = ds match {
+        case Nil => sys.error("Operation on empty list.")
+        case Cons(x, xs) =>
+        @annotation.tailrec
+        def inner(l: List[Double], acc: Double): Double = l match {
+            case Nil => acc
+            case Cons(0.0, t) => 0.0
+            case Cons(h, t) => inner(t, h * acc)
+        }
+        inner(ds, 1.0)
     }
     
     def tail[A](l: List[A]): List[A] = l match {
-        case Nil => sys.error("tail of empty list")
-        case Cons(_, xs) => xs
+        case Nil => sys.error("operation on empty list")
+        case Cons(_, t) => t
     }
     
     def drop[A](l: List[A], n: Int): List[A] = 
@@ -43,21 +73,23 @@ object List {
         else l match {
             // I'm choosing to allow n to overstep list length
             case Nil => Nil
-            case Cons(_, xs) => drop(xs, n - 1)
+            case Cons(_, t) => drop(t, n - 1)
         }
     
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-        case Cons(x, xs) =>
-            if(f(x)) dropWhile(xs, f)
-            else l
+        case Cons(h, t) => if(f(h)) dropWhile(t, f) else l
         case _ => l
     }
     
     // curried
-    def dropWhileAlt[A](l: List[A])(f: A => Boolean): List[A] = l match {
-        case Cons(x, xs) =>
-            if(f(x)) dropWhileAlt(xs)(f)
-            else l
+    def dropWhileCur[A](l: List[A])(f: A => Boolean): List[A] = l match {
+        case Cons(h, t) => if(f(h)) dropWhileCur(t)(f) else l
+        case _ => l
+    }
+    
+    // Reverses the order of the curried parameters
+    def dropWhileCurAlt[A](f: A => Boolean)(l: List[A]): List[A] = l match {
+        case Cons(h, t) => if(f(h)) dropWhileCurAlt(f)(t) else l
         case _ => l
     }
     
@@ -97,11 +129,6 @@ object List {
     def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
         case Nil => a2
         case Cons(x, xs) => Cons(x, append(xs, a2))
-    }
-    
-    def apply[A](as: A*): List[A] = {
-        if(as.isEmpty) Nil
-        else Cons(as.head, apply(as.tail: _*))
     }
     
     //-----------------------------------------------------------------//

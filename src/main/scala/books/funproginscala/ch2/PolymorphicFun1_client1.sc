@@ -22,6 +22,8 @@ object PolymorphicFun1_client1 {
   // --- Results -------- //
   
   val res1 = findFirst(strings, fooMatch)         //> res1  : Int = 2
+  
+  val res1a = findFirst(strings2, fooMatch)       //> res1a  : Int = -1
     
   val res2 = findFirst(strings, startsWithJ)      //> res2  : Int = 3
   
