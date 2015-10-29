@@ -20,8 +20,18 @@ object MonoidLab1_client {
   
   booleanAnd.op(false, false)                     //> res9: Boolean = false
   booleanAnd.op(booleanAnd.zero, true)            //> res10: Boolean = true
+  
+  optionMonoid.op(Some(1), Some(2))               //> res11: Option[Int] = Some(1)
+  optionMonoid.op(None, Some(2))                  //> res12: Option[Int] = Some(2)
+  optionMonoid.op(None, optionMonoid.zero)        //> res13: Option[Nothing] = None
+  
+  firstOptionMonoid.op(Some(1), Some(2))          //> res14: Option[Int] = Some(1)
+  lastOptionMonoid.op(Some(1), Some(2))           //> res15: Option[Int] = Some(2)
 }
 /*
+
+
+
 
 
 
