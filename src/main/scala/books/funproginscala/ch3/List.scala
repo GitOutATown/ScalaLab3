@@ -88,6 +88,7 @@ object List {
     }
     
     // Reverses the order of the curried parameters
+    // NOT WORKING
     def dropWhileCurAlt[A](f: A => Boolean)(l: List[A]): List[A] = l match {
         case Cons(h, t) => if(f(h)) dropWhileCurAlt(f)(t) else l
         case _ => l
@@ -217,7 +218,7 @@ object List {
         foldRight(l, Nil:List[A])(append)
         
     def add1(l: List[Int]): List[Int] =
-        foldRight(l, Nil: List[Int])((h, t) => Cons(h + 1, t))
+        foldRight(l, Nil: List[Int])((h,t) => Cons(h+1, t))
         
     def doubleToString(l: List[Double]): List[String] =
         foldRight(l, Nil: List[String])((h, t) => Cons(h.toString, t))

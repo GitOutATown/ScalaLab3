@@ -25,20 +25,21 @@ object List {
         case Nil => 0
         case Cons(h, t) =>
             @annotation.tailrec
-            def loop(acc: Int, ints: List[Int]): Int = ints match {
+            def loop(l: List[Int], acc: Int): Int = l match {
                 case Nil => acc
-                case Cons(h, t) => loop(h + acc, t)
+                case Cons(h, t) => loop(t, h + acc)
             }
-            loop(0, ints)
+            loop(ints, 0)
     }
     
+    // recursive, not stack safe
     def product(ds: List[Double]): Double = ds match {
         case Nil => 1.0 // TODO: This is not correct for case when initial as is Nil.
         case Cons(0.0, _) => 0.0
         case Cons(h, t) => h * product(t)
     }
     
-    // captures initial empty list error
+    // captures initial empty list error, still not TR
     def productAlt0(ds: List[Double]): Double = ds match {
         case Nil => sys.error("operation on empty list")
         case Cons(h, t) => 
@@ -52,14 +53,14 @@ object List {
     
     def productTR(ds: List[Double]): Double = ds match {
         case Nil => sys.error("Operation on empty list.")
-        case Cons(x, xs) =>
-        @annotation.tailrec
-        def inner(l: List[Double], acc: Double): Double = l match {
-            case Nil => acc
-            case Cons(0.0, t) => 0.0
-            case Cons(h, t) => inner(t, h * acc)
-        }
-        inner(ds, 1.0)
+        case Cons(h, t) =>
+            @annotation.tailrec
+            def loop(l: List[Double], acc: Double): Double = l match {
+                case Nil => acc
+                case Cons(0.0, _) => 0.0
+                case Cons(h, t) => loop(t, h * acc)
+            }
+            loop(ds, 1.0)
     }
     
     def tail[A](l: List[A]): List[A] = l match {
@@ -129,7 +130,7 @@ object List {
     
     def sumAlt2(l: List[Int]) = foldRight(l, 0)((h, acc) => h + acc) // (_ + _)
     
-    def prodAlt1(l: List[Double]): Double = foldRight(l, 1.0)((h, acc) => h * acc) // (_ * _)
+    def prodAlt1(l: List[Double]) = foldRight(l, 1.0)((h, acc) => h * acc) // (_ * _)
     
     @annotation.tailrec
     def foldLeft[A,B](l: List[A], acc: B)(f: (B,A) => B): B = l match {

@@ -52,9 +52,12 @@ object List_client_1 {
                                                   //> res6a  : books.funproginscala.ch3.List[String] = Cons(apple,Cons(banana,Con
                                                   //| s(app,Nil)))
   // curried
-  val res6b = List.dropWhileAlt(l2) (x => x.length < 4)
+  val res6b = List.dropWhileCur(l2) (x => x.length < 4)
                                                   //> res6b  : books.funproginscala.ch3.List[String] = Cons(apple,Cons(banana,Con
                                                   //| s(app,Nil)))
+  
+  // ERROR
+  //val res6c = List.dropWhileCurAlt(l2) (x => x.length < 4)
   val res7 = List.dropWhile(l2, (x:String) => x.startsWith("a"))
                                                   //> res7  : books.funproginscala.ch3.List[String] = Cons(banana,Cons(app,Nil))
   val res8a = List.append(l1, l3)                 //> res8a  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,C
