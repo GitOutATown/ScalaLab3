@@ -26,7 +26,10 @@ trait AccountService
     
     import scala.util.{Try, Success, Failure}
     
-    //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
+    /*
+    def transfer(fromAccount: Account, toAccount: Account, amount: Amount)
+        : Try[(Account, Account)]
+    */
     
     def verifyCustomer(customer: Customer): Try[Customer]
     
@@ -127,10 +130,50 @@ object Account extends AccountService
         ))
     }
     
+    def debit(account: Account, amount: Amount): Try[Account] = {
+        if(account.balance.amount < amount)
+            Failure(new Exception("Insufficient funds in account"))
+        else account match {
+            case ch: CheckingAccount => Success(ch.copy(
+                balance = Balance(account.balance.amount - amount
+            )))
+            case sa: SavingsAccount => Success(sa.copy(
+                balance = Balance(account.balance.amount - amount
+            )))
+            case mm: MoneyMarketAccount => Success(mm.copy(
+                balance = Balance(account.balance.amount - amount
+            )))
+        }
+    }
+    
+    def credit(account: Account, amount: Amount): Try[Account] = {
+        account match {
+            case ch: CheckingAccount => Success(ch.copy(
+                balance = Balance(account.balance.amount + amount
+            )))
+            case sa: SavingsAccount => Success(sa.copy(
+                balance = Balance(account.balance.amount + amount
+            )))
+            case mm: MoneyMarketAccount => Success(mm.copy(
+                balance = Balance(account.balance.amount + amount
+            )))
+        }
+    }
+    
+    def transfer(fromAccount: Account, toAccount: Account, amount: Amount)
+        : Try[(Account, Account)] = {
+        (debit(fromAccount, amount), credit(toAccount, amount)) match {
+            case (Success(from), Success(to)) => Success(from, to)
+            case _ => Failure(new Exception("Transfer failed"))
+        }
+    }
+    
     def calculateInterest[A <: IntrestBearingAccount]
         (account: A, period: DateRange): Try[BigDecimal] = {
         Success(account.rateOfInterest * account.balance.amount)
     }
+    
+    // ---- Verification --------- //
     
     private def closeDateCheck(
         openDate: Option[Date], closeDate: Option[Date]

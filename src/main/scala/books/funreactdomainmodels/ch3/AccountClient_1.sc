@@ -16,7 +16,7 @@ object AccountClient_1 {
   
   val acct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> acct1  : scala.util.Try[books.funreactdomainmodels.ch3.AccountEntities.Check
-                                                  //| ingAccount] = Success(CheckingAccount(STUB_ID,c1,Thu Oct 29 15:05:37 PDT 201
+                                                  //| ingAccount] = Success(CheckingAccount(STUB_ID,c1,Thu Oct 29 19:34:59 PDT 201
                                                   //| 5,None,Balance(0.0)))
   val acct2 = checkingAccount(custFail, Calendar.getInstance().getTime())
                                                   //> acct2  : scala.util.Try[books.funreactdomainmodels.ch3.AccountEntities.Check
@@ -59,9 +59,9 @@ object AccountClient_1 {
                                                   //| java.lang.Exception: Account creation failed!
                                                   //| Customer failed verification
   }
-
 }
 /*
+
 
 
 
