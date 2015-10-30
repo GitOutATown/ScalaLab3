@@ -26,22 +26,18 @@ trait AccountService
     
     import scala.util.{Try, Success, Failure}
     
-    /*
     def transfer(fromAccount: Account, toAccount: Account, amount: Amount)
         : Try[(Account, Account)]
-    */
     
     def verifyCustomer(customer: Customer): Try[Customer]
     
     def checkingAccount(
         customer: Customer, effectiveDate: Date, balance: Balance
-    ): Try[CheckingAccount]
+    ): Try[Account]
     
-    def debitChecking(account: CheckingAccount, amount: Amount)
-        : Try[CheckingAccount]
-    
-    def creditChecking(account: CheckingAccount, amount: Amount)
-        : Try[CheckingAccount]
+    def savingsAccount(
+        customer: Customer, effectiveDate: Date, balance: Balance
+    ): Try[Account]
     
     def calculateInterest[A <: IntrestBearingAccount]
         (account: A, period: DateRange): Try[BigDecimal]
@@ -62,7 +58,7 @@ object Account extends AccountService
         customer: Customer, 
         effectiveDate: Date, 
         balance: Balance = Balance(0.0)
-    ): Try[CheckingAccount] = {
+    ): Try[Account] = {
         verifyCustomer(customer).map { c =>
             CheckingAccount(
                 "STUB_ID", 
@@ -79,7 +75,7 @@ object Account extends AccountService
         customer: Customer, 
         effectiveDate: Date, 
         balance: Balance = Balance(0.0)
-    ): Try[SavingsAccount] = {
+    ): Try[Account] = {
         verifyCustomer(customer).map{ c =>
             SavingsAccount(
                 "STUB_ID", 
@@ -97,7 +93,7 @@ object Account extends AccountService
         customer: Customer, 
         effectiveDate: Date, 
         balance: Balance = Balance(0.0)
-    ): Try[MoneyMarketAccount] = {
+    ): Try[Account] = {
         verifyCustomer(customer).map{ c =>
             MoneyMarketAccount(
                 "STUB_ID",
@@ -108,26 +104,6 @@ object Account extends AccountService
                 balance
             )
         }
-    }
-    
-    // This won't work because of copy only works with case classes.
-    // def debitChecking[A <: Account](account: A, amount: Amount): Try[A] = {
-    
-    def debitChecking(account: CheckingAccount, amount: Amount)
-        : Try[CheckingAccount] = {
-        if(account.balance.amount < amount)
-            Failure(new Exception("Insufficient funds in account"))
-        else
-            Success(account.copy(
-                balance = Balance(account.balance.amount - amount)
-            ))
-    }
-    
-    def creditChecking(account: CheckingAccount, amount: Amount)
-        : Try[CheckingAccount] = {
-        Success(account.copy(
-            balance = Balance(account.balance.amount + amount)
-        ))
     }
     
     def debit(account: Account, amount: Amount): Try[Account] = {

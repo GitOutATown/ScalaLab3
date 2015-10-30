@@ -14,17 +14,15 @@ object AccountClient_2 {
                                                   //| ure,Address())
   
   val acct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
-                                                  //> acct1  : scala.util.Try[books.funreactdomainmodels.ch3.AccountEntities.Check
-                                                  //| ingAccount] = Success(CheckingAccount(STUB_ID,c1,Thu Oct 29 19:36:47 PDT 201
-                                                  //| 5,None,Balance(0.0)))
+                                                  //> acct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Success(Ch
+                                                  //| eckingAccount(STUB_ID,c1,Thu Oct 29 20:38:45 PDT 2015,None,Balance(0.0)))
   val acct2 = checkingAccount(custFail, Calendar.getInstance().getTime())
-                                                  //> acct2  : scala.util.Try[books.funreactdomainmodels.ch3.AccountEntities.Check
-                                                  //| ingAccount] = Failure(java.lang.Exception: Customer failed verification)
+                                                  //> acct2  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Failure(ja
+                                                  //| va.lang.Exception: Customer failed verification)
   
-  def verifyZeroBal(chAcct: CheckingAccount): Boolean = {
-    chAcct.balance == Balance(0.0)
-  }                                               //> verifyZeroBal: (chAcct: books.funreactdomainmodels.ch3.AccountEntities.Check
-                                                  //| ingAccount)Boolean
+  def verifyZeroBal(acct: Account): Boolean = {
+    acct.balance == Balance(0.0)
+  }                                               //> verifyZeroBal: (acct: books.funreactdomainmodels.ch3.Account)Boolean
   
   def runTest(acct: Account): Either[String, Exception] = {
     val acctBal = for {
