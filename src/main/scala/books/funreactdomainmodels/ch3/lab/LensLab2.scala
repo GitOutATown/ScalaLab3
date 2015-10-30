@@ -2,15 +2,15 @@ package books.funreactdomainmodels.ch3.lab
 
 object LensLab2 {
     
-    // O = object type, i.e. Address. V = field/attr value type, i.e. no.
+    // O = object type, eg. Address. V = field/attr value type, eg. no.
     case class Lens[O, V](
         get: O => V,
         set: (O, V) => O
     )
     
     def nestedLens[Outer, Inner, Value](
-        outer: Lens[Outer, Inner],
-        inner: Lens[Inner, Value]
+        outer: Lens[Outer, Inner], // attribute is entity
+        inner: Lens[Inner, Value]  // attribute is single value
     ) = Lens[Outer, Value](
         get = outer.get andThen inner.get,
         set = (obj, value) => outer.set(obj, inner.set(outer.get(obj), value))

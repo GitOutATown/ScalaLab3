@@ -1,14 +1,13 @@
 package books.funreactdomainmodels.ch3
 
-import java.util.{Date, Calendar} // replace with something better
+import java.util.{Date, Calendar}
 import scala.util.{Try, Success, Failure}
 import AccountEntities._
+import scala.util.Failure
+import scala.util.Failure
 
-// Interface for Account entity and the various types of accounts.
-// Base contract for all account types.
-trait Account {
-    //import AccountEntities._
-    
+// Base contract/Interface for Account entity and the various types of accounts.
+trait Account {    
     def acctId: String
     def custId: String
     def dateOfOpening: Date
@@ -20,13 +19,12 @@ trait IntrestBearingAccount extends Account {
     def rateOfInterest: BigDecimal
 }
 
+// Parameterized for modularity
 trait AccountService
-    [Customer, Balance, CheckingAccount, 
+    [Customer, Balance, Amount, CheckingAccount, 
     SavingsAccount, MoneyMarketAccount] {
     
     import scala.util.{Try, Success, Failure}
-    //import AccountEntities._ // TODO: parameterize
-    type Amount = BigDecimal
     
     //def transfer(fromAccount: Account, toAccount: Account, amount: Amount): Option[Amount]
     
@@ -51,11 +49,9 @@ trait AccountService
 
 // companion object in Scala that contains the factories
 object Account extends AccountService
-    [Customer, Balance, CheckingAccount, 
+    [Customer, Balance, Amount, CheckingAccount, 
     SavingsAccount, MoneyMarketAccount] {
-    
-    import AccountEntities._
-    
+        
     def today = Calendar.getInstance.getTime
     
     // Factory
@@ -113,6 +109,7 @@ object Account extends AccountService
     
     // This won't work because of copy only works with case classes.
     // def debitChecking[A <: Account](account: A, amount: Amount): Try[A] = {
+    
     def debitChecking(account: CheckingAccount, amount: Amount)
         : Try[CheckingAccount] = {
         if(account.balance.amount < amount)
@@ -161,6 +158,7 @@ object AccountEntities {
     final case class Address private[ch3]()
     
     //case class Amount(value: BigDecimal)
+    type Amount = BigDecimal
     
     final case class Balance private[ch3](amount: BigDecimal)
     

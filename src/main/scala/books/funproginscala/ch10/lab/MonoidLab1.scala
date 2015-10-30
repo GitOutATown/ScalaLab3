@@ -9,12 +9,12 @@ object MonoidLab1 {
     
     val stringMonoid = new Monoid[String] {
         def zero = ""
-        def op(a1: String, a2: String): String = a1 + a2
+        def op(x: String, y: String) = x + y
     }
     
     def listMonoid[A] = new Monoid[List[A]] {
         def zero = Nil
-        def op(x: List[A], y: List[A]): List[A] = x ++ y
+        def op(a1: List[A], a2: List[A]) = a1 ++ a2
     }
     
     val intAddition = new Monoid[Int] {
@@ -38,17 +38,17 @@ object MonoidLab1 {
     }
     
     def optionMonoid[A] = new Monoid[Option[A]] {
-        def zero = None
-        def op(x: Option[A], y: Option[A]) = x orElse y
+        def zero: Option[A] = None
+        def op(x: Option[A], y: Option[A]): Option[A] = x orElse y
     }
     
     /*
      * `op` combines things in the opposite order.
-     * Equality between dual and arg monoid depends 
-     * on whether monoid arg is commutative.
+     * Equality between dual and m depends 
+     * on whether m is commutative.
      */
     def dual[A](m: Monoid[A]): Monoid[A] = new Monoid[A] {
-        def zero = m.zero
+        val zero: A = m.zero
         def op(x: A, y: A): A = m.op(y, x)
     }
     

@@ -33,6 +33,4 @@ object MonoidLab1_client {
 
 
 
-
-
 */
