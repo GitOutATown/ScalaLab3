@@ -12,12 +12,12 @@ object AccountClient_2c {
                                                   //| ess,Address())
   val checkingAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> checkingAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Su
-                                                  //| ccess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:01:05 PDT 2015,None,Balance(0
+                                                  //| ccess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:11:54 PDT 2015,None,Balance(0
                                                   //| .0)))
   
   val savingsAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> savingsAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Suc
-                                                  //| cess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:01:05 PDT 2015,None,Balance(0.
+                                                  //| cess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:11:54 PDT 2015,None,Balance(0.
                                                   //| 0)))
   val transferal = (checkingAcct1, savingsAcct1) match {
     case (Success(from), Success(to)) => {
@@ -30,11 +30,11 @@ object AccountClient_2c {
         (from, to)
       }
     }
-    case _ => Failure(new Exception("Transfer failed"))
+    case _ => Failure(new Exception("Account creation failed."))
   }                                               //> 400.0
                                                   //| 600.0
                                                   //| transferal  : scala.util.Try[(books.funreactdomainmodels.ch3.Account, books.
                                                   //| funreactdomainmodels.ch3.Account)] = Success((CheckingAccount(STUB_ID,c1,Fri
-                                                  //|  Oct 30 09:01:05 PDT 2015,None,Balance(400.0)),CheckingAccount(STUB_ID,c1,Fr
-                                                  //| i Oct 30 09:01:05 PDT 2015,None,Balance(600.0))))
+                                                  //|  Oct 30 09:11:54 PDT 2015,None,Balance(400.0)),CheckingAccount(STUB_ID,c1,Fr
+                                                  //| i Oct 30 09:11:54 PDT 2015,None,Balance(600.0))))
 }
