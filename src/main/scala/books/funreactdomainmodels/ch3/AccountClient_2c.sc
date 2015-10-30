@@ -1,6 +1,6 @@
 package books.funreactdomainmodels.ch3
 
-object AccountClient_2b {
+object AccountClient_2c {
   import Customer._
   import AccountEntities._
   import Account._
@@ -12,24 +12,29 @@ object AccountClient_2b {
                                                   //| ess,Address())
   val checkingAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> checkingAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Su
-                                                  //| ccess(CheckingAccount(STUB_ID,c1,Fri Oct 30 08:35:28 PDT 2015,None,Balance(0
+                                                  //| ccess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:01:05 PDT 2015,None,Balance(0
                                                   //| .0)))
   
   val savingsAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> savingsAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Suc
-                                                  //| cess(CheckingAccount(STUB_ID,c1,Fri Oct 30 08:35:28 PDT 2015,None,Balance(0.
+                                                  //| cess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:01:05 PDT 2015,None,Balance(0.
                                                   //| 0)))
-  (checkingAcct1, savingsAcct1) match {
+  val transferal = (checkingAcct1, savingsAcct1) match {
     case (Success(from), Success(to)) => {
-      credit(from, 1000)
-      .flatMap(from => transfer(from, to, 600))
-      .map{ case (from, to) => {
-	      println(from.balance.amount)
-	      println(to.balance.amount)
-	    }}
+      for {
+        from <- credit(from, 1000)
+        (from, to) <- transfer(from, to, 600)
+      } yield {
+        println(from.balance.amount)
+        println(to.balance.amount)
+        (from, to)
+      }
     }
     case _ => Failure(new Exception("Transfer failed"))
   }                                               //> 400.0
                                                   //| 600.0
-                                                  //| res0: scala.util.Try[Unit] = Success(())
+                                                  //| transferal  : scala.util.Try[(books.funreactdomainmodels.ch3.Account, books.
+                                                  //| funreactdomainmodels.ch3.Account)] = Success((CheckingAccount(STUB_ID,c1,Fri
+                                                  //|  Oct 30 09:01:05 PDT 2015,None,Balance(400.0)),CheckingAccount(STUB_ID,c1,Fr
+                                                  //| i Oct 30 09:01:05 PDT 2015,None,Balance(600.0))))
 }
