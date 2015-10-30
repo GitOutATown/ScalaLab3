@@ -23,16 +23,13 @@ object CaseClass1 extends App {
     def altTerm(t: Term): Term = t match {
         case t: Var => {
             val varAltName = t.copy(name = t.name + "Alt")
-            //println("Got Var, new name is " + varAltName.name)
             varAltName
         }
         case t: Fun => {
             val funAltBody = t.copy(body = t3)
-            //println("Got Fun, new body is " + funAltBody.body)
             funAltBody
         }
         case t: App => {
-            //println("Got App, v is " + t.v)
             t // no mod
         }
     }
