@@ -3,8 +3,6 @@ package books.funreactdomainmodels.ch3
 import java.util.{Date, Calendar}
 import scala.util.{Try, Success, Failure}
 import AccountEntities._
-import scala.util.Failure
-import scala.util.Failure
 
 // Base contract/Interface for Account entity and the various types of accounts.
 trait Account {    
@@ -21,11 +19,9 @@ trait IntrestBearingAccount extends Account {
 
 // Parameterized for modularity
 trait AccountService
-    [Customer, Balance, Amount, CheckingAccount, 
-    SavingsAccount, MoneyMarketAccount] {
-    
-    import scala.util.{Try, Success, Failure}
-    
+    [Customer, CheckingAccount, SavingsAccount, 
+     MoneyMarketAccount, Balance, Amount] {
+        
     def transfer(fromAccount: Account, toAccount: Account, amount: Amount)
         : Try[(Account, Account)]
     
@@ -46,10 +42,10 @@ trait AccountService
     //val write: String => Unit
 } // end trait AccountService
 
-// companion object in Scala that contains the factories
+// Companion object in Scala that contains the factories
 object Account extends AccountService
-    [Customer, Balance, Amount, CheckingAccount, 
-    SavingsAccount, MoneyMarketAccount] {
+    [Customer, CheckingAccount, SavingsAccount, 
+     MoneyMarketAccount, Balance, Amount] {
         
     def today = Calendar.getInstance.getTime
     
@@ -111,28 +107,28 @@ object Account extends AccountService
             Failure(new Exception("Insufficient funds in account"))
         else account match {
             case ch: CheckingAccount => Success(ch.copy(
-                balance = Balance(account.balance.amount - amount
-            )))
+                balance = Balance(account.balance.amount - amount)
+            ))
             case sa: SavingsAccount => Success(sa.copy(
-                balance = Balance(account.balance.amount - amount
-            )))
+                balance = Balance(account.balance.amount - amount)
+            ))
             case mm: MoneyMarketAccount => Success(mm.copy(
-                balance = Balance(account.balance.amount - amount
-            )))
+                balance = Balance(account.balance.amount - amount)
+            ))
         }
     }
     
     def credit(account: Account, amount: Amount): Try[Account] = {
         account match {
             case ch: CheckingAccount => Success(ch.copy(
-                balance = Balance(account.balance.amount + amount
-            )))
+                balance = Balance(account.balance.amount + amount)
+            ))
             case sa: SavingsAccount => Success(sa.copy(
-                balance = Balance(account.balance.amount + amount
-            )))
+                balance = Balance(account.balance.amount + amount)
+            ))
             case mm: MoneyMarketAccount => Success(mm.copy(
-                balance = Balance(account.balance.amount + amount
-            )))
+                balance = Balance(account.balance.amount + amount)
+            ))
         }
     }
     
