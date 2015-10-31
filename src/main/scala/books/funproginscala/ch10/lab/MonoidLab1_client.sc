@@ -17,20 +17,24 @@ object MonoidLab1_client {
   
   booleanOr.op(false, false)                      //> res7: Boolean = false
   booleanOr.op(true, booleanOr.zero)              //> res8: Boolean = true
+  booleanOr.op(booleanOr.zero, true)              //> res9: Boolean = true
   
-  booleanAnd.op(false, false)                     //> res9: Boolean = false
-  booleanAnd.op(booleanAnd.zero, true)            //> res10: Boolean = true
+  booleanAnd.op(false, false)                     //> res10: Boolean = false
+  booleanAnd.op(booleanAnd.zero, true)            //> res11: Boolean = true
   
-  optionMonoid.op(Some(1), Some(2))               //> res11: Option[Int] = Some(1)
-  optionMonoid.op(None, Some(2))                  //> res12: Option[Int] = Some(2)
-  optionMonoid.op(None, optionMonoid.zero)        //> res13: Option[Nothing] = None
+  optionMonoid.op(Some(1), Some(2))               //> res12: Option[Int] = Some(1)
+  optionMonoid.op(None, Some(2))                  //> res13: Option[Int] = Some(2)
+  optionMonoid.op(None, optionMonoid.zero)        //> res14: Option[Nothing] = None
   
-  firstOptionMonoid.op(Some(1), Some(2))          //> res14: Option[Int] = Some(1)
-  lastOptionMonoid.op(Some(1), Some(2))           //> res15: Option[Int] = Some(2)
+  firstOptionMonoid.op(Some(1), Some(2))          //> res15: Option[Int] = Some(1)
+  firstOptionMonoid.op(None, Some("second"))      //> res16: Option[String] = Some(second)
+  lastOptionMonoid.op(Some(1), Some(2))           //> res17: Option[Int] = Some(2)
+  lastOptionMonoid.op(Some("first"), lastOptionMonoid.zero)
+                                                  //> res18: Option[String] = Some(first)
+  lastOptionMonoidAlt.op(Some("first"), lastOptionMonoid.zero)
+                                                  //> res19: Option[String] = Some(first)
 }
 /*
-
-
 
 
 */

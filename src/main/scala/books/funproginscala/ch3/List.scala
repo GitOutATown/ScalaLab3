@@ -136,21 +136,23 @@ object List {
     // Recursion over lists and generalizing to higher-order functions //
     //-----------------------------------------------------------------//
     
+    // RW: The fold family are accumulators (like sum)
     def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
         case Cons(h, t) => f(h, foldRight(t, acc)(f))
     }
     
-    def sumAlt2(xs: List[Int]) = foldRight(xs, 0)(_ + _)
+    // RW: Implementation with foldRight
+    def sumAlt2(l: List[Int]) = foldRight(l, 0)(_ + _)
     
-    def sumAlt3(xs: List[Int]) = foldRight(xs, 0)((x, acc) => x + acc)
+    def sumAlt3(l: List[Int]) = foldRight(l, 0)((h, acc) => h + acc)
     
-    def prodAlt1(xs: List[Double]) = foldRight(xs, 1.0)(_ * _)
+    def prodAlt1(l: List[Double]) = foldRight(l, 1.0)(_ * _)
     
     // The right hand side of the fat arrow comes back as acc. x is the next value in the list.
-    def prodAlt2(xs: List[Double]) = foldRight(xs, 1.0)((x, acc) => x * acc)
+    def prodAlt2(l: List[Double]) = foldRight(l, 1.0)((h, acc) => h * acc)
     
-    def length[A](xs: List[A]): Int = foldRight(xs, 0)((_, acc) => acc + 1)
+    def length[A](l: List[A]): Int = foldRight(l, 0)((_, acc) => acc + 1)
     
     @annotation.tailrec
     def foldRightTR[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
@@ -158,9 +160,9 @@ object List {
         case Cons(h, t) => foldRightTR(t, f(h, acc))(f)
     }
     
-    def sumAlt4(xs: List[Int]) = foldRightTR(xs, 0)((x, acc) => x + acc)
+    def sumAlt4(l: List[Int]) = foldRightTR(l, 0)((h, acc) => h + acc)
     
-    def prodAlt3(xs: List[Double]) = foldRightTR(xs, 1.0)((x, acc) => x * acc)
+    def prodAlt3(l: List[Double]) = foldRightTR(l, 1.0)((h, acc) => h * acc)
     
     @annotation.tailrec
     def foldLeftTR[A,B](l: List[A], acc: B)(f: (B, A) => B): B = l match {
@@ -168,15 +170,17 @@ object List {
         case Cons(h, t) => foldLeftTR(t, f(acc, h))(f)
     }
     
-    def sumAlt5(l: List[Int]) = foldLeftTR(l, 0)((acc, x) => x + acc)
+    def sumAlt5(l: List[Int]) = foldLeftTR(l, 0)((acc, h) => h + acc)
     
-    def prodAlt4(l: List[Double]) = foldLeftTR(l, 1.0)((acc, x) => x * acc)
+    def prodAlt4(l: List[Double]) = foldLeftTR(l, 1.0)((acc, h) => h * acc)
     
     def lengthFL[A](l: List[A]): Int = foldLeftTR(l, 0)((acc, _) => acc + 1)
     
-    def reverse[A](l: List[A]): List[A] = foldLeftTR(l, List[A]())((acc, x) => Cons(x, acc))
+    def reverse[A](l: List[A]): List[A] = 
+        foldLeftTR(l, List[A]())((acc, h) => Cons(h, acc))
     
-    def reverseFR[A](l: List[A]): List[A] = foldRightTR(l, List[A]())((x, acc) => Cons(x, acc))
+    def reverseFR[A](l: List[A]): List[A] = 
+        foldRightTR(l, List[A]())((h, acc) => Cons(h, acc))
     
     def foldRightViaFL[A,B](l: List[A], acc: B)(f: (A,B) => B): B = 
         foldLeftTR(reverse(l), acc)((b,a) => f(a,b))
@@ -222,7 +226,11 @@ object List {
         
     def doubleToString(l: List[Double]): List[String] =
         foldRight(l, Nil: List[String])((h, t) => Cons(h.toString, t))
-    
+        
+    // RW: Mine
+    def stringListToString(l: List[String]): String =
+        foldRight(l, "")(_ + _)
+            
     // 18
     /* 
         map
@@ -272,6 +280,9 @@ object List {
         inner(l)
         List(buf.toList: _*) // converting from the standard Scala list to the list we've defined here
     }
+    
+    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] =
+        concatLists(map(l)(f))
 }
 
 

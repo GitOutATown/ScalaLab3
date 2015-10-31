@@ -111,6 +111,8 @@ object List_client_1 {
   
   val res29 = doubleToString(List(1d, 2, 3))      //> res29  : books.funproginscala.ch3.List[String] = Cons(1.0,Cons(2.0,Cons(3.0
                                                   //| ,Nil)))
+  val res29b = stringListToString(res29)          //> res29b  : String = 1.02.03.0
+  
   val res30 = map(List(2, 4))(x => x * 2)         //> res30  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
   
   val res31 = mapAlt1(List(2, 4))(x => x * 2)     //> res31  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
@@ -122,7 +124,6 @@ object List_client_1 {
   '''                                             //> res1: Char('\'') = '
 }
 /*
-
 
 
 

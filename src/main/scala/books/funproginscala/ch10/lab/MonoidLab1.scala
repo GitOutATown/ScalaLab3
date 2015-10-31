@@ -14,7 +14,7 @@ object MonoidLab1 {
     
     def listMonoid[A] = new Monoid[List[A]] {
         def zero = Nil
-        def op(a1: List[A], a2: List[A]) = a1 ++ a2
+        def op(x: List[A], y: List[A]) = x ++ y
     }
     
     val intAddition = new Monoid[Int] {
@@ -38,8 +38,8 @@ object MonoidLab1 {
     }
     
     def optionMonoid[A] = new Monoid[Option[A]] {
-        def zero: Option[A] = None
-        def op(x: Option[A], y: Option[A]): Option[A] = x orElse y
+        def zero = None
+        def op(x: Option[A], y: Option[A]) = x orElse y
     }
     
     /*
@@ -55,6 +55,7 @@ object MonoidLab1 {
     // Able to choose which side of the binary op takes precidence.
     def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid[A]
     def lastOptionMonoid[A]: Monoid[Option[A]] = dual(firstOptionMonoid)
+    def lastOptionMonoidAlt[A]: Monoid[Option[A]] = dual(optionMonoid[A])
     
     def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
         def zero = (a: A) => a

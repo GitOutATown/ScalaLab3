@@ -6,8 +6,15 @@ import CalendarEntities._
 
 /*
  * Base contract and interface for Calendar entity and 
- * the various types of accounts.
+ * the various types of calendars.
  */
+trait Calendar {
+    def user: User
+    def name: String
+    def events: List[CalendarEvent] 
+    def holidays: List[Holiday]
+}
+
 trait CalendarService[User, Calendar] {
     
     /*
@@ -18,12 +25,13 @@ trait CalendarService[User, Calendar] {
     def getHolidays(holidays: List[Holiday])
     */
     
-    def newCalendar(uId: User): Try[Calendar]
+    def personalCalendar(uId: User, name: String): Try[Calendar]
 }
 
 object CalendarApplication extends CalendarService[User, Calendar] { //with EventService {
     
-    def newCalendar(uId: User): Try[Calendar] = Success(Calendar(uId))
+    def personalCalendar(uId: User, name: String): Try[Calendar] = 
+        Success(PersonalCalendar(uId, name))
 }
 
 trait Event {
@@ -31,7 +39,7 @@ trait Event {
     def startTime: DateTime
     def endTime: DateTime
     def notes: Option[List[String]]
-    def reminders: List[Reminder]
+    def reminders: Option[List[Reminder]]
 }
 
 /*
@@ -40,7 +48,7 @@ trait Event {
  * All functions are abstract with concrete implementations 
  * in module type companion objects.
  */
-trait EventService[Calendar, CalendarEvent, Reminder] {
+trait EventService[Calendar, CalendarEvent, Milestone, Reminder] {
     
     def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)]
     
@@ -52,21 +60,21 @@ trait EventService[Calendar, CalendarEvent, Reminder] {
     
     //def eventsBy(startTime: DateTime, endTime: DateTime): Try[List[CalendarEvent]]
     
-    def addReminder(event: CalendarEvent, date: DateTime): Try[CalendarEvent]
+    def addReminder(event: Event, date: DateTime): Try[Event]
     
-    def deleteReminder(event: CalendarEvent, reminder: Reminder)
-        : Try[CalendarEvent]
+    def deleteReminder(event: Event, reminder: Reminder)
+        : Try[Event]
     
     def changeReminder(
-        event: CalendarEvent, oldReminder: Reminder, newDate: DateTime
-    ): Try[CalendarEvent]
+        event: Event, oldReminder: Reminder, newDate: DateTime
+    ): Try[Event]
     
     def transferEvent(
         sourceCal: Calendar, targetCal: Calendar, event: CalendarEvent
     ): Try[(Calendar, Calendar)]
 }
 
-object Event extends EventService[Calendar, CalendarEvent, Reminder] {
+object Event extends EventService[Calendar, CalendarEvent, Milestone, Reminder] {
     
     def calendarEvent(
         calendar: Calendar,
@@ -83,16 +91,18 @@ object Event extends EventService[Calendar, CalendarEvent, Reminder] {
         )
     }
     
-    def addEvent(calendar: Calendar, event: CalendarEvent): Try[(Calendar)] = {
-        val newCalendar = calendar.copy(events = event :: calendar.events)
-        Success(newCalendar)
+    def addEvent(calendar: Calendar, event: CalendarEvent)
+        : Try[(Calendar)] = calendar match {
+        case pc: PersonalCalendar => 
+            Success(pc.copy(events = event :: calendar.events))
     }
     
     def deleteEvent(
         calendar: Calendar, event: CalendarEvent
-    ): Try[Calendar] = {
-        val newEvents = calendar.events.filter(e => e != event)
-        Success(calendar.copy(events = newEvents))
+    ): Try[Calendar] = calendar match {
+        case pc: PersonalCalendar =>
+            val events = pc.events.filter(e => e != event)
+            Success(pc.copy(events = events))
     }
     
     def findEvent(calendar: Calendar, name: String)
@@ -101,27 +111,66 @@ object Event extends EventService[Calendar, CalendarEvent, Reminder] {
         Success(foundEvents)
     }
     
-    def addReminder(event: CalendarEvent, date: DateTime)
-        : Try[CalendarEvent] = {
-        val newReminders = Reminder(date) :: event.reminders
-        Success(event.copy(reminders = newReminders))
+    def addReminder(event: Event, date: DateTime)
+        : Try[Event] = event.reminders match {
+        case Some(reminders) => 
+            val newReminders = Reminder(date) :: reminders
+            event match {
+                // TODO: This is not DRY
+                case ce: CalendarEvent =>
+                    Success(ce.copy(reminders = Some(newReminders)))
+                case ms: Milestone =>
+                    Success(ms.copy(reminders = Some(newReminders)))
+            }
+        case None => event match {
+            // TODO: This is not DRY
+            case ce: CalendarEvent =>
+                Success(ce.copy(reminders = Some(List(Reminder(date)))))
+            case ms: Milestone =>
+                Success(ms.copy(reminders = Some(List(Reminder(date)))))
+        }
     }
     
-    def deleteReminder(event: CalendarEvent, reminder: Reminder)
-        : Try[CalendarEvent] = {
-        val newReminders = event.reminders.filter { 
-            r => r != reminder 
-        }
-        Success(event.copy(reminders = newReminders))
+    def deleteReminder(event: Event, reminder: Reminder)
+        : Try[Event] = event.reminders match {
+            case Some(reminders) =>
+                val newReminders = reminders.filter(r => r != reminder)
+                event match {
+                    // TODO: This is not DRY
+                    case ce: CalendarEvent => 
+                        Success(ce.copy(reminders = Some(newReminders)))
+                    case ms: Milestone =>
+                        Success(ms.copy(reminders = Some(newReminders)))
+                }
+            case None => Success(event) // No op, reminders are already None
     }
     
     def changeReminder(
-        event: CalendarEvent, oldReminder: Reminder, newDate: DateTime
-    ): Try[CalendarEvent] = {
-        val newReminders = Reminder(newDate) :: event.reminders.filter { 
-            r => r != oldReminder 
-        }
-        Success(event.copy(reminders = newReminders))
+        event: Event, oldReminder: Reminder, newDate: DateTime
+    ): Try[Event] = event.reminders match {
+            case Some(reminders) =>
+                val newReminders = Reminder(newDate) :: reminders.filter { 
+                    r => r != oldReminder 
+                }
+                event match {
+                    // TODO: This is not DRY
+                    case ce: CalendarEvent =>
+                        Success(ce.copy(reminders = Some(newReminders)))
+                    case ms: Milestone =>
+                        Success(ms.copy(reminders = Some(newReminders)))
+                }
+            case None =>
+                event match {
+                    // TODO: This is not DRY
+                    case ce: CalendarEvent =>
+                        Success(ce.copy(
+                            reminders = Some(List(Reminder(newDate)))
+                        ))
+                    case ms: Milestone =>
+                        Success(ms.copy(
+                            reminders = Some(List(Reminder(newDate)))
+                        ))
+                }
     }
     
     def transferEvent(
@@ -151,6 +200,21 @@ object CalendarEntities {
         
     final case class User (uId: String)
     
+    final case class PersonalCalendar private[calendar2](
+        user: User,
+        name: String,
+        events: List[CalendarEvent] = Nil, 
+        holidays: List[Holiday] = Nil
+    ) extends Calendar
+    
+    final case class ProjectCalendar private[calendar2](
+        user: User,
+        name: String,
+        events: List[CalendarEvent] = Nil, 
+        holidays: List[Holiday] = Nil,
+        milestones: List[Milestone]
+    ) extends Calendar
+    
     final case class CalendarEvent private[calendar2](
         calendar: Calendar,
         name: String,
@@ -159,13 +223,19 @@ object CalendarEntities {
         location: Option[Location] = None,
         notes: Option[List[String]] = None,
         url: Option[URL] = None,
-        reminders: List[Reminder] = Nil,
+        reminders: Option[List[Reminder]] = None,
         invites: List[Email] = Nil
     ) extends Event
     
-    final case class Calendar private[calendar2](
-        user: User, events: List[CalendarEvent] = Nil, holidays: List[Holiday] = Nil
-    )
+    final case class Milestone private[calendar2] (
+        name: String,
+        startTime: DateTime,
+        endTime: DateTime,
+        notes: Option[List[String]],
+        reminders: Option[List[Reminder]],
+        description: Option[String],
+        notification: List[Notification]
+    ) extends Event
         
     case class Year(months: List[Month])
     
@@ -188,6 +258,8 @@ object CalendarEntities {
     final case class Reminder(before: DateTime)
     
     final case class Holiday(date: DateTime, name: String)
+    
+    final case class Notification(recipients: Option[List[User]])
 }
 
 
