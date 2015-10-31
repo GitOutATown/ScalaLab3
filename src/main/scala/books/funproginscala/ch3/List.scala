@@ -136,7 +136,10 @@ object List {
     // Recursion over lists and generalizing to higher-order functions //
     //-----------------------------------------------------------------//
     
-    // RW: The fold family are accumulators (like sum)
+    /* RW: The fold family are accumulators (like sum).
+     * It's important to understand that there are two parameter sets
+     * and follow the pattern flow accordingly.
+     */
     def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
         case Cons(h, t) => f(h, foldRight(t, acc)(f))
@@ -245,6 +248,14 @@ object List {
     */
     def map[A,B](l: List[A])(f: A => B): List[B] =
         foldRight(l, Nil: List[B])((h, t) => Cons(f(h), t))
+    
+    // PROBLEM HERE: reverses order!
+    def mapViaFRTR[A,B](l: List[A])(f: A => B): List[B] =
+        foldRightTR(l, Nil: List[B])((h, t) => Cons(f(h), t))
+        
+    // PROBLEM HERE also: reverses order!    
+    def mapViaFLTR[A,B](l: List[A])(f: A => B): List[B] =
+        foldLeftTR(l, Nil: List[B])((t, h) => Cons(f(h), t))
         
     def mapAlt1[A,B](l: List[A])(f: A => B): List[B] = 
         foldRightViaFL(l, Nil: List[B])((h,t) => Cons(f(h), t))
@@ -283,7 +294,16 @@ object List {
     
     def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] =
         concatLists(map(l)(f))
+        
+    def flatMapAlt1[A,B](l: List[A])(f: A => List[B]): List[B] =
+        concatLists(mapAlt2(l)(f))
 }
+
+
+
+
+
+
 
 
 

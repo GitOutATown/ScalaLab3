@@ -119,12 +119,23 @@ object List_client_1 {
   
   val res32 = mapAlt2(List(2, 4))(x => x * 2)     //> res32  : books.funproginscala.ch3.List[Int] = Cons(4,Cons(8,Nil))
   
-  val res33 = filter(List(1,2,3,4,5))(x => !(x % 2 == 0))
-                                                  //> res33  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(3,Cons(5,Nil)))
+  // PROBLEM HERE: reverses order!
+  val res33 = mapViaFRTR(List(2, 4))(x => x * 2)  //> res33  : books.funproginscala.ch3.List[Int] = Cons(8,Cons(4,Nil))
+  // PROBLEM HERE also: reverses order!
+  val res34 = mapViaFLTR(List(2, 4))(x => x * 2)  //> res34  : books.funproginscala.ch3.List[Int] = Cons(8,Cons(4,Nil))
+  
+  val res35 = filter(List(1,2,3,4,5))(x => !(x % 2 == 0))
+                                                  //> res35  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(3,Cons(5,Nil)))
+  
+  val res36 = flatMap(List(1,2,3))(i => List(i,i))//> res36  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(1,Cons(2,Cons(2,C
+                                                  //| ons(3,Cons(3,Nil))))))
+  
+  val res37 = flatMapAlt1(List(1,2,3))(i => List(i,i))
+                                                  //> res37  : books.funproginscala.ch3.List[Int] = Cons(1,Cons(1,Cons(2,Cons(2,C
+                                                  //| ons(3,Cons(3,Nil))))))
   '''                                             //> res1: Char('\'') = '
 }
 /*
-
 
 
 
