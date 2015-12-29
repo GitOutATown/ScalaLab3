@@ -12,13 +12,13 @@ object AccountClient_2c {
                                                   //| ess,Address())
   val checkingAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> checkingAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Su
-                                                  //| ccess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:29:45 PDT 2015,None,Balance(0
+                                                  //| ccess(CheckingAccount(STUB_ID,c1,Thu Dec 03 13:47:02 PST 2015,None,Balance(0
                                                   //| .0)))
   
-  val savingsAcct1 = checkingAccount(custSucc, Calendar.getInstance().getTime())
+  val savingsAcct1 = savingsAccount(custSucc, Calendar.getInstance().getTime())
                                                   //> savingsAcct1  : scala.util.Try[books.funreactdomainmodels.ch3.Account] = Suc
-                                                  //| cess(CheckingAccount(STUB_ID,c1,Fri Oct 30 09:29:45 PDT 2015,None,Balance(0.
-                                                  //| 0)))
+                                                  //| cess(SavingsAccount(STUB_ID,c1,Thu Dec 03 13:47:02 PST 2015,None,0.0,Balance
+                                                  //| (0.0)))
   val transferal = (checkingAcct1, savingsAcct1) match {
     case (Success(from), Success(to)) => {
       for {
@@ -34,7 +34,7 @@ object AccountClient_2c {
   }                                               //> 400.0
                                                   //| 600.0
                                                   //| transferal  : scala.util.Try[(books.funreactdomainmodels.ch3.Account, books.
-                                                  //| funreactdomainmodels.ch3.Account)] = Success((CheckingAccount(STUB_ID,c1,Fri
-                                                  //|  Oct 30 09:29:45 PDT 2015,None,Balance(400.0)),CheckingAccount(STUB_ID,c1,Fr
-                                                  //| i Oct 30 09:29:45 PDT 2015,None,Balance(600.0))))
+                                                  //| funreactdomainmodels.ch3.Account)] = Success((CheckingAccount(STUB_ID,c1,Thu
+                                                  //|  Dec 03 13:47:02 PST 2015,None,Balance(400.0)),SavingsAccount(STUB_ID,c1,Thu
+                                                  //|  Dec 03 13:47:02 PST 2015,None,0.0,Balance(600.0))))
 }

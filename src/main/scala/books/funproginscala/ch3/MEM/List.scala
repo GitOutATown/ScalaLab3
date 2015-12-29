@@ -108,6 +108,7 @@ object List {
             inner(l)
     }
     
+    // Sets different head
     def setHead[A](h: A, l: List[A]): List[A] = l match {
         case Nil => sys.error("operation on empty list")
         case Cons(_, t) => Cons(h, t)

@@ -8,6 +8,7 @@ case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 // companion object
 object List {
+    import collection.mutable.ListBuffer
     
     // companion class factory
     def apply[A](as: A*): List[A] = {
@@ -33,7 +34,7 @@ object List {
     }
     
     def product(ds: List[Double]): Double = ds match {
-        case Nil => 1.0 // TODO: This is not correct for case when initial as is Nil.
+        case Nil => 1.0 // TODO: This is not correct for case when initial ds is Nil.
         case Cons(0.0, _) => 0.0
         case Cons(h, t) => h * product(t)
     }
@@ -88,7 +89,6 @@ object List {
     }
     
     // Reverses the order of the curried parameters
-    // NOT WORKING
     def dropWhileCurAlt[A](f: A => Boolean)(l: List[A]): List[A] = l match {
         case Cons(h, t) => if(f(h)) dropWhileCurAlt(f)(t) else l
         case _ => l
@@ -110,7 +110,6 @@ object List {
     def initAlt[A](l: List[A]): List[A] = l match {
         case Nil => sys.error("init of empty list")
         case _ =>
-            import collection.mutable.ListBuffer
             val buf = new ListBuffer[A]
             @annotation.tailrec
             def loop(l: List[A]): List[A] = l match {
@@ -122,6 +121,7 @@ object List {
             loop(l)
     }
     
+    // Sets different head
     def setHead[A](h: A, l: List[A]): List[A] = l match {
         case Nil => sys.error("set head on empty list")
         case Cons(_, xs) => Cons(h, xs)
@@ -141,7 +141,7 @@ object List {
      * and follow the pattern flow accordingly.
      */
     def foldRight[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
-        case Nil => acc // TODO: This is not correct for case when initial as is Nil.
+        case Nil => acc // TODO: This is not correct for case when initial l is Nil and the accumulator is 1 as in multiplication.
         case Cons(h, t) => f(h, foldRight(t, acc)(f))
     }
     
@@ -152,11 +152,11 @@ object List {
     
     def prodAlt1(l: List[Double]) = foldRight(l, 1.0)(_ * _)
     
-    // The right hand side of the fat arrow comes back as acc. x is the next value in the list.
+    // The right hand side of the fat arrow comes back as acc. h is the next value in the list.
     def prodAlt2(l: List[Double]) = foldRight(l, 1.0)((h, acc) => h * acc)
     
     def length[A](l: List[A]): Int = foldRight(l, 0)((_, acc) => acc + 1)
-    
+        
     @annotation.tailrec
     def foldRightTR[A,B](l: List[A], acc: B)(f: (A, B) => B): B = l match {
         case Nil => acc // TODO: This is not correct for case when initial as is Nil.
@@ -179,14 +179,14 @@ object List {
     
     def lengthFL[A](l: List[A]): Int = foldLeftTR(l, 0)((acc, _) => acc + 1)
     
-    def reverse[A](l: List[A]): List[A] = 
-        foldLeftTR(l, List[A]())((acc, h) => Cons(h, acc))
+    def reverseFLTR[S](l: List[S]): List[S] = 
+        foldLeftTR(l, List[S]())((acc, h) => Cons(h, acc))
     
-    def reverseFR[A](l: List[A]): List[A] = 
+    def reverseFRTR[A](l: List[A]): List[A] = 
         foldRightTR(l, List[A]())((h, acc) => Cons(h, acc))
     
     def foldRightViaFL[A,B](l: List[A], acc: B)(f: (A,B) => B): B = 
-        foldLeftTR(reverse(l), acc)((b,a) => f(a,b))
+        foldLeftTR(reverseFLTR(l), acc)((b,a) => f(a,b))
     
     // This is evidently theoretic (academic). Don't worry about not grokking it now.
     // https://github.com/fpinscala/fpinscala/blob/master/answerkey/datastructures/13.answer.scala
@@ -240,7 +240,7 @@ object List {
         
         A natural solution is using `foldRight`, but our implementation of 
         `foldRight` is not stack-safe. We can use `foldRightViaFoldLeft` 
-        to avoid the stack overflow (variation 1), but more commonly, with 
+        to avoid the stack overflow (variation 1), but more commonly, as with 
         our current implementation of `List`, `map` will just be implemented 
         using local mutation (variation 2). Again, note that the mutation 
         isn't observable outside the function, since we're only mutating a 

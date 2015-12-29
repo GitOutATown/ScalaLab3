@@ -3,7 +3,6 @@ package books.funreactdomainmodels.ch3
 import AccountEntities._
 
 object Customer {
-    
     def getSuccessCustomer() = Customer("c1", "Sally Success", Address())
     def getFailCustomer() = Customer("c2", "Frank Failure", Address())
 }
