@@ -17,4 +17,11 @@ object CartesianProduct {
          val coord2 = s.map{ case (a, b) => b }
          (coord1, coord2)
      }
+     
+     def inverse[A,B](s: Set[(A,B)]): (Set[(B,A)]) = {
+         s.map{ case (a, b) => (b, a) }
+     }
 }
+
+
+

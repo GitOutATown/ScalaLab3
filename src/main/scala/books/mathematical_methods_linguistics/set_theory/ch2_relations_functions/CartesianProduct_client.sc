@@ -40,7 +40,7 @@ object CartesianProduct_client {
   
   // -------------- //
   
-  val motherDaughter = Set(
+  val motherChild = Set(
     ("Sophie", "Glenda"),
     ("Margerie", "Bruce"),
     ("Margerie", "Anna"),
@@ -48,10 +48,10 @@ object CartesianProduct_client {
     ("Clare", "Peter"),
     ("Clare", "Jennifer"),
     ("Margerie", "Clare")
-  )                                               //> motherDaughter  : scala.collection.immutable.Set[(String, String)] = Set((C
-                                                  //| lare,Peter), (Margerie,Bruce), (Jasmine,Howie), (Sophie,Glenda), (Clare,Jen
-                                                  //| nifer), (Margerie,Clare), (Margerie,Anna))
-  val md1 = smallest(motherDaughter)              //> md1  : (Set[String], Set[String]) = (Set(Clare, Margerie, Jasmine, Sophie),
+  )                                               //> motherChild  : scala.collection.immutable.Set[(String, String)] = Set((Clare
+                                                  //| ,Peter), (Margerie,Bruce), (Jasmine,Howie), (Sophie,Glenda), (Clare,Jennifer
+                                                  //| ), (Margerie,Clare), (Margerie,Anna))
+  val md1 = smallest(motherChild)                 //> md1  : (Set[String], Set[String]) = (Set(Clare, Margerie, Jasmine, Sophie),
                                                   //| Set(Glenda, Anna, Clare, Jennifer, Bruce, Howie, Peter))
   (md1._1.size, md1._2.size)                      //> res7: (Int, Int) = (4,7)
   
@@ -78,7 +78,7 @@ object CartesianProduct_client {
   val jennifer = Person("Jennifer")               //> jennifer  : books.mathematical_methods_linguistics.set_theory.ch2_relations
                                                   //| _functions.CartesianProduct_client.Person = Person(Jennifer)
   
-  val motherDaughter2 = Set(
+  val motherChild2 = Set(
     (sophie, glenda),
     (margerie, bruce),
     (margerie, anna),
@@ -86,15 +86,16 @@ object CartesianProduct_client {
     (clare, peter),
     (clare, jennifer),
     (margerie, clare)
-  )                                               //> motherDaughter2  : scala.collection.immutable.Set[(books.mathematical_metho
-                                                  //| ds_linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.P
-                                                  //| erson, books.mathematical_methods_linguistics.set_theory.ch2_relations_func
-                                                  //| tions.CartesianProduct_client.Person)] = Set((Person(Margerie),Person(Clare
-                                                  //| )), (Person(Jasmine),Person(Howie)), (Person(Clare),Person(Jennifer)), (Per
-                                                  //| son(Margerie),Person(Bruce)), (Person(Margerie),Person(Anna)), (Person(Soph
-                                                  //| ie),Person(Glenda)), (Person(Clare),Person(Peter)))
+  )                                               //> motherChild2  : scala.collection.immutable.Set[(books.mathematical_methods_
+                                                  //| linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.Pers
+                                                  //| on, books.mathematical_methods_linguistics.set_theory.ch2_relations_functio
+                                                  //| ns.CartesianProduct_client.Person)] = Set((Person(Margerie),Person(Clare)),
+                                                  //|  (Person(Jasmine),Person(Howie)), (Person(Clare),Person(Jennifer)), (Person
+                                                  //| (Margerie),Person(Bruce)), (Person(Margerie),Person(Anna)), (Person(Sophie)
+                                                  //| ,Person(Glenda)), (Person(Clare),Person(Peter)))
+
              
-  val md2 = smallest(motherDaughter2)             //> md2  : (Set[books.mathematical_methods_linguistics.set_theory.ch2_relations
+  val md2 = smallest(motherChild2)                //> md2  : (Set[books.mathematical_methods_linguistics.set_theory.ch2_relations
                                                   //| _functions.CartesianProduct_client.Person], Set[books.mathematical_methods_
                                                   //| linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.Pers
                                                   //| on]) = (Set(Person(Margerie), Person(Jasmine), Person(Clare), Person(Sophie
@@ -104,15 +105,14 @@ object CartesianProduct_client {
   
   // -------------- //
   
-  val (mothers, daughters) = smallest(motherDaughter2)
-                                                  //> mothers  : Set[books.mathematical_methods_linguistics.set_theory.ch2_relati
+  val (mothers, children) = smallest(motherChild2)//> mothers  : Set[books.mathematical_methods_linguistics.set_theory.ch2_relati
                                                   //| ons_functions.CartesianProduct_client.Person] = Set(Person(Margerie), Perso
                                                   //| n(Jasmine), Person(Clare), Person(Sophie))
-                                                  //| daughters  : Set[books.mathematical_methods_linguistics.set_theory.ch2_rela
-                                                  //| tions_functions.CartesianProduct_client.Person] = Set(Person(Anna), Person(
-                                                  //| Glenda), Person(Peter), Person(Howie), Person(Bruce), Person(Clare), Person
-                                                  //| (Jennifer))
-  val cartProdAll = cartProd(mothers, daughters)  //> cartProdAll  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_r
+                                                  //| children  : Set[books.mathematical_methods_linguistics.set_theory.ch2_relat
+                                                  //| ions_functions.CartesianProduct_client.Person] = Set(Person(Anna), Person(G
+                                                  //| lenda), Person(Peter), Person(Howie), Person(Bruce), Person(Clare), Person(
+                                                  //| Jennifer))
+  val cartProdAll = cartProd(mothers, children)   //> cartProdAll  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_r
                                                   //| elations_functions.CartesianProduct_client.Person, books.mathematical_metho
                                                   //| ds_linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.P
                                                   //| erson)] = Set((Person(Jasmine),Person(Peter)), (Person(Margerie),Person(Pet
@@ -126,8 +126,7 @@ object CartesianProduct_client {
                                                   //| ie),Person(Anna)), (Person(Clare),Person(Clare)), (Person(Margerie),Person(
                                                   //| Howie)), (Person(Sophie
                                                   //| Output exceeds cutoff limit.
-  val comp = compliment(cartProdAll)(motherDaughter2)
-                                                  //> comp  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_relation
+  val comp = compliment(cartProdAll)(motherChild2)//> comp  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_relation
                                                   //| s_functions.CartesianProduct_client.Person, books.mathematical_methods_ling
                                                   //| uistics.set_theory.ch2_relations_functions.CartesianProduct_client.Person)]
                                                   //|  = Set((Person(Jasmine),Person(Peter)), (Person(Margerie),Person(Peter)), (
@@ -141,17 +140,32 @@ object CartesianProduct_client {
                                                   //| )), (Person(Sophie),Person(Howie)), (Person(Clare),Person(Howie)), (Person(
                                                   //| Clare),Person(Anna)))
   cartProdAll.size                                //> res9: Int = 28
-  motherDaughter2.size                            //> res10: Int = 7
+  motherChild2.size                               //> res10: Int = 7
   comp.size                                       //> res11: Int = 21
-  (motherDaughter2 union comp) == cartProdAll     //> res12: Boolean = true
-  (motherDaughter2 intersect comp) == Set.empty   //> res13: Boolean = true
+  (motherChild2 union comp) == cartProdAll        //> res12: Boolean = true
+  (motherChild2 intersect comp) == Set.empty      //> res13: Boolean = true
   
-  val persons = mothers ++ daughters              //> persons  : scala.collection.immutable.Set[books.mathematical_methods_lingui
+  val persons = mothers ++ children               //> persons  : scala.collection.immutable.Set[books.mathematical_methods_lingui
                                                   //| stics.set_theory.ch2_relations_functions.CartesianProduct_client.Person] = 
                                                   //| Set(Person(Anna), Person(Margerie), Person(Glenda), Person(Peter), Person(H
                                                   //| owie), Person(Bruce), Person(Clare), Person(Sophie), Person(Jasmine), Perso
                                                   //| n(Jennifer))
+  
   persons.size                                    //> res14: Int = 10
   
+  val childMother = inverse(motherChild2)         //> childMother  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_r
+                                                  //| elations_functions.CartesianProduct_client.Person, books.mathematical_metho
+                                                  //| ds_linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.P
+                                                  //| erson)] = Set((Person(Peter),Person(Clare)), (Person(Clare),Person(Margerie
+                                                  //| )), (Person(Jennifer),Person(Clare)), (Person(Bruce),Person(Margerie)), (Pe
+                                                  //| rson(Glenda),Person(Sophie)), (Person(Anna),Person(Margerie)), (Person(Howi
+                                                  //| e),Person(Jasmine)))
+  assert(inverse(childMother) == motherChild2)
+  
+  assert(childMother.size == motherChild2.size)
+  
+  assert(isSubset(cartProd(mothers, children))(motherChild2))
+  assert(isSubset(cartProd(children, mothers))(inverse(motherChild2)))
+  assert(!isSubset(cartProd(children, mothers))(motherChild2))
   '''                                             //> res15: Char('\'') = '
 }
