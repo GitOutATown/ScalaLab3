@@ -30,5 +30,6 @@ object CartesianProduct_client {
   val c1 = cartProd(N, O)                         //> c1  : Set[(Int, Int)] = Set((1,1), (1,2), (3,1), (3,2))
   
   isSubset(c1)(M)                                 //> res4: Boolean = true
-  '''                                             //> res5: Char('\'') = '
+  smallest(M)                                     //> res5: (Set[Int], Set[Int]) = (Set(1, 3),Set(1, 2))
+  '''                                             //> res6: Char('\'') = '
 }
