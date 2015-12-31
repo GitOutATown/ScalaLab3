@@ -55,6 +55,8 @@ object CartesianProduct_client {
                                                   //| Set(Glenda, Anna, Clare, Jennifer, Bruce, Howie, Peter))
   (md1._1.size, md1._2.size)                      //> res7: (Int, Int) = (4,7)
   
+  // ------------------------ //
+  
   case class Person(name: String)
   
   val sophie = Person("Sophie")                   //> sophie  : books.mathematical_methods_linguistics.set_theory.ch2_relations_f
@@ -94,14 +96,6 @@ object CartesianProduct_client {
                                                   //| (Margerie),Person(Bruce)), (Person(Margerie),Person(Anna)), (Person(Sophie)
                                                   //| ,Person(Glenda)), (Person(Clare),Person(Peter)))
 
-             
-  val md2 = smallest(motherChild2)                //> md2  : (Set[books.mathematical_methods_linguistics.set_theory.ch2_relations
-                                                  //| _functions.CartesianProduct_client.Person], Set[books.mathematical_methods_
-                                                  //| linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.Pers
-                                                  //| on]) = (Set(Person(Margerie), Person(Jasmine), Person(Clare), Person(Sophie
-                                                  //| )),Set(Person(Anna), Person(Glenda), Person(Peter), Person(Howie), Person(B
-                                                  //| ruce), Person(Clare), Person(Jennifer)))
-  (md2._1.size, md2._2.size)                      //> res8: (Int, Int) = (4,7)
   
   // -------------- //
   
@@ -112,6 +106,9 @@ object CartesianProduct_client {
                                                   //| ions_functions.CartesianProduct_client.Person] = Set(Person(Anna), Person(G
                                                   //| lenda), Person(Peter), Person(Howie), Person(Bruce), Person(Clare), Person(
                                                   //| Jennifer))
+  
+  (mothers.size, children.size)                   //> res8: (Int, Int) = (4,7)
+  
   val cartProdAll = cartProd(mothers, children)   //> cartProdAll  : Set[(books.mathematical_methods_linguistics.set_theory.ch2_r
                                                   //| elations_functions.CartesianProduct_client.Person, books.mathematical_metho
                                                   //| ds_linguistics.set_theory.ch2_relations_functions.CartesianProduct_client.P
