@@ -19,7 +19,6 @@ object Composition_client {
                                                   //| 
   val S = Set(('c','f'), ('e','g'), ('e','h'))    //> S  : scala.collection.immutable.Set[(Char, Char)] = Set((c,f), (e,g), (e,h))
                                                   //| 
-  
   // ---------------- //
   
   // Cartesians (not functions)
@@ -37,29 +36,16 @@ object Composition_client {
   val BtoC = relation(AtoB)(C)(S)                 //> BtoC  : Set[Char] = Set(g, h, f)
   assert(BtoC == C)
   
-  
-  relation(relation(A)(B)(R))(C)(S)               //> res3: Set[Char] = Set(g, h, f)
-  
-  // ------------------- //
-  
-  val AtoB2 = composeRel(A)(B)(R)                 //> AtoB2  : Set[(Char, Char)] = Set((a,d), (a,e), (b,c))
-  
-  val a = AtoB2.map{case(a,b) => a}               //> a  : scala.collection.immutable.Set[Char] = Set(a, b)
-  val b = AtoB2.map{case(a,b) => b}               //> b  : scala.collection.immutable.Set[Char] = Set(d, e, c)
-  
-  val BtoC2 = composeRel(b)(C)(S)                 //> BtoC2  : Set[(Char, Char)] = Set((e,g), (e,h), (c,f))
+  val AtoC = relation(relation(A)(B)(R))(C)(S)    //> AtoC  : Set[Char] = Set(g, h, f)
+  assert(AtoC == C)
   
   // -------------------- //
   
-  val RcomposeS = Set(('a','g'), ('a','h'), ('b','f'))
-                                                  //> RcomposeS  : scala.collection.immutable.Set[(Char, Char)] = Set((a,g), (a,h
-                                                  //| ), (b,f))
-  composeRel2(R, S)                               //> res4: Set[(Char, Char)] = Set((a,g), (a,h), (b,f))
+  composeRel(R, S)                                //> res3: Set[(Char, Char)] = Set((a,g), (a,h), (b,f))
+    
+  assert(value(composeRel(R, S)) == C)
   
-  assert(RcomposeS == composeRel2(R, S))
+  assert(isSubset(cartProd(A, C), composeRel(R, S)))
   
-  range(composeRel2(R, S))                        //> res5: Set[Char] = Set(g, h, f)
-  
-  assert(isSubset(cartProd(A, C), composeRel2(R, S)))
-  '''                                             //> res6: Char('\'') = '
+  '''                                             //> res4: Char('\'') = '
 }

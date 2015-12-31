@@ -23,16 +23,8 @@ object Function {
         } yield ab._2
     }
     
-    def composeRel[A,B](domain: Set[A])(range: Set[B])(rel: Set[(A,B)]): Set[(A,B)] = {
-        //require(relExists(domain, range, rel))
-        for{
-            a <- domain
-            ab <- rel
-            if a == ab._1
-        } yield ab
-    }
-    
-    def composeRel2[A,B](rel1: Set[(A,B)], rel2: Set[(A,B)]): Set[(A,B)] = {
+    // Compose two relations into a single relation
+    def composeRel[A,B](rel1: Set[(A,B)], rel2: Set[(A,B)]): Set[(A,B)] = {
         for{
             (a1, b1) <- rel1
             (a2, b2) <- rel2
@@ -57,7 +49,7 @@ object Function {
         bs.forall { b => range.contains(b) }
     }
     
-    def range[A,B](rel: Set[(A,B)]): Set[B] = {
+    def value[A,B](rel: Set[(A,B)]): Set[B] = {
         rel.map{ case (a,b) => b }
     }
 }
