@@ -29,7 +29,7 @@ object CartesianProduct_client {
   val O = Set(1, 2)                               //> O  : scala.collection.immutable.Set[Int] = Set(1, 2)
   val c1 = cartProd(N, O)                         //> c1  : Set[(Int, Int)] = Set((1,1), (1,2), (3,1), (3,2))
   
-  isSubset(c1)(M)                                 //> res4: Boolean = true
+  isSubset(c1,M)                                  //> res4: Boolean = true
   smallest(M)                                     //> res5: (Set[Int], Set[Int]) = (Set(1, 3),Set(1, 2))
   
   // ------------- //
@@ -161,8 +161,10 @@ object CartesianProduct_client {
   
   assert(childMother.size == motherChild2.size)
   
-  assert(isSubset(cartProd(mothers, children))(motherChild2))
-  assert(isSubset(cartProd(children, mothers))(inverse(motherChild2)))
-  assert(!isSubset(cartProd(children, mothers))(motherChild2))
+  assert(isSubset( cartProd(mothers, children), motherChild2))
+  assert(isSubset( cartProd(children, mothers), inverse(motherChild2)))
+  assert(!isSubset( cartProd(children, mothers), motherChild2))
+  
   '''                                             //> res15: Char('\'') = '
+  
 }

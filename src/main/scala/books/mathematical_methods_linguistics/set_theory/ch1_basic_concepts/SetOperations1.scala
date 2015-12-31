@@ -7,7 +7,7 @@ object SetOperations1 {
         universe -- s
     }
     
-    def isSubset[A](container: Set[A])(sub: Set[A]): Boolean = {
+    def isSubset[A](container: Set[A], sub: Set[A]): Boolean = {
         (sub union container) == container &&
         (sub intersect container) == sub
     }

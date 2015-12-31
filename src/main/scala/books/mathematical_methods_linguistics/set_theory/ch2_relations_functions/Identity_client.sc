@@ -23,8 +23,9 @@ object Identity_client {
   
   // --------------- //
   
-  // (2-10)
+  // (2-10), Figure 2-5
   
+  // idA
   val F = func(A)(B)(R1)                          //> F  : Set[Int] = Set(2, 1, 3)
   val Finv = func(F)(A)(inverse(R1))              //> Finv  : Set[Char] = Set(a, b, c)
   assert(Finv == identitySet(A))
@@ -34,6 +35,14 @@ object Identity_client {
   
   assert(F == B)
   assert(Finv == A)
+  val Finv2 = func(B)(A)(inverse(R1))             //> Finv2  : Set[Char] = Set(b, a, c)
+  assert(Finv2 == A)
+  
+  //idB
+  val F2 = func(Finv2)(B)(R1)                     //> F2  : Set[Int] = Set(1, 2, 3)
+  assert(F2 == identitySet(B))
+  
+  // ---------------- //
   
   '''                                             //> res4: Char('\'') = '
 }
