@@ -36,7 +36,7 @@ object Reflexivity {
     // true if no relations are reflexive
     def irreflexive[A](set: Set[A])(rel: Set[(A,A)]): Boolean = {
         val identity = identityRel(set)
-        rel.forall(r => !identity.contains(r))
+        rel.intersect(identity) == Set.empty
     }
     
     /*

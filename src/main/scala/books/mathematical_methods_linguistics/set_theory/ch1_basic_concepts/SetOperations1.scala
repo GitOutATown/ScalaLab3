@@ -9,6 +9,7 @@ object SetOperations1 {
     
     def isSubset[A](container: Set[A], sub: Set[A]): Boolean = {
         (sub union container) == container &&
-        (sub intersect container) == sub
+        (sub intersect container) == sub &&
+        sub.subsetOf(container)
     }
 }

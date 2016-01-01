@@ -37,8 +37,8 @@ object Function {
         val as = rel.toList.map{ case (a,b) => a }
         val bs = rel.toList.map{ case (a,b) => b }
         as.distinct.size == rel.size &&
-        as.forall { a => domain.contains(a) } &&
-        bs.forall { b => range.contains(b) }
+        as.toSet.subsetOf(domain) &&
+        bs.toSet.subsetOf(range)
     }
     
     // verify relation exists in domain and range

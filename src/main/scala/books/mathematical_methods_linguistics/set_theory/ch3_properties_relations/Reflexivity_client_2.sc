@@ -47,5 +47,22 @@ object Reflexivity_client_2 {
   assert(!isReflexFunc(persons)(tallerThan))
   assert(isReflexFunc(persons)(sameAge))
   
+  // ------------------- //
+  
+  // Financial relation
+  val supports = Set(
+    (sophie, sophie),
+    (sophie, jasmine),
+    (clare, clare),
+    (margerie, margerie)
+  )                                               //> supports  : scala.collection.immutable.Set[(books.mathematical_methods_ling
+                                                  //| uistics.set_theory.ch3_properties_relations.Reflexivity_client_2.Person, bo
+                                                  //| oks.mathematical_methods_linguistics.set_theory.ch3_properties_relations.Re
+                                                  //| flexivity_client_2.Person)] = Set((Person(Sophie,42,5.4),Person(Sophie,42,5
+                                                  //| .4)), (Person(Sophie,42,5.4),Person(Jasmine,10,5.8)), (Person(Clare,31,5.6)
+                                                  //| ,Person(Clare,31,5.6)), (Person(Margerie,42,5.8),Person(Margerie,42,5.8)))
+  assert(!irreflexive(persons)(supports))
+  assert(nonReflexive(persons)(supports))
+  
   '''                                             //> res0: Char('\'') = '
 }

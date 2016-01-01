@@ -16,5 +16,7 @@ object Function_client {
   assert(isFunction(A, B, R1))
   assert(isFunction(A, B, R2))
   assert(!isFunction(A, B, R3))
+  
   '''                                             //> res0: Char('\'') = '
+  
 }
