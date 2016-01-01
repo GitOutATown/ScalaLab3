@@ -64,7 +64,10 @@ object Reflexivity_client {
   val R8 = Set((1,2), (3,2))                      //> R8  : scala.collection.immutable.Set[(Int, Int)] = Set((1,2), (3,2))
   irreflexive(A)(R8)                              //> res9: Boolean = true
   
-  irreflexive(B)(R7)                              //> res10: Boolean = false
+  assert(!irreflexive(B)(R7))
   
-  '''                                             //> res11: Char('\'') = '
+  assert(!irreflexive(A)(R2))
+  
+  
+  '''                                             //> res10: Char('\'') = '
 }

@@ -23,7 +23,7 @@ object Reflexivity {
         isSubset(rel, identityRel(set)) // (container, subset)
     }
     
-    // Not all relations are reflexive
+    // true if not all relations are reflexive
     def nonReflexive[A](set: Set[A])(rel: Set[(A,A)]): Boolean = {
         !isReflexive(set)(rel)
     }
@@ -33,14 +33,14 @@ object Reflexivity {
         !isReflexFunc(set)(f)
     }
     
-    // No relations are reflexive
+    // true if no relations are reflexive
     def irreflexive[A](set: Set[A])(rel: Set[(A,A)]): Boolean = {
         val identity = identityRel(set)
         rel.forall(r => !identity.contains(r))
     }
     
     /*
-     * No relations are reflexive
+     * true if no relations are reflexive
      * Uses function to generate relations
      */
     def irreflexFunc[A](set: Set[A])(f: (A,A) => Boolean): Boolean = {
