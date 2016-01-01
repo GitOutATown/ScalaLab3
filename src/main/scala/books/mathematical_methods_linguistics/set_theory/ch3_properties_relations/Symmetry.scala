@@ -21,7 +21,7 @@ object Symmetry {
     
     // Uses function to generate relations
     def isSymFunc[A](rel: Set[(A,A)])(f: (A,A) => Boolean): Boolean = {
-        (inverse(rel) filter{ case(a1,a2) => f(a1,a2)}).subsetOf(rel)
+        inverse(rel).subsetOf(rel filter{ case(a1,a2) => f(a1,a2)})
     }
     
     def isSymFuncConstr[A](rel: Set[(A,A)])(set: Set[A])(f: (A,A) => Boolean): Boolean = {
