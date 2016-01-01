@@ -65,5 +65,6 @@ object Reflexivity_client {
   irreflexive(A)(R8)                              //> res9: Boolean = true
   
   irreflexive(B)(R7)                              //> res10: Boolean = false
+  
   '''                                             //> res11: Char('\'') = '
 }
