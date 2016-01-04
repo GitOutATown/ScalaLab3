@@ -11,7 +11,8 @@ object Reflexivity {
      * <x,x> for every x that is a member of the set. 
      */
     def isReflexive[A](set: Set[A])(rel: Set[(A,A)]): Boolean = {
-        isSubset(rel, identityRel(set)) // (container, subset)
+        isSubset(rel, identityRel(set)) && // (container, subset)
+        identityRel(set).subsetOf(rel) // redundant, just for comparison
     }
     
     // Uses function to generate relations
@@ -33,7 +34,7 @@ object Reflexivity {
         !isReflexFunc(set)(f)
     }
     
-    // true if no relations are reflexive
+    // true if no pairs are reflexive
     def irreflexive[A](set: Set[A])(rel: Set[(A,A)]): Boolean = {
         val identity = identityRel(set)
         rel.intersect(identity) == Set.empty

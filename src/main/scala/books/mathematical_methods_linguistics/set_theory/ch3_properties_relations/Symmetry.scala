@@ -7,7 +7,7 @@ object Symmetry {
 
     /*
      * If an ordered pair is in R, then the pair with the members reversed 
-     * is also in R.
+     * is also in R. I.e. both <x,y> and <y,x> must exist in the relation.
      */
     def isSym[A](rel: Set[(A,A)]): Boolean = {
         inverse(rel).subsetOf(rel)
@@ -35,6 +35,20 @@ object Symmetry {
     def constrRelToSet[A](set: Set[A], rel: Set[(A,A)]) {
         require((rel.map{ case(a1,a2) => a1}).subsetOf(set))
         require((rel.map{ case(a1,a2) => a2}).subsetOf(set))
+    }
+    
+    // true if no pairs are symmetric
+    def isAsym[A](rel: Set[(A,A)]): Boolean = {
+        inverse(rel).intersect(rel) == Set.empty
+    }
+    
+    // true if whenever both <x,y> and <y,x> are in the relation x = y.
+    def antiSym[A](rel: Set[(A,A)]): Boolean = {
+        val res = rel.filter{ case (a, b) => {
+            // rel.contains(b, a) && // This logic is more explicit per the books definition, i.e. queries reflexivity, but reflexivity test is not logically necessary.
+            (a == b) 
+        }}
+        !res.isEmpty
     }
 }
     
